@@ -166,6 +166,57 @@ chmod +x /bin/clashcs
 # Add helmiwrt script : lists of command lines provided by helmiau.com
 chmod +x /bin/helmiwrt
 
+# Add USB Hilink Interface by default
+# Add my Load Balance network interfaces to default network config
+if [[ $(grep -c 'ueth1' /etc/config/network) = "0" ]];then
+	echo "  helmilb_log : network config file available, patching..."
+	cat << "EOF" >> /etc/config/network
+
+
+config interface 'ueth1'
+	option proto 'dhcp'
+	option ifname 'eth1'
+	option metric '10'
+
+config interface 'wwan'
+	option proto 'dhcp'
+	option metric '50'
+
+EOF
+	echo "  helmilb_log : patching network for my loadbalance settings is done..."
+else
+	echo "  helmilb_log : network config file already patched. Skipping..."
+fi
+
+# Add my Load Balance network interfaces to firewall
+if [[ $(grep -c 'fweth1\|wan' /etc/config/firewall) = "0" ]];then
+	echo "  helmilb_log : firewall config file available, patching..."
+	cat << "EOF" >> /etc/config/firewall
+
+
+config zone
+	option name 'fweth1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth1'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'lan'
+
+EOF
+	echo "  helmilb_log : patching firewall config file done..."
+else
+	echo "  helmilb_log : firewall config file already patched. Skipping..."
+fi
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
