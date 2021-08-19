@@ -31,3 +31,5 @@ if [[ $helmiooo == *"uhttpd mai"* ]]; then
 	echo -e "Everything has been done..."
 	sed -i "/config uhttpd main/a option ubus_prefix '/ubus'" /etc/config/uhttpd
 fi
+/etc/init.d/uhttpd restart
+/etc/init.d/rpcd restart
