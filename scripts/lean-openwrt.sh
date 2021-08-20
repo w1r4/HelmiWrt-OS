@@ -105,6 +105,9 @@ svn co https://github.com/tano-systems/luci-theme-tano/branches/master/src/luci-
 # luci-theme-darkmatter
 git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter
 
+# HelmiWrt packages
+git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
