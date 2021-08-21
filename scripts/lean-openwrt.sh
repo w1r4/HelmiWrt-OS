@@ -71,9 +71,6 @@ git clone --depth=1 https://github.com/sirpdboy/luci-theme-opentopd.git
 # git clone --depth=1 https://github.com/nickberry17/luci-proto-modemmanager.git #For OpenWrt 18.xx and below only. 
 git clone --depth=1 https://github.com/rickydee/luci-proto-modemmanager.git #For OpenWrt 19.xx and above only. 
 
-# Add openwrt badvpn-tun2socks
-git clone --depth=1 https://github.com/helmiau/badvpn_corkscrew
-
 # Add modeminfo
 git clone --depth=1 https://github.com/koshev-msk/luci-app-modeminfo
 
@@ -103,7 +100,8 @@ git clone --depth=1 https://github.com/4IceG/luci-app-internet-detector
 svn co https://github.com/tano-systems/luci-theme-tano/branches/master/src/luci-theme-tano
 
 # luci-theme-darkmatter
-git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter
+#git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter #For OpenWrt 18.xx and below only. 
+git clone --depth=1 https://github.com/rufengsuixing/luci-theme-darkmatter #For OpenWrt 19.xx and below only. 
 
 # HelmiWrt packages
 git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
