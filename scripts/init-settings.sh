@@ -173,6 +173,29 @@ if [[ $(grep -c 'ueth1' /etc/config/network) = "0" ]];then
 	cat << "EOF" >> /etc/config/network
 
 
+config interface 'l2tp'
+	option proto 'l2tp'
+	option auto '0'
+	option ipv6 'auto'
+
+config interface 'qmi'
+	option proto 'qmi'
+	option device '/dev/cdc-wdm0'
+	option auth 'none'
+	option apn 'home'
+
+config interface 'vpn'
+	option proto 'none'
+	option ifname 'tun0'
+
+config interface 'libernet'
+	option proto 'none'
+	option ifname 'tun1'
+
+config interface 'xderm'
+	option proto 'none'
+	option ifname 'tun2'
+
 config interface 'ueth1'
 	option proto 'dhcp'
 	option ifname 'eth1'
@@ -195,6 +218,32 @@ if [[ $(grep -c 'fweth1\|wan' /etc/config/firewall) = "0" ]];then
 
 
 config zone
+	option name 'libernet'
+	option masq '1'
+	option mtu_fix '1'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'libernet'
+
+config forwarding
+	option src 'lan'
+	option dest 'libernet'
+
+config zone
+	option output 'ACCEPT'
+	option name 'xderm'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'xderm'
+
+config forwarding
+	option dest 'xderm'
+	option src 'lan'
+
+config zone
 	option name 'fweth1'
 	option forward 'REJECT'
 	option output 'ACCEPT'
@@ -212,6 +261,7 @@ config forwarding
 	option src 'lan'
 
 EOF
+	sed -i 's#wan wan6#wan wan6 qmi#g' /etc/config/firewall
 	echo "  helmilb_log : patching firewall config file done..."
 else
 	echo "  helmilb_log : firewall config file already patched. Skipping..."
