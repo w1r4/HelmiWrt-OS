@@ -7,8 +7,11 @@
 #=================================================
 
 # Disable autostart by default for some packages
-cd /etc/rc.d
-rm -f S98udptools || true
+rm -f /etc/rc.d/S98udptools || true
+rm -f /etc/rc.d/S99dockerd || true
+rm -f /etc/rc.d/S99dockerman || true
+rm -f /etc/rc.d/S30stubby || true
+
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
