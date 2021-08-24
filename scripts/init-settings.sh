@@ -179,35 +179,37 @@ if [[ $(grep -c 'ueth1' /etc/config/network) = "0" ]];then
 
 config interface 'l2tp'
 	option proto 'l2tp'
-	option auto '0'
 	option ipv6 'auto'
+	option auto '0'
 
-config interface 'qmi'
+config interface 'uqmi1'
 	option proto 'qmi'
 	option device '/dev/cdc-wdm0'
 	option auth 'none'
 	option apn 'home'
 
-config interface 'vpn'
+config interface 'xderm'
 	option proto 'none'
 	option ifname 'tun0'
+	option auto '0'
 
 config interface 'libernet'
 	option proto 'none'
 	option ifname 'tun1'
+	option auto '0'
 
-config interface 'xderm'
-	option proto 'none'
-	option ifname 'tun2'
+config interface '3g'
+	option proto '3g'
+	option ipv6 'auto'
+
+config interface 'wg'
+	option proto 'wireguard'
+	option auto '0'
 
 config interface 'ueth1'
 	option proto 'dhcp'
 	option ifname 'eth1'
 	option metric '10'
-
-config interface 'wwan'
-	option proto 'dhcp'
-	option metric '50'
 
 EOF
 	echo "  helmilb_log : patching network for my loadbalance settings is done..."
@@ -231,8 +233,12 @@ config zone
 	option network 'libernet'
 
 config forwarding
-	option src 'lan'
 	option dest 'libernet'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'libernet'
 
 config zone
 	option output 'ACCEPT'
@@ -241,11 +247,33 @@ config zone
 	option forward 'REJECT'
 	option masq '1'
 	option mtu_fix '1'
-	option network 'xderm'
+	list network 'xderm'
 
 config forwarding
 	option dest 'xderm'
 	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'xderm'
+
+config zone
+	option name 'ipsec'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	list network 'l2tp'
+	list network 'sstp'
+
+config forwarding
+	option src 'lan'
+	option dest 'ipsec'
+
+config forwarding
+	option src 'ipsec'
+	option dest 'wan'
 
 config zone
 	option name 'fweth1'
@@ -265,7 +293,7 @@ config forwarding
 	option src 'lan'
 
 EOF
-	sed -i 's#wan wan6#wan wan6 qmi#g' /etc/config/firewall
+	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'uqmi1'\n	list network '3g'\n	list network 'wg'#g" /etc/config/firewall
 	echo "  helmilb_log : patching firewall config file done..."
 else
 	echo "  helmilb_log : firewall config file already patched. Skipping..."
