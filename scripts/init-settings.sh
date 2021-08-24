@@ -216,7 +216,7 @@ else
 fi
 
 # Add my Load Balance network interfaces to firewall
-if [[ $(grep -c 'fweth1\|wan' /etc/config/firewall) = "0" ]];then
+if [[ $(grep -c 'fweth1' /etc/config/firewall) = "0" ]];then
 	echo "  helmilb_log : firewall config file available, patching..."
 	cat << "EOF" >> /etc/config/firewall
 
