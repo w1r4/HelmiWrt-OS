@@ -1,0 +1,296 @@
+#!/bin/bash
+#--------------------------------------------------------
+#   Don't remove this section for credits
+#   Don't rename this file
+#--------------------------------------------------------
+#   This script to manage v2rayA VPN service
+#   by Helmi Amirudin a.k.a helmiau
+#   my profile page https://helmiau.com/about
+#   my github https://github.com/helmiau
+#--------------------------------------------------------
+
+#--- Warna Warna
+R='\033[1;31m' # Merah Muda
+G='\033[1;32m' # Hijau Muda
+C='\033[0;36m' # Biru Muda
+Y='\033[1;33m' # Kuning
+N='\033[1;37m' # Putih
+
+INSTALLERNAME="$(basename "$0")"
+CHECKNET="http://github.com/v2rayA/v2rayA"
+INITD="/etc/init.d/v2raya"
+VAUSRBIN="/usr/bin/v2raya"
+VABIN="/bin/v2raya"
+ETCWEB="/etc/v2raya/web"
+ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
+VAIP=$(uci show network | grep network.lan.ipaddr | cut -d \' -f2)
+
+V2RAYIPK="/root/v2raycore.ipk"
+V2RAYVER=$( opkg list-installed | grep v2ray-core )
+V2RAYSTAT=$(if [[ $V2RAYVER == *"core"* ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
+
+V2RAYAVER=$( opkg list-installed | grep v2ray-core )
+V2RAYASTAT=$(if [[ -f $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
+V2RAYASVC="Running"
+
+OPKGS=$( if [[ $(opkg list-installed | grep -c "v2ray-core\|ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
+INSTALLSUPPORT=$(if [[ $ARCH == *"aarch"* || $ARCH == *"arm"* || $ARCH == *"x86"* ]]; then echo -e "${G}Supported${N}"; else echo -e "${R}Unsupported${N}"; fi)
+SCRIPTVER="1.0"
+
+echo -e "${N}======================================================${Y}"
+echo -e "          v2rayA OpenWrt Script Manager v$SCRIPTVER"
+echo -e "             Copyright(R)2021 helmiau.com"
+echo -e "${N}======================================================"
+echo -e "  Device Architecture       : ${G}$ARCH${N}"
+echo -e "  Installation Support      : $INSTALLSUPPORT"
+echo -e "  Requirement Packages      : $OPKGS"
+echo -e "  V2ray Core Status         : $V2RAYSTAT"
+echo -e "  V2rayA Install Status     : $V2RAYASTAT"
+echo -e "  V2rayA Service Status     : ${G}$V2RAYASVC${N}"
+echo -e "  V2rayA WebGUI Address     : ${G}$VAIP:2017${N}"
+echo -e "======================================================"
+echo -e "  Run commands 1-5          : 1"
+echo -e "  Install required packages : 2"
+echo -e "  Install v2ray core        : 3"
+echo -e "  Install/Update v2rayA     : 4"
+echo -e "  Start and Run v2rayA      : 5"
+echo -e "  Start on Boot v2rayA      : 6"
+echo -e "  Stop v2rayA Program       : 77"
+echo -e "  Uninstall v2rayA          : 99"
+echo -e "======================================================"
+echo -e "              Type anything to exit"
+echo -e "======================================================"
+echo -e "     Type one of command above to run its command"
+
+function helmiau_unsupported() {
+	if [[ $INSTALLSUPPORT = "Unsupported" ]];then
+		echo "  Sorry, your device is unsupported for v2rayA installation"
+		echo "  Exiting in 3 secs..."
+		echo -e "======================================================"
+		sleep 3
+		exit
+	fi
+}
+function helmiau_checknet() {
+	echo "  Checking connections..."
+	if wget -S --spider "$CHECKNET" 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+		echo "  Internet connected..."
+		echo -e "======================================================"
+	else
+		echo "  No internet or URL unavailable..."
+		echo "  Back to installer menu..."
+		echo -e "======================================================"
+		sleep 3
+		clear
+		return_installer
+	fi
+}
+function return_installer() {
+	clear
+	if [[ -f /root/$INSTALLERNAME ]]; then
+		cat /root/"$INSTALLERNAME" > /bin/"$INSTALLERNAME"
+		chmod +x /bin/"$INSTALLERNAME"
+		./"$INSTALLERNAME"
+	elif [[ -f /root/$INSTALLERNAME ]] && [[ -f /bin/$INSTALLERNAME ]]; then
+		"$INSTALLERNAME"
+	elif [[ ! -f /root/$INSTALLERNAME ]] && [[ -f /bin/$INSTALLERNAME ]]; then
+		cat /bin/"$INSTALLERNAME" > /root/"$INSTALLERNAME"
+		chmod +x /root/"$INSTALLERNAME"
+		"$INSTALLERNAME"
+	fi
+}
+function opkg_reqs() {
+	echo -e "${G}  Installing requirements packages....${Y}"
+	opkg update
+	opkg install ca-certificates wget unzip tar curl kmod-ipt-nat6 iptables-mod-tproxy iptables-mod-filter
+	echo -e "${G}  Requirements packages installed...."
+	echo -e "${N}======================================================"
+}
+function v2ray_core() {
+	echo -e "${G}  Installing v2ray core....${Y}"
+	V2RAYSRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
+	wget -qO $V2RAYIPK $V2RAYSRC
+	#CHECK SIZE THEN INSTALL
+	if [[ -s $V2RAYIPK ]]; then
+		echo -e "  $V2RAYIPK downloaded, installing...."
+		opkg install $V2RAYIPK
+		echo -e "${G}  v2ray core installed....${N}"
+	else
+		echo -e "${R}  v2ray core install failed....${N}"		
+	fi
+	echo -e "======================================================"
+}
+function v2ray_core_mini() {
+	echo -e "${G}  Installing v2ray core mini....${Y}"
+	V2RAYMINISRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core-mini_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
+	wget -qO $V2RAYIPK $V2RAYMINISRC
+	#CHECK SIZE THEN INSTALL
+	if [[ -s $V2RAYIPK ]]; then
+		echo -e "  $V2RAYIPK downloaded, installing...."
+		opkg install $V2RAYIPK
+		echo -e "${G}  v2ray core mini installed....${N}"
+	else
+		echo -e "${R}  v2ray core mini install failed....${N}"		
+	fi
+	echo -e "======================================================"
+}
+function v2ray_core_install_option() {
+	echo -e "${G}  Select v2ray core type :${Y}"
+	echo -e "  1. Normal core"
+	echo -e "  2. Mini core"
+	echo -n "  "
+	read -r VIO
+	if [[ $VIO = "1" ]];then
+		v2ray_core
+	elif [[ $VIO = "2" ]];then
+		v2ray_core_mini
+	fi
+	echo -e "${N}======================================================"
+}
+function v2ray_core_check() {
+	echo -e "${G}  Checking v2ray core....${Y}"
+	if [[ $(opkg list-installed | grep -c v2ray-core) = "1" ]]; then
+		echo -e "${G}  v2ray core already installed....${Y}"
+		echo -e "  Resuming script runs....${N}"
+	else
+		echo -e "${R}  v2ray core is not installed....${N}"
+		v2ray_core_install_option
+	fi
+	echo -e "======================================================"
+}
+function v2raya_web() {
+	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
+	wget -O /root/v2rayweb.zip http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip
+	#Check Directory, Create if doesn't exist
+	if [[ -d $ETCWEB ]]; then
+		echo "${G}  v2rayA Web path is exist, cleaning...${Y}"
+		rm -rf $ETCWEB
+		echo "${G}  v2rayA Web path cleaned...${Y}"
+	fi
+	#Check size, unzip file if size is not null
+	if [[ -s /root/v2rayweb.zip ]]; then
+		echo "${G}  Extracting files....${Y}"
+		unzip /root/v2rayweb.zip
+		echo "${G}  Extract done....${Y}"
+		echo "${G}  Moving files....${Y}"
+		mv /root/v2raya-web-master $ETCWEB
+		echo "${G}  Moving done....${Y}"
+		echo -e "  ${G}v2rayA Web GUI installed....${N}"
+	else
+		echo -e "  ${R}v2rayA Web GUI install failed....${N}"
+	fi
+	echo -e "======================================================"
+}
+function v2raya_binary() {
+	echo -e "  Installing v2rayA binary...."
+	echo -e "  Architecture detected $ARCH...."
+	if [[ $ARCH == *"aarch"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm64...."
+		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm64_')
+	elif [[	$ARCH == *"arm"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm...."
+		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm_')
+	elif [[ $ARCH == *"x86_64"* ]]; then
+		echo -e "  Downloading v2raya_linux_x64...."
+		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x64_')
+	elif [[ $ARCH == *"x86_generic"* ]]; then
+		echo -e "  Downloading v2raya_linux_x86...."
+		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x86_')
+	else
+		echo -e "${R}  v2ray binary download failed....${N}"	
+	fi
+	#Check size then symlink and set permissions
+	if [[ -s $VAUSRBIN ]]; then
+		echo -e "  $VAUSRBIN downloaded, installing...."
+		chmod +x $VAUSRBIN
+		echo -e "  symlinking $VAUSRBIN to $VABIN...."
+		ln -sf $VAUSRBIN $VABIN
+		echo -e "  Set binary permissions...."
+		chmod +x $VABIN
+		echo -e "${G}  v2rayA binary installed....${N}"
+	else
+		echo -e "${R}  v2rayA binary install failed....${N}"		
+	fi
+	echo -e "======================================================"
+}
+function v2raya_daemon() {
+	echo -e "  Installing v2rayA daemon...."
+	cat <<'EOF' >/etc/init.d/v2raya
+#!/bin/sh
+/etc/rc.common
+command=/usr/bin/v2raya
+PIDFILE=/var/run/v2raya.pid
+depend() {
+ need net
+ after firewall
+ use dns logger
+}
+start() {
+ start-stop-daemon -b -S -m -p "${PIDFILE}" -x $command
+}
+stop() {
+ start-stop-daemon -K -p "${PIDFILE}"
+}
+EOF
+	chmod +x /etc/init.d/v2raya
+	echo -e "  v2rayA daemon installed...."
+	echo -e "======================================================"
+}
+function v2raya_start() {
+	echo -e "  Starting v2rayA service...."
+	/etc/init.d/v2raya start
+	/etc/init.d/v2raya enable
+	echo -e "  v2rayA service started...."
+	echo -e "======================================================"
+}
+function v2raya_stop() {
+	echo -e "  Stopping v2rayA service...."
+	/etc/init.d/v2raya stop
+	/etc/init.d/v2raya disable
+	echo -e "  v2rayA service stopped...."
+	echo -e "======================================================"
+}
+
+helmiau_unsupported
+echo -n " "
+read -r OPT
+
+if [[ $OPT = "1" ]];then
+	helmiau_checknet \ &&
+	opkg_reqs \ &&
+	v2ray_core_check \ &&
+	v2raya_web \ &&
+	v2raya_binary \ &&
+	v2raya_daemon \ &&
+	v2raya_start \ &&
+	echo -e "  ${Y}Please Reboot Immediately !${N}"
+	echo -e "======================================================"
+	sleep 3
+	return_installer
+elif [[ $OPT = "2" ]];then
+	helmiau_checknet \ &&
+	opkg_reqs \ &&
+	return_installer
+elif [[ $OPT = "3" ]];then
+	helmiau_checknet \ &&
+	v2ray_core_check \ &&
+	return_installer
+elif [[ $OPT = "4" ]];then
+	helmiau_checknet \ &&
+	v2raya_web \ &&
+	v2raya_binary \ &&
+	v2raya_daemon \ &&
+	v2raya_start
+	echo -e "  ${Y}Please Reboot Immediately !${N}"
+	echo -e "======================================================"
+	sleep 3
+	return_installer
+elif [[ $OPT = "5" ]];then
+	v2raya_start \ &&
+	return_installer
+elif [[ $OPT = "6" ]];then
+	v2ray_core_check \ &&
+	helmiau_checknet \ &&
+	v2ray_core
+	return_installer
+fi
