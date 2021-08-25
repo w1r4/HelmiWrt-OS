@@ -170,6 +170,10 @@ chmod +x /bin/clashcs
 # Add helmiwrt script : lists of command lines provided by helmiau.com
 chmod +x /bin/helmiwrt
 
+# Add : v2rayA Script Manager : This script will help you to install v2rayA software to your openwrt device
+# read more about v2rayA here
+chmod +x /bin/v2rayamgr
+
 # Add USB Hilink Interface by default
 # Add my Load Balance network interfaces to default network config
 if [[ $(grep -c 'ueth1' /etc/config/network) = "0" ]];then
