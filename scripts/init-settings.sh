@@ -211,6 +211,21 @@ config interface 'ueth1'
 	option ifname 'eth1'
 	option metric '10'
 
+config interface 'ueth2'
+	option proto 'dhcp'
+	option ifname 'eth2'
+	option metric '20'
+
+config interface 'ueth3'
+	option proto 'dhcp'
+	option ifname 'eth3'
+	option metric '30'
+
+config interface 'ueth4'
+	option proto 'dhcp'
+	option ifname 'eth4'
+	option metric '40'
+
 EOF
 	echo "  helmilb_log : patching network for my loadbalance settings is done..."
 else
@@ -247,7 +262,7 @@ config zone
 	option forward 'REJECT'
 	option masq '1'
 	option mtu_fix '1'
-	list network 'xderm'
+	option network 'xderm'
 
 config forwarding
 	option dest 'xderm'
@@ -264,8 +279,7 @@ config zone
 	option forward 'REJECT'
 	option masq '1'
 	option mtu_fix '1'
-	list network 'l2tp'
-	list network 'sstp'
+	option network 'l2tp sstp'
 
 config forwarding
 	option src 'lan'
@@ -288,15 +302,178 @@ config forwarding
 	option dest 'fweth1'
 	option src 'lan'
 
+config zone
+	option name 'fweth2'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth2'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth2'
+	option src 'lan'
+
+config zone
+	option name 'fweth3'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth3'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth3'
+	option src 'lan'
+
+config zone
+	option name 'fweth4'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth4'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth4'
+	option src 'lan'
+
 config forwarding
 	option dest 'wan'
 	option src 'lan'
 
 EOF
 	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'uqmi1'\n	list network '3g'\n	list network 'wg'#g" /etc/config/firewall
+	sed -i "s#wan wan6#wan wan6 uqmi1 3g wg#g" /etc/config/firewall
 	echo "  helmilb_log : patching firewall config file done..."
 else
 	echo "  helmilb_log : firewall config file already patched. Skipping..."
+fi
+
+# Add my Load Balance settings to default config mwan3
+if [[ $(grep -c 'mueth1\|mueth2\|mueth3\|mueth4' /etc/config/mwan3) = "0" ]];then
+	echo "  helmilb_log : my load balance settings is not available, patching..."
+	cat << "EOF" > /etc/config/mwan3
+config globals 'globals'
+	option mmx_mask '0x3F00'
+	option rtmon_interval '5'
+
+config policy 'balanced'
+	option last_resort 'unreachable'
+	list use_member 'mueth1'
+	list use_member 'mueth2'
+	list use_member 'mueth3'
+	list use_member 'mueth4'
+
+config rule 'https'
+	option sticky '1'
+	option dest_port '443'
+	option proto 'tcp'
+	option use_policy 'balanced'
+
+config rule 'default_rule'
+	option dest_ip '0.0.0.0/0'
+	option use_policy 'balanced'
+
+config interface 'ueth1'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth2'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth3'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth4'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config member 'mueth1'
+	option interface 'ueth1'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth2'
+	option interface 'ueth2'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth3'
+	option interface 'ueth3'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth4'
+	option interface 'ueth4'
+	option metric '1'
+	option weight '1'
+
+EOF
+	echo "  helmilb_log : patching mwan3 done..."
+else
+	echo "  helmilb_log : mwan3 config file already patched. Skipping..."
 fi
 
 #-----------------------------------------------------------------------------
