@@ -59,7 +59,7 @@ echo -e "  Device Architecture       : ${G}$ARCH${N}"
 echo -e "  Installation Support      : $INSTALLSUPPORT"
 echo -e "  Requirement Packages      : $OPKGS"
 echo -e "  V2ray Core Status         : $V2RAYSTAT"
-echo -e "  V2rayA Install Status     : $V2RAYASTAT"
+echo -e "  V2rayA Binaries           : $V2RAYASTAT"
 echo -e "  V2rayA Service Status     : $V2RAYASVC"
 # echo -e "  V2rayA Service Stat Debug : $V2RAYASVCDEBUG"
 echo -e "  V2rayA WebGUI Address     : ${G}$VAIP${N}"
@@ -278,7 +278,7 @@ function v2raya_web() {
 		rm -f $V2RAYAWEBZIP || true
 		echo -e "  Extract done...."
 		echo -e "  Moving files...."
-		mkdir -p $ETCWEB
+		mkdir -p /etc/v2raya
 		mv $V2RAYAWEBEXT $ETCWEB
 		echo -e "  Moving done...."
 		echo -e "${G}  v2rayA Web GUI installed....${N}"
@@ -418,6 +418,11 @@ elif [[ $OPT = "5" ]];then
 	return_installer
 elif [[ $OPT = "77" ]];then
 	v2raya_stop \ &&
+	sleep 3
+	return_installer
+elif [[ $OPT = "88" ]];then
+	v2raya_stop \ &&
+	v2raya_uninstall
 	sleep 3
 	return_installer
 elif [[ $OPT = "99" ]];then
