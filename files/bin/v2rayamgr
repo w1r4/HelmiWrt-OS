@@ -16,26 +16,33 @@ C='\033[0;36m' # Biru Muda
 Y='\033[1;33m' # Kuning
 N='\033[1;37m' # Putih
 
-INSTALLERNAME="$(basename "$0")"
+SCRIPTNAME="$(basename "$0")"
+SCRIPTUPD="${SCRIPTNAME}upd"
+SCRIPTSRC="raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/v2rayamgr"
+SCRIPTVER="2.1"
+
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
 VAUSRBIN="/usr/bin/v2raya"
 VABIN="/bin/v2raya"
 ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
-VAIP=$(uci show network | grep network.lan.ipaddr | cut -d \' -f2)
 
 V2RAYIPK="/root/v2raycore.ipk"
 V2RAYVER=$( opkg list-installed | grep v2ray-core )
 V2RAYSTAT=$(if [[ $V2RAYVER == *"core"* ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
 
+V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
+V2RAYAWEBZIP="/root/v2rayweb.zip"
+V2RAYAWEBEXT="/root/v2raya-web-master"
 V2RAYAVER=$( opkg list-installed | grep v2ray-core )
 V2RAYASTAT=$(if [[ -f $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
-V2RAYASVC="Running"
+V2RAYASVC=$( if [[ $( pgrep -l v2raya | grep -c v2raya ) > "4" ]]; then echo -e "${G}Running${N}"; else echo -e "${R}Not Running${N}"; fi )
+V2RAYASVCDEBUG=$( pgrep -l v2raya | grep -c v2raya )
+VAIP="$(uci show network | grep network.lan.ipaddr | cut -d \' -f2):2017"
 
 OPKGS=$( if [[ $(opkg list-installed | grep -c "v2ray-core\|ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
 INSTALLSUPPORT=$(if [[ $ARCH == *"aarch"* || $ARCH == *"arm"* || $ARCH == *"x86"* ]]; then echo -e "${G}Supported${N}"; else echo -e "${R}Unsupported${N}"; fi)
-SCRIPTVER="1.0"
 
 echo -e "${N}======================================================${Y}"
 echo -e "          v2rayA OpenWrt Script Manager v$SCRIPTVER"
@@ -46,17 +53,18 @@ echo -e "  Installation Support      : $INSTALLSUPPORT"
 echo -e "  Requirement Packages      : $OPKGS"
 echo -e "  V2ray Core Status         : $V2RAYSTAT"
 echo -e "  V2rayA Install Status     : $V2RAYASTAT"
-echo -e "  V2rayA Service Status     : ${G}$V2RAYASVC${N}"
-echo -e "  V2rayA WebGUI Address     : ${G}$VAIP:2017${N}"
+echo -e "  V2rayA Service Status     : $V2RAYASVC"
+# echo -e "  V2rayA Service Stat Debug : $V2RAYASVCDEBUG"
+echo -e "  V2rayA WebGUI Address     : ${G}$VAIP${N}"
 echo -e "======================================================"
 echo -e "  Run commands 1-5          : 1"
 echo -e "  Install required packages : 2"
 echo -e "  Install v2ray core        : 3"
 echo -e "  Install/Update v2rayA     : 4"
 echo -e "  Start and Run v2rayA      : 5"
-echo -e "  Start on Boot v2rayA      : 6"
 echo -e "  Stop v2rayA Program       : 77"
-echo -e "  Uninstall v2rayA          : 99"
+echo -e "  Uninstall v2rayA          : 88"
+echo -e "  Update v2rayamgr script   : 99"
 echo -e "======================================================"
 echo -e "              Type anything to exit"
 echo -e "======================================================"
@@ -64,21 +72,21 @@ echo -e "     Type one of command above to run its command"
 
 function helmiau_unsupported() {
 	if [[ $INSTALLSUPPORT = "Unsupported" ]];then
-		echo "  Sorry, your device is unsupported for v2rayA installation"
-		echo "  Exiting in 3 secs..."
+		echo -e "${R}  Sorry, your device is unsupported for v2rayA installation"
+		echo -e "  Exiting in 3 secs...${N}"
 		echo -e "======================================================"
 		sleep 3
 		exit
 	fi
 }
 function helmiau_checknet() {
-	echo "  Checking connections..."
+	echo -e "${G}  Checking connections...${Y}"
 	if wget -S --spider "$CHECKNET" 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-		echo "  Internet connected..."
+		echo -e "  Internet connected...${N}"
 		echo -e "======================================================"
 	else
-		echo "  No internet or URL unavailable..."
-		echo "  Back to installer menu..."
+		echo -e "${R}  No internet or URL unavailable...${N}"
+		echo -e "${Y}  Back to installer menu...${N}"
 		echo -e "======================================================"
 		sleep 3
 		clear
@@ -87,24 +95,100 @@ function helmiau_checknet() {
 }
 function return_installer() {
 	clear
-	if [[ -f /root/$INSTALLERNAME ]]; then
-		cat /root/"$INSTALLERNAME" > /bin/"$INSTALLERNAME"
-		chmod +x /bin/"$INSTALLERNAME"
-		./"$INSTALLERNAME"
-	elif [[ -f /root/$INSTALLERNAME ]] && [[ -f /bin/$INSTALLERNAME ]]; then
-		"$INSTALLERNAME"
-	elif [[ ! -f /root/$INSTALLERNAME ]] && [[ -f /bin/$INSTALLERNAME ]]; then
-		cat /bin/"$INSTALLERNAME" > /root/"$INSTALLERNAME"
-		chmod +x /root/"$INSTALLERNAME"
-		"$INSTALLERNAME"
+	if [[ -f /root/$SCRIPTNAME ]]; then
+		cat /root/"$SCRIPTNAME" > /bin/"$SCRIPTNAME"
+		chmod +x /bin/"$SCRIPTNAME"
+		trap ./"$SCRIPTNAME" EXIT
+		exit
+	elif [[ -f /root/$SCRIPTNAME ]] && [[ -f /bin/$SCRIPTNAME ]]; then
+		trap "$SCRIPTNAME" EXIT
+		exit
+	elif [[ ! -f /root/$SCRIPTNAME ]] && [[ -f /bin/$SCRIPTNAME ]]; then
+		cat /bin/"$SCRIPTNAME" > /root/"$SCRIPTNAME"
+		chmod +x /root/"$SCRIPTNAME"
+		trap "$SCRIPTNAME" EXIT
+		exit
 	fi
+}
+function update_installer() {
+	clear
+	echo -e "==========================================="
+	echo -e "           ${CYA}v2raya script manager update menu${NOR}"
+	echo -e "==========================================="
+	cat <<'EOF' >/bin/$SCRIPTUPD
+echo -e "==========================================="
+echo -e " Starting update for $SCRIPTNAME Script"
+echo -e "==========================================="
+echo -e " Script by helmiau a.k.a Helmi Amirudin"
+echo -e "==========================================="
+echo "  Checking connections..."
+if wget -S --spider $SCRIPTSRC 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+	wget -O /bin/$SCRIPTNAME $SCRIPTSRC -q
+	cat /bin/$SCRIPTNAME > /root/$SCRIPTNAME
+	chmod +x /bin/$SCRIPTNAME
+	chmod +x /root/$SCRIPTNAME
+	echo -e "==========================================="
+	echo -e " Update Success. Exiting in 3 secs."
+	echo -e "==========================================="
+	echo -e " Now returning to $SCRIPTNAME main menu..."
+	echo -e " If $SCRIPTNAME main menu not showing after 3 secs."
+	echo -e " please run command : $SCRIPTNAME or ./$SCRIPTNAME"
+	echo -e " to use main script, thank you."
+	echo -e "==========================================="
+	echo -e " Script by helmiau a.k.a Helmi Amirudin"
+	echo -e "==========================================="
+	sleep 2
+	if [[ -f /root/$SCRIPTNAME ]]; then
+		trap /root/$SCRIPTNAME EXIT
+	elif [[ -f /bin/$SCRIPTNAME ]]; then
+		trap $SCRIPTNAME EXIT
+	fi
+	clear
+	exit
+else
+	echo "  No internet connection or repository url unavailable..."
+	echo "  Returning to $SCRIPTNAME main menu in 3 secs."
+	sleep 3
+	if [[ -f /root/$SCRIPTNAME ]]; then
+		trap /root/$SCRIPTNAME EXIT
+	elif [[ -f /bin/$SCRIPTNAME ]]; then
+		trap $SCRIPTNAME EXIT
+	fi
+	clear
+	exit
+fi
+EOF
+	echo -e " Downloading needed files."
+	sleep 1
+	echo -e " Downloading needed files...."
+	sleep 1
+	echo -e " Downloading needed files........."
+	sleep 1
+	echo -e " Downloading needed files.............."
+	sleep 1
+	cat /bin/$SCRIPTUPD > /root/$SCRIPTUPD
+	echo -e " Downloading needed files.................."
+	chmod +x /bin/$SCRIPTUPD
+	chmod +x /root/$SCRIPTUPD
+	echo -e " Files and patches downloaded.............."
+	echo -e "==========================================="
+	echo -e " Now screen will show update screen installation"
+	echo -e " If update screen menu not showing after 3 secs,"
+	echo -e " please run command ./$SCRIPTUPD or $SCRIPTUPD"
+	echo -e " manually for resuming update"
+	echo -e "==========================================="
+	echo -e " Exiting in 2 secs."
+	echo -e "==========================================="
+	sleep 2
+	trap /root/$SCRIPTUPD EXIT
+	exit
 }
 function opkg_reqs() {
 	echo -e "${G}  Installing requirements packages....${Y}"
 	opkg update
 	opkg install ca-certificates wget unzip tar curl kmod-ipt-nat6 iptables-mod-tproxy iptables-mod-filter
-	echo -e "${G}  Requirements packages installed...."
-	echo -e "${N}======================================================"
+	echo -e "${G}  Requirements packages installed....${N}"
+	echo -e "======================================================"
 }
 function v2ray_core() {
 	echo -e "${G}  Installing v2ray core....${Y}"
@@ -160,30 +244,41 @@ function v2ray_core_check() {
 }
 function v2raya_web() {
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
-	wget -O /root/v2rayweb.zip http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip
-	#Check Directory, Create if doesn't exist
-	if [[ -d $ETCWEB ]]; then
-		echo "${G}  v2rayA Web path is exist, cleaning...${Y}"
-		rm -rf $ETCWEB
-		echo "${G}  v2rayA Web path cleaned...${Y}"
-	fi
+	wget -qO $V2RAYAWEBZIP $V2RAYAWEBSRC
 	#Check size, unzip file if size is not null
-	if [[ -s /root/v2rayweb.zip ]]; then
-		echo "${G}  Extracting files....${Y}"
-		unzip /root/v2rayweb.zip
-		echo "${G}  Extract done....${Y}"
-		echo "${G}  Moving files....${Y}"
-		mv /root/v2raya-web-master $ETCWEB
-		echo "${G}  Moving done....${Y}"
-		echo -e "  ${G}v2rayA Web GUI installed....${N}"
+	if [[ -s $V2RAYAWEBZIP ]]; then
+		#Check v2rayA web directory, delete recursive if exist
+		if [[ -d $ETCWEB ]]; then
+			echo -e "  v2rayA web path is exist, cleaning..."
+			mkdir -p $ETCWEB
+			rm -rf $ETCWEB || true
+			echo -e "  v2rayA web path cleaned..."
+		fi
+		#Check v2raya-web-master directory, delete recursive if exist
+		if [[ -d $V2RAYAWEBEXT ]]; then
+			echo -e "  Older v2raya-web-master directory is exist, cleaning..."
+			rm -rf $V2RAYAWEBEXT || true
+			echo -e "  Older v2raya-web-master cleaned..."
+		fi
+		echo -e "  Extracting files...."
+		sleep 2
+		unzip -q $V2RAYAWEBZIP
+		sleep 2
+		rm -f $V2RAYAWEBZIP || true
+		echo -e "  Extract done...."
+		echo -e "  Moving files...."
+		mkdir -p $ETCWEB
+		mv $V2RAYAWEBEXT $ETCWEB
+		echo -e "  Moving done...."
+		echo -e "${G}  v2rayA Web GUI installed....${N}"
 	else
-		echo -e "  ${R}v2rayA Web GUI install failed....${N}"
+		echo -e "${R}  v2rayA Web GUI install failed....${N}"
 	fi
 	echo -e "======================================================"
 }
 function v2raya_binary() {
-	echo -e "  Installing v2rayA binary...."
-	echo -e "  Architecture detected $ARCH...."
+	echo -e "${G}  Installing v2rayA binary...."
+	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
 	if [[ $ARCH == *"aarch"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm64...."
 		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm64_')
@@ -214,10 +309,9 @@ function v2raya_binary() {
 	echo -e "======================================================"
 }
 function v2raya_daemon() {
-	echo -e "  Installing v2rayA daemon...."
-	cat <<'EOF' >/etc/init.d/v2raya
-#!/bin/sh
-/etc/rc.common
+	echo -e "${G}  Installing v2rayA daemon....${Y}"
+	cat <<'EOF' >$INITD
+#!/bin/sh /etc/rc.common
 command=/usr/bin/v2raya
 PIDFILE=/var/run/v2raya.pid
 depend() {
@@ -232,22 +326,44 @@ stop() {
  start-stop-daemon -K -p "${PIDFILE}"
 }
 EOF
-	chmod +x /etc/init.d/v2raya
-	echo -e "  v2rayA daemon installed...."
+	chmod +x $INITD
+	echo -e "${G}  v2rayA daemon installed....${N}"
 	echo -e "======================================================"
 }
 function v2raya_start() {
-	echo -e "  Starting v2rayA service...."
-	/etc/init.d/v2raya start
-	/etc/init.d/v2raya enable
-	echo -e "  v2rayA service started...."
+	echo -e "${G}  Starting v2rayA service....${Y}"
+	$INITD start
+	$INITD enable
+	echo -e "${G}  v2rayA service started....${N}"
 	echo -e "======================================================"
 }
 function v2raya_stop() {
-	echo -e "  Stopping v2rayA service...."
-	/etc/init.d/v2raya stop
-	/etc/init.d/v2raya disable
-	echo -e "  v2rayA service stopped...."
+	echo -e "${G}  Stopping v2rayA service....${Y}"
+	$INITD stop
+	$INITD disable
+	echo -e "${G}  v2rayA service stopped....${N}"
+	echo -e "======================================================"
+}
+function v2raya_uninstall() {
+	echo -e "${G}  Uninstalling v2rayA service....${Y}"
+	sleep 1
+	echo -e "  Removing v2rayA init.d service...."
+	rm -f $INITD || true
+	echo -e "  v2rayA init.d service removed...."
+	sleep 1
+	echo -e "  Unlinking v2rayA binary...."
+	rm -f $VABIN || true
+	echo -e "  v2rayA binary unlinked...."
+	sleep 1
+	echo -e "  Uninstalling v2rayA binary...."
+	rm -f $VAUSRBIN || true
+	echo -e "  v2rayA binary removed...."
+	sleep 1
+	echo -e "  Uninstalling v2rayA web ui...."
+	rm -rf /etc/v2raya || true
+	echo -e "  v2rayA web ui removed...."
+	sleep 1
+	echo -e "${G}  v2rayA service uninstall success....${N}"
 	echo -e "======================================================"
 }
 
@@ -287,10 +403,12 @@ elif [[ $OPT = "4" ]];then
 	return_installer
 elif [[ $OPT = "5" ]];then
 	v2raya_start \ &&
+	sleep 3
 	return_installer
-elif [[ $OPT = "6" ]];then
-	v2ray_core_check \ &&
-	helmiau_checknet \ &&
-	v2ray_core
+elif [[ $OPT = "77" ]];then
+	v2raya_stop \ &&
+	sleep 3
 	return_installer
+elif [[ $OPT = "99" ]];then
+	update_installer
 fi
