@@ -167,9 +167,6 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
 
-# Add neofetch
-wget -O package/base-files/files/bin/neofetch "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/neofetch" && chmod +x package/base-files/files/bin/neofetch
-
 # Add speedtest
 wget -O package/base-files/files/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x package/base-files/files/bin/speedtest
 
@@ -184,29 +181,6 @@ wget -O package/base-files/files/bin/ram "https://raw.githubusercontent.com/wega
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
 wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
-
-# Add shadowsocksr shortcut ssr
-wget -O package/base-files/files/bin/ssr-rst "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/ssr-rst" && chmod +x package/base-files/files/bin/ssr-rst
-wget -O package/base-files/files/bin/ssr-start "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/ssr-start" && chmod +x package/base-files/files/bin/ssr-start
-wget -O package/base-files/files/bin/ssr-stop "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/ssr-stop" && chmod +x package/base-files/files/bin/ssr-stop
-
-# Add IP Address Info Checker
-# run "myip" using terminal for use
-wget -O package/base-files/files/bin/myip "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/myip" && chmod +x package/base-files/files/bin/myip
-
-# Add Samba Allowed Guest Setup
-# run "sambaset" using terminal to set it up
-wget -O package/base-files/files/bin/sambaset "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/sambaset" && chmod +x package/base-files/files/bin/sambaset
-
-# Add language changer to auto
-wget -O package/base-files/files/bin/changelang "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/changelang" && chmod +x package/base-files/files/bin/changelang
-
-# Add refresh IP Address for QMI Modems, such as LT4220
-# Script by Rudi Hartono https://www.facebook.com/rud18
-wget -O package/base-files/files/bin/ipqmi "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/ipqmi" && chmod +x package/base-files/files/bin/ipqmi
-
-# Add clashcs script : OpenClash Core switcher
-wget -O package/base-files/files/bin/clashcs "https://raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/clashcs" && chmod +x package/base-files/files/bin/clashcs
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
