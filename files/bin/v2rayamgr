@@ -19,7 +19,14 @@ N='\033[1;37m' # Putih
 SCRIPTNAME="$(basename "$0")"
 SCRIPTUPD="${SCRIPTNAME}upd"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/v2rayamgr"
-SCRIPTVER="2.1"
+SCRIPTVER="2.2"
+if [[ -f /root/$SCRIPTUPD ]]; then
+	rm /root/$SCRIPTUPD
+fi
+if [[ -f /bin/$SCRIPTUPD ]]; then
+	rm /bin/$SCRIPTUPD
+fi
+
 
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
