@@ -119,35 +119,35 @@ function return_installer() {
 }
 function update_installer() {
 	clear
-	echo -e "==========================================="
-	echo -e "           ${CYA}v2raya script manager update menu${NOR}"
-	echo -e "==========================================="
+	echo -e "======================================================"
+	echo -e "        ${C}v2raya script manager update menu${N}"
+	echo -e "======================================================"
 	cat <<'EOF' >/bin/$SCRIPTUPD
 
 SCRIPTNAME="v2rayamgr"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/v2rayamgr"
 
-echo -e "==========================================="
-echo -e " Starting update for $SCRIPTNAME Script"
-echo -e "==========================================="
-echo -e " Script by helmiau a.k.a Helmi Amirudin"
-echo -e "==========================================="
+echo -e "======================================================"
+echo -e "  Starting update for $SCRIPTNAME Script"
+echo -e "======================================================"
+echo -e "  Script by helmiau a.k.a Helmi Amirudin"
+echo -e "======================================================"
 echo "  Checking connections..."
 if wget -S --spider $SCRIPTSRC 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
 	wget -O /bin/$SCRIPTNAME $SCRIPTSRC -q
 	cat /bin/$SCRIPTNAME > /root/$SCRIPTNAME
 	chmod +x /bin/$SCRIPTNAME
 	chmod +x /root/$SCRIPTNAME
-	echo -e "==========================================="
-	echo -e " Update Success. Exiting in 3 secs."
-	echo -e "==========================================="
-	echo -e " Now returning to $SCRIPTNAME main menu..."
-	echo -e " If $SCRIPTNAME main menu not showing after 3 secs."
-	echo -e " please run command : $SCRIPTNAME or ./$SCRIPTNAME"
-	echo -e " to use main script, thank you."
-	echo -e "==========================================="
-	echo -e " Script by helmiau a.k.a Helmi Amirudin"
-	echo -e "==========================================="
+	echo -e "======================================================"
+	echo -e "  Update Success. Exiting in 3 secs."
+	echo -e "======================================================"
+	echo -e "  Now returning to $SCRIPTNAME main menu..."
+	echo -e "  If $SCRIPTNAME main menu not showing after 3 secs."
+	echo -e "  please run command : $SCRIPTNAME or ./$SCRIPTNAME"
+	echo -e "  to use main script, thank you."
+	echo -e "======================================================"
+	echo -e "  Script by helmiau a.k.a Helmi Amirudin"
+	echo -e "======================================================"
 	sleep 2
 	if [[ -f /root/$SCRIPTNAME ]]; then
 		trap /root/$SCRIPTNAME EXIT
@@ -169,27 +169,27 @@ else
 	exit
 fi
 EOF
-	echo -e " Downloading needed files."
+	echo -e "  Downloading needed files."
 	sleep 1
-	echo -e " Downloading needed files...."
+	echo -e "  Downloading needed files...."
 	sleep 1
-	echo -e " Downloading needed files........."
+	echo -e "  Downloading needed files........."
 	sleep 1
-	echo -e " Downloading needed files.............."
+	echo -e "  Downloading needed files.............."
 	sleep 1
 	cat /bin/$SCRIPTUPD > /root/$SCRIPTUPD
-	echo -e " Downloading needed files.................."
+	echo -e "  Downloading needed files.................."
 	chmod +x /bin/$SCRIPTUPD
 	chmod +x /root/$SCRIPTUPD
-	echo -e " Files and patches downloaded.............."
-	echo -e "==========================================="
-	echo -e " Now screen will show update screen installation"
-	echo -e " If update screen menu not showing after 3 secs,"
-	echo -e " please run command ./$SCRIPTUPD or $SCRIPTUPD"
-	echo -e " manually for resuming update"
-	echo -e "==========================================="
-	echo -e " Exiting in 2 secs."
-	echo -e "==========================================="
+	echo -e "  Files and patches downloaded.............."
+	echo -e "======================================================"
+	echo -e "  Now screen will show update screen installation"
+	echo -e "  If update screen menu not showing after 3 secs,"
+	echo -e "  please run command ./$SCRIPTUPD or $SCRIPTUPD"
+	echo -e "  manually for resuming update"
+	echo -e "======================================================"
+	echo -e "  Exiting in 2 secs."
+	echo -e "======================================================"
 	sleep 2
 	trap /root/$SCRIPTUPD EXIT
 	exit
