@@ -116,6 +116,10 @@ function update_installer() {
 	echo -e "           ${CYA}v2raya script manager update menu${NOR}"
 	echo -e "==========================================="
 	cat <<'EOF' >/bin/$SCRIPTUPD
+
+SCRIPTNAME="v2rayamgr"
+SCRIPTSRC="raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/v2rayamgr"
+
 echo -e "==========================================="
 echo -e " Starting update for $SCRIPTNAME Script"
 echo -e "==========================================="
