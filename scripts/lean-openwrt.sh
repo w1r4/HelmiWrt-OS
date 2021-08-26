@@ -98,7 +98,7 @@ git clone --depth=1 https://github.com/4IceG/luci-app-internet-detector
 
 # Add luci-theme-tano
 #git clone --depth=1 https://github.com/tano-systems/luci-theme-tano
-svn co https://github.com/tano-systems/luci-theme-tano/trunk/src/luci-theme-tano
+git clone https://github.com/tano-systems/luci-theme-tano.git luci-theme-tano
 
 # luci-theme-darkmatter
 #git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter #For OpenWrt 18.xx and below only. 
