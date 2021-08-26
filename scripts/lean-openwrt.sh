@@ -69,9 +69,8 @@ git clone --depth=1 https://github.com/sirpdboy/luci-theme-opentopd.git
 
 # Add luci-proto-modemmanager
 # git clone --depth=1 https://github.com/nickberry17/luci-proto-modemmanager.git #For OpenWrt 18.xx and below only. 
-# git clone --depth=1 https://github.com/rickydee/luci-proto-modemmanager.git #For OpenWrt 19.xx and above only. 
-# svn co https://github.com/openwrt/luci/tree/master/protocols/luci-proto-modemmanager #For OpenWrt snapshot. 
-svn co https://github.com/openwrt/luci/trunk/protocols/luci-proto-modemmanager #For OpenWrt snapshot. 
+# git clone --depth=1 https://github.com/rickydee/luci-proto-modemmanager.git #For OpenWrt 19.xx and above only.
+git clone --depth=1 https://github.com/helmiau/luci-proto-modemmanager.git #For OpenWrt snapshot.
 
 # Add modeminfo
 git clone --depth=1 https://github.com/koshev-msk/luci-app-modeminfo
