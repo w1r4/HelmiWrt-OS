@@ -9,27 +9,55 @@
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
 
-# Set default language
-uci set luci.main.lang=auto
-uci commit luci
+# Set auto as default language
+if grep -q "option lang 'zh" /etc/config/luci; then
+	uci set luci.main.lang=auto
+	uci commit luci
+fi
 
 # Autofix download index.php
-helmiooo=$(cat /etc/config/uhttpd)
-if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
-	echo -e "Step 1 done ! Resuming to step 2..."
-	sed -i "/config uhttpd 'main'/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
+if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
+	helmiooo=$(cat /etc/config/uhttpd)
+	if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
+		echo -e "Step 1 done ! Resuming to step 2..."
+		sed -i "/config uhttpd 'main'/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
+	fi
+	if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
+		echo -e "Step 2 done ! Resuming to step 3..."
+		sed -i "/config uhttpd 'main'/a option ubus_prefix '/ubus'" /etc/config/uhttpd
+	fi
+	if [[ $helmiooo == *"uhttpd mai"* ]]; then
+		echo -e "Step 3 done ! Resuming to last step..."
+		sed -i "/config uhttpd main/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
+	fi
+	if [[ $helmiooo == *"uhttpd mai"* ]]; then
+		echo -e "Everything has been done..."
+		sed -i "/config uhttpd main/a option ubus_prefix '/ubus'" /etc/config/uhttpd
+	fi
+	/etc/init.d/uhttpd restart
+	/etc/init.d/rpcd restart
 fi
-if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
-	echo -e "Step 2 done ! Resuming to step 3..."
-	sed -i "/config uhttpd 'main'/a option ubus_prefix '/ubus'" /etc/config/uhttpd
+
+# Add HelmiWrt firmware informations
+if [ -f /etc/openwrt_release ];then
+	if [[ $(grep -c Helmi /etc/openwrt_release) = "0" ]];then
+		logger "  helmilog : openwrt_release file available, patching..."
+		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Dev/iIg' /etc/openwrt_release
+		logger "  helmilog : patching openwrt_release done..."
+	else
+		logger "helmilog : openwrt_release file already patched. Skipping..."
+	fi
+else
+	logger "helmilog : openwrt_release file already patched. Skipping..."
 fi
-if [[ $helmiooo == *"uhttpd mai"* ]]; then
-	echo -e "Step 3 done ! Resuming to last step..."
-	sed -i "/config uhttpd main/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
+if [ -f /usr/lib/os-release ];then
+	if [[ $(grep -c Helmi /usr/lib/os-release) = "0" ]];then
+		logger "  helmilog : os-release file available, patching..."
+		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Dev/g' -i -e 's/"SNAPSHOT/"Dev/g' -i -e 's/ SNAPSHOT/ Dev/g' -i -e 's#openwrt.org/#www.helmiau.com/blog/openwrt-rpi#g' -i -e 's#bugs.##g' -i -e 's#forum.##g' /usr/lib/os-release
+		logger "  helmilog : patching os-release done..."
+	else
+		logger "helmilog : os-release file already patched. Skipping..."
+	fi
+else
+	logger "helmilog : os-release file already patched. Skipping..."
 fi
-if [[ $helmiooo == *"uhttpd mai"* ]]; then
-	echo -e "Everything has been done..."
-	sed -i "/config uhttpd main/a option ubus_prefix '/ubus'" /etc/config/uhttpd
-fi
-/etc/init.d/uhttpd restart
-/etc/init.d/rpcd restart

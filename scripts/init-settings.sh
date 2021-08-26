@@ -19,7 +19,7 @@ rm -f /etc/rc.d/S90stunnel || true
 #-----------------------------------------------------------------------------
 
 # Set default theme to luci-theme-argon
-uci set luci.main.mediaurlbase='/luci-static/argon'
+uci set luci.main.mediaurlbase='/luci-static/netgear'
 uci commit luci
 
 # Set Argon theme to light on first boot
@@ -74,15 +74,9 @@ ln -sf /usr/sbin/trojan /usr/bin/trojan
 
 # Add language changer to auto !
 chmod +x /bin/changelang
-changelang
 /bin/changelang
-sh changelang
-sh /bin/changelang
 sed -i 's#exit 0#chmod +x /bin/changelang#g' /etc/rc.local
-echo 'changelang' >> /etc/rc.local
 echo '/bin/changelang' >> /etc/rc.local
-echo 'sh changelang' >> /etc/rc.local
-echo 'sh /bin/changelang' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
 
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh

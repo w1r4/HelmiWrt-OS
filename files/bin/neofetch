@@ -3498,11 +3498,11 @@ main() {
     return 0
 }
 
-# Simplify informations
+# Add HelmiWrt firmware informations
 if [ -f /etc/openwrt_release ];then
 	if [[ $(grep -c Helmi /etc/openwrt_release) = "0" ]];then
 		logger "  helmilog : openwrt_release file available, patching..."
-		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Beta/iIg' /etc/openwrt_release
+		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Dev/iIg' /etc/openwrt_release
 		logger "  helmilog : patching openwrt_release done..."
 	else
 		logger "helmilog : openwrt_release file already patched. Skipping..."
@@ -3513,7 +3513,7 @@ fi
 if [ -f /usr/lib/os-release ];then
 	if [[ $(grep -c Helmi /usr/lib/os-release) = "0" ]];then
 		logger "  helmilog : os-release file available, patching..."
-		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Beta/g' -i -e 's/"SNAPSHOT/"Beta/g' -i -e 's/ SNAPSHOT/ Beta/g' /usr/lib/os-release
+		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Dev/g' -i -e 's/"SNAPSHOT/"Dev/g' -i -e 's/ SNAPSHOT/ Dev/g' -i -e 's#openwrt.org/#www.helmiau.com/blog/openwrt-rpi#g' -i -e 's#bugs.##g' -i -e 's#forum.##g' /usr/lib/os-release
 		logger "  helmilog : patching os-release done..."
 	else
 		logger "helmilog : os-release file already patched. Skipping..."
