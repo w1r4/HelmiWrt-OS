@@ -64,9 +64,6 @@ rm -rf ../lean/luci-theme-argon
 #   Start of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
 
-# Add luci-theme-opentopd
-git clone --depth=1 https://github.com/sirpdboy/luci-theme-opentopd.git
-
 # Add luci-proto-modemmanager
 # git clone --depth=1 https://github.com/nickberry17/luci-proto-modemmanager.git #For OpenWrt 18.xx and below only. 
 # git clone --depth=1 https://github.com/rickydee/luci-proto-modemmanager.git #For OpenWrt 19.xx and above only.
@@ -96,16 +93,20 @@ git clone --depth=1 https://github.com/gSpotx2f/luci-app-cpu-status
 # Add luci-app-internet-detector
 git clone --depth=1 https://github.com/4IceG/luci-app-internet-detector
 
-# Add luci-theme-tano
-#git clone --depth=1 https://github.com/tano-systems/luci-theme-tano
-git clone https://github.com/tano-systems/luci-theme-tano.git luci-theme-tano
-
 # luci-theme-darkmatter
 #git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter #For OpenWrt 18.xx and below only. 
-git clone --depth=1 https://github.com/rufengsuixing/luci-theme-darkmatter #For OpenWrt 19.xx and below only. 
+git clone https://github.com/rufengsuixing/luci-theme-darkmatter luci-theme-darkmatter #For OpenWrt 19.xx and below only. 
 
 # HelmiWrt packages
 git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
+
+# Add themes from kenzok8 openwrt-packages
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-atmaterial_new kenzok8/luci-theme-atmaterial_new
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-edge kenzok8/luci-theme-edge
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-ifit kenzok8/luci-theme-ifit
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomato kenzok8/luci-theme-opentomato
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomcat kenzok8/luci-theme-opentomcat
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd kenzok8/luci-theme-opentopd
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
