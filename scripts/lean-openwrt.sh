@@ -25,10 +25,6 @@ rm -rf ../lean/luci-app-kodexplorer
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
 
-# Add luci-app-vssr <M>
-git clone --depth=1 https://github.com/jerrykuku/lua-maxminddb.git
-git clone --depth=1 https://github.com/jerrykuku/luci-app-vssr
-
 # Add mentohust & luci-app-mentohust
 git clone --depth=1 https://github.com/BoringCat/luci-app-mentohust
 git clone --depth=1 https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk
@@ -54,6 +50,15 @@ cp luci-app-diskman/Parted.Makefile parted/Makefile
 rm -rf ../lean/luci-app-docker
 git clone --depth=1 https://github.com/lisaac/luci-app-dockerman
 git clone --depth=1 https://github.com/lisaac/luci-lib-docker
+
+# Add luci-app-wrtbwmon
+svn co https://github.com/sirpdboy/sirpdboy-package/trunk/luci-app-wrtbwmon
+svn co https://github.com/sirpdboy/sirpdboy-package/trunk/wrtbwmon
+rm -rf ../lean/luci-app-wrtbwmon
+
+# Add luci-app-unblockneteasemusic
+git clone --depth=1 https://github.com/immortalwrt/luci-app-unblockneteasemusic
+rm -rf ../lean/luci-app-unblockneteasemusic
 
 # Add luci-theme-argon
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
@@ -112,9 +117,6 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd ken
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
 
-# Add subconverter
-git clone --depth=1 https://github.com/tindy2013/openwrt-subconverter
-
 # Add luci-udptools
 svn co https://github.com/zcy85611/Openwrt-Package/trunk/luci-udptools
 svn co https://github.com/zcy85611/Openwrt-Package/trunk/udp2raw
@@ -132,10 +134,6 @@ svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/pa
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
-
-# Add apk (Apk Packages Manager)
-svn co https://github.com/openwrt/packages/trunk/utils/apk
-popd
 
 # Mod zzz-default-settings
 pushd package/lean/default-settings/files
