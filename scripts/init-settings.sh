@@ -13,6 +13,8 @@ rm -f /etc/rc.d/S99dockerman || true
 rm -f /etc/rc.d/S30stubby || true
 rm -f /etc/rc.d/S90stunnel || true
 
+# Disable opkg signature check
+sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
