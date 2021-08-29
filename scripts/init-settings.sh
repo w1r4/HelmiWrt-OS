@@ -74,11 +74,11 @@ chmod +x /usr/bin/luci-app-atinout
 # Fix for xderm mini gui if trojan is not installed
 ln -sf /usr/sbin/trojan /usr/bin/trojan
 
-# Add language changer to auto !
-chmod +x /bin/changelang
-/bin/changelang
-sed -i 's#exit 0#chmod +x /bin/changelang#g' /etc/rc.local
-echo '/bin/changelang' >> /etc/rc.local
+# HelmiWrt Patches
+chmod +x /bin/helmipatch
+/bin/helmipatch
+sed -i 's#exit 0#chmod +x /bin/helmipatch#g' /etc/rc.local
+echo '/bin/helmipatch' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
 
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
