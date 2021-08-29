@@ -11,29 +11,41 @@
 
 # Set auto as default language
 if grep -q "option lang 'zh" /etc/config/luci; then
+	logger "  helmilog : chinese language detected !..."
 	uci set luci.main.lang=auto
 	uci commit luci
+	logger "  helmilog : switched default languange to auto..."
 fi
 
 # Autofix download index.php
 if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
+	echo -e "  helmilog : system not using php-cgi, patching php config ..."
+	logger "  helmilog : system not using php-cgi, patching php config..."
 	helmiooo=$(cat /etc/config/uhttpd)
 	if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
-		echo -e "Step 1 done ! Resuming to step 2..."
+		echo -e "  helmilog : fixing auto download php file using patch 1 ..."
+		logger "  helmilog : fixing auto download php file using patch 1 ..."
 		sed -i "/config uhttpd 'main'/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
 	fi
 	if [[ $helmiooo == *"uhttpd 'mai"* ]]; then
-		echo -e "Step 2 done ! Resuming to step 3..."
+		echo -e "  helmilog : fixing auto download php file using patch 2 ..."
+		logger "  helmilog : fixing auto download php file using patch 2 ..."
 		sed -i "/config uhttpd 'main'/a option ubus_prefix '/ubus'" /etc/config/uhttpd
 	fi
 	if [[ $helmiooo == *"uhttpd mai"* ]]; then
-		echo -e "Step 3 done ! Resuming to last step..."
+		echo -e "  helmilog : fixing auto download php file using patch 3 ..."
+		logger "  helmilog : fixing auto download php file using patch 3 ..."
 		sed -i "/config uhttpd main/a list interpreter '.php=/usr/bin/php-cgi'" /etc/config/uhttpd
 	fi
 	if [[ $helmiooo == *"uhttpd mai"* ]]; then
-		echo -e "Everything has been done..."
+		echo -e "  helmilog : fixing auto download php file using patch 4 ..."
+		logger "  helmilog : fixing auto download php file using patch 4 ..."
 		sed -i "/config uhttpd main/a option ubus_prefix '/ubus'" /etc/config/uhttpd
 	fi
+	echo -e "  helmilog : patching system with php configuration done ..."
+	echo -e "  helmilog : restarting some apps ..."
+	logger "  helmilog : patching system with php configuration done..."
+	logger "  helmilog : restarting some apps..."
 	/etc/init.d/uhttpd restart
 	/etc/init.d/rpcd restart
 fi
@@ -48,7 +60,7 @@ if [ -f /etc/openwrt_release ];then
 		logger "helmilog : openwrt_release file already patched. Skipping..."
 	fi
 else
-	logger "helmilog : openwrt_release file already patched. Skipping..."
+	logger "helmilog : /etc/openwrt_release file is not exist..."
 fi
 if [ -f /usr/lib/os-release ];then
 	if [[ $(grep -c Helmi /usr/lib/os-release) = "0" ]];then
@@ -59,5 +71,5 @@ if [ -f /usr/lib/os-release ];then
 		logger "helmilog : os-release file already patched. Skipping..."
 	fi
 else
-	logger "helmilog : os-release file already patched. Skipping..."
+	logger "helmilog : os-release file is not exist..."
 fi
