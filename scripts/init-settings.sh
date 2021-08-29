@@ -36,7 +36,7 @@ uci set system.@system[0].zonename='Asia/Jakarta'
 uci commit system
 
 # Set default wifi name to HelmiWrt
-sed -i "s#option ssid 'OpenWrt'#option ssid 'HelmiWrt'#iIg" /etc/rc.local
+sed -i "s#option ssid 'OpenWrt'#option ssid 'HelmiWrt'#iIg" /etc/config/wireless
 
 # Add shadowsocksr shortcut
 chmod +x /bin/ssr-rst
