@@ -178,7 +178,9 @@ jobs:
           find . -type f -name 'openwrt-*' | while read FILE ; do
             newfile="$(echo ${FILE} |sed -e 's/openwrt-/helmiwrt-/')" ;
             mv "${FILE}" "${newfile}" ;
-          done 
+          done
+          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-${{ env.DEVICE_NAME }}-config.txt" \;
+          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-${{ env.DEVICE_NAME }}-sha256sums.txt" \;
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
