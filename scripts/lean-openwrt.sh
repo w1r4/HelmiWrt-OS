@@ -135,12 +135,15 @@ svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/pa
 
 popd
 
-# Mod zzz-default-settings
+# Mod zzz-default-settings for HelmiWrt
 pushd package/lean/default-settings/files
 sed -i '/http/d' zzz-default-settings
 sed -i '/18.06/d' zzz-default-settings
 export orig_version="$(cat "zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')"
 sed -i "s/${orig_version}/${orig_version} ($(date +"%Y-%m-%d"))/g" zzz-default-settings
+sed -i "s/zh_cn/auto/g" zzz-default-settings
+sed -i "s/uci set system.@system[0].timezone=CST-8/uci set system.@system[0].hostname=HelmiWrt\nuci set system.@system[0].timezone=WIB-7/g" zzz-default-settings
+sed -i "s/Shanghai/Jakarta/g" zzz-default-settings
 popd
 
 # Use Lienol's https-dns-proxy package
