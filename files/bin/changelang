@@ -73,3 +73,12 @@ if [ -f /usr/lib/os-release ];then
 else
 	logger "helmilog : os-release file is not exist..."
 fi
+
+# Auto mount rw/read-write for ro/read-only partitions
+if [ grep "[[:space:]]ro[[:space:],]" /proc/mounts ];then
+	logger "  helmilog : rootfs partition is read-only..."
+	logger "  helmilog : mounting read-write..."
+	logger "  helmilog : device will reboot after patching..."
+	e2fsck -y /dev/mmcblk0p2
+	logger "  helmilog : patching read-write done..."
+fi
