@@ -35,6 +35,9 @@ cp -r temp/packages/net/gowebdav packages/net/gowebdav
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
 
+# Add v2rayA
+cp -r temp/luci/net/v2raya luci/net/v2raya
+
 # Add netdata
 rm -rf packages/admin/netdata
 rm -rf ../package/lean/luci-app-netdata
