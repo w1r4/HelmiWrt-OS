@@ -75,7 +75,7 @@ else
 fi
 
 # Auto mount rw/read-write for ro/read-only partitions
-if [ grep "[[:space:]]ro[[:space:],]" /proc/mounts ];then
+if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	logger "  helmilog : rootfs partition is read-only..."
 	logger "  helmilog : mounting read-write..."
 	logger "  helmilog : device will reboot after patching..."
