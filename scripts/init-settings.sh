@@ -302,6 +302,45 @@ config forwarding
 	option dest 'wan'
 
 config zone
+	option name 'fw3g'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network '3g'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fw3g'
+	option src 'lan'
+
+config zone
+	option name 'fwumd1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'umd1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fwumd1'
+	option src 'lan'
+
+config zone
+	option name 'fwuqmi1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'uqmi1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fwuqmi1'
+	option src 'lan'
+
+config zone
 	option name 'fweth1'
 	option forward 'REJECT'
 	option output 'ACCEPT'
@@ -358,8 +397,8 @@ config forwarding
 	option src 'lan'
 
 EOF
-	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'uqmi1'\n	list network '3g'\n	list network 'wg1'\n	list network 'umd1'#g" /etc/config/firewall
-	sed -i "s#wan wan6#wan wan6 uqmi1 3g wg1 umd1#g" /etc/config/firewall
+	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'wg1'#g" /etc/config/firewall
+	sed -i "s#wan wan6#wan wan6 wg1#g" /etc/config/firewall
 	echo "  helmilb_log : patching firewall config file done..."
 else
 	echo "  helmilb_log : firewall config file already patched. Skipping..."
