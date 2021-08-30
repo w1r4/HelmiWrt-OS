@@ -35,10 +35,7 @@ cp -r temp/packages/net/gowebdav packages/net/gowebdav
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
 
-# Add v2rayA
-cp -r temp/luci/net/v2raya luci/net/v2raya
-
-# Add netdata
+# Add luci-app-netdata
 rm -rf packages/admin/netdata
 rm -rf ../package/lean/luci-app-netdata
 cp -r temp/luci/applications/luci-app-netdata luci/applications/luci-app-netdata
@@ -47,6 +44,10 @@ cp -r temp/packages/admin/netdata packages/admin/netdata
 # Add luci-app-smartdns
 cp -r temp/luci/applications/luci-app-smartdns luci/applications/luci-app-smartdns
 cp -r temp/packages/net/smartdns packages/net/smartdns
+
+# Add luci-app-verysync
+cp -r temp/luci/applications/luci-app-smartdns luci/applications/luci-app-verysync
+cp -r temp/packages/net/verysync packages/net/verysync
 
 # Add tmate
 cp -r temp/packages/net/tmate packages/net/tmate
@@ -59,6 +60,9 @@ cp -r temp/packages/admin/gotop packages/admin/gotop
 cp -r temp/packages/net/minieap packages/net/minieap
 rm -rf temp
 popd
+
+# Add v2rayA
+cp -r temp/luci/net/v2raya luci/net/v2raya
 
 # Set to local feeds
 pushd customfeeds/packages
