@@ -173,6 +173,9 @@ chmod +x /bin/helmiwrt
 # read more about v2rayA here
 chmod +x /bin/v2rayamgr
 
+# Bye-bye zh_cn
+opkg remove $(opkg list-installed | grep zh-cn)
+
 # Add USB Hilink Interface by default
 # Add my Load Balance network interfaces to default network config
 if [[ $(grep -c 'ueth1' /etc/config/network) = "0" ]];then
