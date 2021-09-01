@@ -176,6 +176,7 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
         run: |
           cd openwrt/bin/targets/*/*
+          ls -R | grep .ipk
           rm -rf packages
           find . -type f -name 'openwrt-*' | while read FILE ; do
             newfile="$(echo ${FILE} |sed -e 's/openwrt-/helmiwrt-/')" ;
