@@ -62,7 +62,7 @@ rm -rf temp
 popd
 
 # Add v2rayA
-cp -r temp/luci/net/v2raya luci/net/v2raya
+cp -r temp/packages/net/v2raya packages/net/v2raya
 
 # Set to local feeds
 pushd customfeeds/packages
