@@ -96,10 +96,6 @@ git clone --depth=1 https://github.com/gSpotx2f/luci-app-cpu-status
 # Add luci-app-internet-detector
 git clone --depth=1 https://github.com/4IceG/luci-app-internet-detector
 
-# luci-theme-darkmatter
-#git clone --depth=1 https://github.com/Lienol/luci-theme-darkmatter #For OpenWrt 18.xx and below only. 
-git clone https://github.com/rufengsuixing/luci-theme-darkmatter luci-theme-darkmatter #For OpenWrt 19.xx and below only. 
-
 # HelmiWrt packages
 git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
 
