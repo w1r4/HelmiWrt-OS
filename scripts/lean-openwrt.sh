@@ -186,6 +186,10 @@ wget -O package/base-files/files/bin/ram "https://raw.githubusercontent.com/wega
 # run "fixphp" using terminal for use
 wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
 
+#HelmiWrt Patches
+mkdir -p "package/base-files/files/www/luci-static/helmiwrt"
+wget --no-check-certificate $(curl -L https://github.com/helmiau/helmiau/releases/helmiwrt | grep "/helmiau/helmiau/releases/download" | grep ".svg" | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g') -P package/base-files/files/www/luci-static/helmiwrt/
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
