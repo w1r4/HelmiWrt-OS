@@ -82,3 +82,17 @@ if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	e2fsck -y /dev/mmcblk0p2
 	logger "  helmilog : patching read-write done..."
 fi
+
+# Patch OpenClash codes
+if ! grep "HelmiWrt" /usr/lib/lua/luci/view/openclash/status.htm; then
+	sed -i '/<img id="logo"/c\<img id="logo" src="/luci-static/helmiwrt/clashpremium.svg" title="Clash Premium for HelmiWrt" alt="Clash Premium for HelmiWrt" width="50%" onclick="return helmiwrt()" />' /usr/lib/lua/luci/view/openclash/status.htm
+	#sed -i 's#helmiopenx#<a href="http://www.helmiau.com/blog/openwrt-rpi" target="_blank">\n#g' /usr/lib/lua/luci/view/openclash/status.htm
+	#sed -i 's#helmiendx#\n</a>#g' /usr/lib/lua/luci/view/openclash/status.htm
+	sed -i "s#function homepage#function helmiwrt(){ url99='https://www.helmiau.com/blog/openwrt-rpi'; winOpen(url99); }\n\nfunction homepage#g" /usr/lib/lua/luci/view/openclash/status.htm
+fi
+
+# Patch System Status
+if ! grep "helmiwrt" /usr/lib/lua/luci/view/admin_status/index.htm; then
+	sed -i '/%:System%/c\	<!--<legend><%:System%></legend>-->\n	<br><center><img height="70px" width="80%" src="/luci-static/helmiwrt/helmiwrtos.svg" ></center><br><br>' /usr/lib/lua/luci/view/admin_status/index.htm
+fi
+
