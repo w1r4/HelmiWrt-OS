@@ -31,7 +31,7 @@ CURRENTCORE=$(if [[ -f $CORE ]] && [[ -f $PREM ]]; then echo "Original"; elif [[
 IPKVER=$(opkg list-installed | grep luci-app-openclash | sed -e 's/luci-app-openclash - //g' )
 IPKSTAT=$(if [[ $IPKVER == *"."* ]]; then echo "Installed";else echo "Not Available"; fi)
 #wget $(curl -sL https://github.com/vernesong/OpenClash/releases | grep luci-app-openclash_ | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | awk 'FNR <= 1')
-SCRIPTVER="2.5"
+SCRIPTVER="2.6"
 
 echo -e "${G}"
 echo "==============================="
@@ -56,6 +56,7 @@ echo "  Inst/Upd TUN core      : t"
 echo "  Inst/Upd Game core     : g"
 echo "  Inst/Upd all cores     : u"
 echo "  Inst/Upd OpenClash App : a"
+echo "  Add Adblock Rules      : b"
 echo "  Start OpenClash        : c"
 echo "  Stop OpenClash         : h"
 echo "==============================="
@@ -205,6 +206,26 @@ function helmi_install_ipk() {
 	fi
 }
 
+function helmi_adblock() {
+	echo -e "${Y}Downloading Rules..."
+	wget -O /root/HelmiWrt-Adblock.yaml http://sbc.io/hosts/alternates/fakenews-gambling/hosts
+	if [[ -s /root/HelmiWrt-Adblock.yaml ]]; then
+		echo -e "Rules downloaded, patching..."
+		ROOTADS="/root/HelmiWrt-Adblock.yaml"
+		CLASHADS="/etc/openclash/rule_provider/HelmiWrt-Adblock.yaml"
+		grep -v -e "^#" $ROOTADS -e "^\s*$" -e "\blocalhost\b" | sed -E -e "s/^127.0.0.1/0.0.0.0/" -e "s/0.0.0.0 /  - DOMAIN-KEYWORD,/" -e "s/#.*$//" -e "s/\t/ /" -e "s/[[:space:]]{2,}/ /" | tr -d "\r" > $CLASHADS
+		sed	-i "/ip6-allhosts/c\payload:" $CLASHADS
+		sed -i '/payload:/,$!d' $CLASHADS
+		rm $ROOTADS
+		echo -e "${G}"
+		echo "  Install Done...."
+	else
+		echo -e "${R}"
+		echo "  Install Failed...."
+		echo -e "${G}"
+	fi
+}
+
 if [[ $OPT = "s" ]];then
 	helmi_clash_stop \ &&
 	if [[ -f $CORE ]] && [[ -f $PREM ]];then
@@ -253,6 +274,9 @@ elif [[ $OPT = "i" ]];then
 	helmi_download_ipk
 	echo "  Installing OpenClash App...."
 	helmi_install_ipk
+elif [[ $OPT = "b" ]];then
+	echo "  Installing Adblock Rules...."
+	helmi_adblock
 elif [[ $OPT = "u" ]];then
 	echo "  Downloading Premium Core...."
 	helmi_download_premium
