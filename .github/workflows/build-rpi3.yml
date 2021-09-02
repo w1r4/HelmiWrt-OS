@@ -61,7 +61,7 @@ jobs:
           sudo swapoff -a
           sudo chown -R runner:runner /mnt
           sudo rm -f /mnt/swapfile
-          wget -q https://github.com/SuLingGG/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O /mnt/toolchain-image.img
+          wget -q https://github.com/helmiau/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O /mnt/toolchain-image.img
           mkdir /mnt/openwrt-ro openwrt workdir overlay
           sudo mount -o loop /mnt/toolchain-image.img /mnt/openwrt-ro
           sudo mount -t overlay overlay -o lowerdir=/mnt/openwrt-ro,upperdir=overlay,workdir=workdir openwrt
@@ -172,10 +172,14 @@ jobs:
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
         run: |
+          find . -type f -name '*.ipk' | while read FILE ; do
+            echo -e $(readlink -f ${FILE}) ;
+          done
           cd openwrt/bin/targets/*/*
           rm -rf packages
           find . -type f -name 'openwrt-*' | while read FILE ; do
             newfile="$(echo ${FILE} |sed -e 's/openwrt-/helmiwrt-/')" ;
+            echo -e $(readlink -f ${FILE}) ;
             mv "${FILE}" "${newfile}" ;
           done
           find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-${{ env.DEVICE_NAME }}-config.txt" \;

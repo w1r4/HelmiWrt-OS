@@ -52,7 +52,7 @@ fi
 
 # Add HelmiWrt firmware informations
 if [ -f /etc/openwrt_release ];then
-	if [[ $(grep -c Helmi /etc/openwrt_release) = "0" ]];then
+	if ! grep -q Helmi /etc/openwrt_release;then
 		logger "  helmilog : openwrt_release file available, patching..."
 		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Dev/iIg' /etc/openwrt_release
 		logger "  helmilog : patching openwrt_release done..."
@@ -63,7 +63,7 @@ else
 	logger "helmilog : /etc/openwrt_release file is not exist..."
 fi
 if [ -f /usr/lib/os-release ];then
-	if [[ $(grep -c Helmi /usr/lib/os-release) = "0" ]];then
+	if ! grep -q Helmi /usr/lib/os-release;then
 		logger "  helmilog : os-release file available, patching..."
 		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Dev/g' -i -e 's/"SNAPSHOT/"Dev/g' -i -e 's/ SNAPSHOT/ Dev/g' -i -e 's#openwrt.org/#www.helmiau.com/blog/openwrt-rpi#g' -i -e 's#bugs.##g' -i -e 's#forum.##g' /usr/lib/os-release
 		logger "  helmilog : patching os-release done..."
@@ -129,4 +129,32 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/themes/bootstrap/header.htm; then
 	sed -i 's$helmiwrtos.svg$helmiwrtos-r.svg$g' $(grep -rli "helmiwrtos" "/usr/lib/lua/luci/view/themes/opentomcat" "/usr/lib/lua/luci/view/themes/ifit" "/usr/lib/lua/luci/view/themes/opentomato")
 	logger "  helmilog : User interfaces patched..."
 	echo -e "  helmilog : User interfaces patched..."
+fi
+
+# Configuring aria2c
+if ! grep -q "aria2c" /etc/rc.local; then
+	sed -i 's#exit 0#\n#g' /etc/rc.local
+	cat << 'EOF' >> /etc/rc.local
+
+aria2c --conf-path=/etc/aria2/aria2.conf --check-certificate=false --daemon=true --enable-rpc --rpc-allow-origin-all
+usbipd -D &
+sleep 1
+usbip bind -b 2-2
+exit 0
+EOF
+	logger "  helmilog : Aria2 configuration patched..."
+	echo -e "  helmilog : Aria2c configuration patched..."
+fi
+
+# HelmiWrt Patches
+if ! grep -q "helmipatch" /etc/rc.local; then
+	sed -i 's#exit 0#\n#g' /etc/rc.local
+	cat << 'EOF' >> /etc/rc.local
+
+chmod +x /bin/helmipatch
+/bin/helmipatch
+exit 0
+EOF
+	logger "  helmilog : helmipatch already applied to on-boot..."
+	echo -e "  helmilog : helmipatch already applied to on-boot..."
 fi
