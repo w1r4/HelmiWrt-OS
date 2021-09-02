@@ -78,11 +78,21 @@ chmod +x /usr/bin/luci-app-atinout
 ln -sf /usr/sbin/trojan /usr/bin/trojan
 
 # HelmiWrt Patches
-chmod +x /bin/helmipatch
-/bin/helmipatch
-sed -i 's#exit 0#chmod +x /bin/helmipatch#g' /etc/rc.local
-echo '/bin/helmipatch' >> /etc/rc.local
-echo 'exit 0' >> /etc/rc.local
+chmod +x /bin/helmiwrt
+/bin/helmiwrt
+
+# HelmiWrt Patches
+if ! grep -q "helmiwrt" /etc/rc.local; then
+	sed -i 's#exit 0#\n#g' /etc/rc.local
+	cat << 'EOF' >> /etc/rc.local
+
+chmod +x /bin/helmiwrt
+/bin/helmiwrt
+exit 0
+EOF
+	logger "  helmilog : helmipatch already applied to on-boot..."
+	echo -e "  helmilog : helmipatch already applied to on-boot..."
+fi
 
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
 # source docs.google.com/document/d/10ldzikC9EdvXT43LEtct0qSwi5qWJk-LHFZFsl8_69E
@@ -165,9 +175,6 @@ EOF
 
 # Add clashcs script : OpenClash Core switcher
 chmod +x /bin/clashcs
-
-# Add helmiwrt script : lists of command lines provided by helmiau.com
-chmod +x /bin/helmiwrt
 
 # Add : v2rayA Script Manager : This script will help you to install v2rayA software to your openwrt device
 # read more about v2rayA here
