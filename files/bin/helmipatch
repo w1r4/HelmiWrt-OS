@@ -56,8 +56,6 @@ if [ -f /etc/openwrt_release ];then
 		logger "  helmilog : openwrt_release file available, patching..."
 		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Dev/iIg' /etc/openwrt_release
 		logger "  helmilog : patching openwrt_release done..."
-	else
-		logger "helmilog : openwrt_release file already patched. Skipping..."
 	fi
 else
 	logger "helmilog : /etc/openwrt_release file is not exist..."
@@ -67,24 +65,9 @@ if [ -f /usr/lib/os-release ];then
 		logger "  helmilog : os-release file available, patching..."
 		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Dev/g' -i -e 's/"SNAPSHOT/"Dev/g' -i -e 's/ SNAPSHOT/ Dev/g' -i -e 's#openwrt.org/#www.helmiau.com/blog/openwrt-rpi#g' -i -e 's#bugs.##g' -i -e 's#forum.##g' /usr/lib/os-release
 		logger "  helmilog : patching os-release done..."
-	else
-		logger "helmilog : os-release file already patched. Skipping..."
 	fi
 else
 	logger "helmilog : os-release file is not exist..."
-fi
-
-# Auto mount rw/read-write for ro/read-only partitions
-if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
-	logger "  helmilog : rootfs partition is read-only..."
-	logger "  helmilog : mounting read-write..."
-	logger "  helmilog : device will reboot after patching..."
-	echo -e "  helmilog : rootfs partition is read-only..."
-	echo -e "  helmilog : dmounting read-write..."
-	echo -e "  helmilog : device will reboot after patching..."
-	e2fsck -y /dev/mmcblk0p2
-	logger "  helmilog : patching read-write done..."
-	echo -e "  helmilog : patching read-write done..."
 fi
 
 # Patch OpenClash codes
@@ -157,4 +140,17 @@ exit 0
 EOF
 	logger "  helmilog : helmipatch already applied to on-boot..."
 	echo -e "  helmilog : helmipatch already applied to on-boot..."
+fi
+
+# Auto mount rw/read-write for ro/read-only partitions
+if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
+	logger "  helmilog : rootfs partition is read-only..."
+	logger "  helmilog : mounting read-write..."
+	logger "  helmilog : device will reboot after patching..."
+	echo -e "  helmilog : rootfs partition is read-only..."
+	echo -e "  helmilog : dmounting read-write..."
+	echo -e "  helmilog : device will reboot after patching..."
+	e2fsck -y /dev/mmcblk0p2
+	logger "  helmilog : patching read-write done..."
+	echo -e "  helmilog : patching read-write done..."
 fi
