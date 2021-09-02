@@ -58,11 +58,13 @@ cp -r temp/packages/admin/gotop packages/admin/gotop
 
 # Add minieap
 cp -r temp/packages/net/minieap packages/net/minieap
-rm -rf temp
-popd
 
 # Add v2rayA
 cp -r temp/packages/net/v2raya packages/net/v2raya
+
+# Clearing temp directory
+rm -rf temp
+popd
 
 # Set to local feeds
 pushd customfeeds/packages
