@@ -60,8 +60,9 @@ cp -r temp/packages/admin/gotop packages/admin/gotop
 cp -r temp/packages/net/minieap packages/net/minieap
 
 # Add v2rayA
+cp -r temp/packages/net/xray-core packages/net/xray-core
+cp -r temp/packages/net/xray-plugin packages/net/xray-plugin
 cp -r temp/packages/net/v2raya packages/net/v2raya
-sed -i 's$xray-core$v2ray-core$d' packages/net/v2raya/Makefile
 
 # Clearing temp directory
 rm -rf temp
