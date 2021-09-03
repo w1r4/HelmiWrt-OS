@@ -29,7 +29,7 @@ echo -e "  myip        : Check your public IP Address Info."
 echo -e "  ipqmi       : Refresh IP Address for QMI Modems."
 echo -e "  vmess       : Free vmess account for 3 days."
 echo -e "  ipv6-helper : This tool help you install IPV6 modules."
-echo -e "  clashcs     : Openclash core switcher script."
+echo -e "  ocsm        : OpenClash Script Manager."
 echo -e "${R}======================================================"
 
 # Set auto as default language

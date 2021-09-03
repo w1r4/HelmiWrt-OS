@@ -174,7 +174,7 @@ config ttyd
 EOF
 
 # Add clashcs script : OpenClash Core switcher
-chmod +x /bin/clashcs
+chmod +x /bin/ocsm
 
 # Add : v2rayA Script Manager : This script will help you to install v2rayA software to your openwrt device
 # read more about v2rayA here
