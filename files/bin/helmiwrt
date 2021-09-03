@@ -103,7 +103,8 @@ fi
 
 # Patch System Status
 if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/admin_status/index.htm; then
-	sed -i '/%:System%/c\	<!--<legend><%:System%></legend>-->\n	<br><center><img height="70px" width="80%" src="/luci-static/helmiwrt/helmiwrtos.svg" ></center><br><br>' /usr/lib/lua/luci/view/admin_status/index.htm
+	sed -i 's$<h2 name="content"><%:Status%></h2>$<!--<h2 name="content"><%:Status%></h2>-->$g' /usr/lib/lua/luci/view/admin_status/index.htm 
+	sed -i '/%:System%/c\	<!--<legend><%:System%></legend>-->\n	<br><center><img height="70px" width="80%" src="/luci-static/helmiwrt/helmiwrtos.svg" ></center><br><br>' /usr/lib/lua/luci/view/admin_status/index.htm 
 	logger "  helmilog : System Status Patched..."
 	echo -e "  helmilog : System Status Patched..."
 fi
@@ -129,10 +130,10 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/themes/bootstrap/header.htm; then
 	sed -i 's$helmiwrtos.svg"$helmiwrtos-r.svg" height="30rem"$g' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/material")
 	sed -i 's$src="/luci-static/helmiwrt/helmiwrtos.svg"$src="/luci-static/helmiwrt/helmiwrtos-r.svg" height="20rem"$g' $(grep -rli "helmiwrtos" "/usr/lib/lua/luci/view/themes/bootstrap")
 	sed -i '/class="brand"/c\<img class="brand" src="/luci-static/helmiwrt/helmiwrtos-r.svg" height="25rem">' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/opentopd")
-	sed -i '/class="brand"/c\<img class="brand" src="/luci-static/helmiwrt/helmiwrtos-r.svg" height="10rem">' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/atmaterial" "/usr/lib/lua/luci/view/themes/atmaterial_Brown" "/usr/lib/lua/luci/view/themes/atmaterial_red")
+	sed -i '/class="brand"/c\<img class="brand" src="/luci-static/helmiwrt/helmiwrtos-r.svg" height="10rem" style="padding-left:10px; ! important;" >' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/atmaterial" "/usr/lib/lua/luci/view/themes/atmaterial_Brown" "/usr/lib/lua/luci/view/themes/atmaterial_red")
 	sed -i 's$<%=media%>/logo.png$/luci-static/helmiwrt/helmiwrtos.svg$g	' $(grep -rli "logo.png" "/usr/lib/lua/luci/view/themes/edge")
 	sed -i '/class="brand"/c\<a class="brand" href="#"><img src="/luci-static/helmiwrt/helmiwrtos.svg"></a>' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/edge")
-	sed -i 's$helmiwrtos.svg$helmiwrtos-r.svg$g' $(grep -rli "helmiwrtos" "/usr/lib/lua/luci/view/themes/opentomcat" "/usr/lib/lua/luci/view/themes/ifit" "/usr/lib/lua/luci/view/themes/opentomato")
+	sed -i 's$helmiwrtos.svg"$helmiwrtos-r.svg" style="padding-left:10px; ! important;" $g' $(grep -rli "helmiwrtos" "/usr/lib/lua/luci/view/themes/opentomcat" "/usr/lib/lua/luci/view/themes/ifit" "/usr/lib/lua/luci/view/themes/opentomato")
 	logger "  helmilog : User interfaces patched..."
 	echo -e "  helmilog : User interfaces patched..."
 fi
