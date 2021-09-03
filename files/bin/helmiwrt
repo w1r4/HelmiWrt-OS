@@ -125,7 +125,7 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/themes/bootstrap/header.htm; then
 	sed -i 's$<%=media%>/icon/favicon-16x16.png$/luci-static/helmiwrt/hwos.svg$g' $(grep -rli "hwos.svg" "/usr/lib/lua/luci/view/themes")
 	#patching brand
 	sed -i '/class="brand"/c\<img class="brand" src="/luci-static/helmiwrt/helmiwrtos.svg">' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes")
-	sed -i '/netgear/c\<img class="brand" style="padding-left:10px; ! important;" src="/luci-static/helmiwrt/helmiwrtos.svg">' $(grep -rli "netgear" "/usr/lib/lua/luci/view/themes/netgear")
+	sed -i '/netgear/c\<img class="brand" style="padding-left:10px; ! important;" src="/luci-static/helmiwrt/helmiwrtos.svg">' $(grep -rli "helmiwrt" "/usr/lib/lua/luci/view/themes/netgear")
 	sed -i 's$helmiwrtos.svg"$helmiwrtos.svg" height="25rem"$g' $(grep -rli "helmiwrtos" "/usr/lib/lua/luci/view/themes/argon")
 	sed -i '/class="brand-text/c\<!--HelmiWrt-->' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/argon")
 	sed -i 's$helmiwrtos.svg"$helmiwrtos-r.svg" height="30rem"$g' $(grep -rli "brand" "/usr/lib/lua/luci/view/themes/material")
