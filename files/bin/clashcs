@@ -35,7 +35,7 @@ SCRIPTVER="2.6"
 
 echo -e "${G}"
 echo "==============================="
-echo "     OpenClash Manager v$SCRIPTVER"
+echo " OpenClash Script Manager v$SCRIPTVER"
 echo "      Created by helmiau"
 echo "==============================="
 echo -e "  Architecture  : $ARCH"
