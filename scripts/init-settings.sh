@@ -20,10 +20,6 @@ sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
 
-# Set default theme to luci-theme-argon
-uci set luci.main.mediaurlbase='/luci-static/netgear'
-uci commit luci
-
 # Set Argon theme to light on first boot
 uci set argon.@global[0].mode='light'
 
@@ -93,6 +89,13 @@ EOF
 	logger "  helmilog : helmipatch already applied to on-boot..."
 	echo -e "  helmilog : helmipatch already applied to on-boot..."
 fi
+
+# Set default theme to luci-theme-netgear
+echo -e "uci set luci.main.mediaurlbase='/luci-static/netgear'\nuci commit luci" > /bin/default-theme
+chmod +x /bin/default-theme
+/bin/default-theme
+sleep 2
+rm /bin/default-theme
 
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
 # source docs.google.com/document/d/10ldzikC9EdvXT43LEtct0qSwi5qWJk-LHFZFsl8_69E
