@@ -94,8 +94,6 @@ fi
 echo -e "uci set luci.main.mediaurlbase='/luci-static/netgear'\nuci commit luci" > /bin/default-theme
 chmod +x /bin/default-theme
 /bin/default-theme
-sleep 2
-rm /bin/default-theme
 
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
 # source docs.google.com/document/d/10ldzikC9EdvXT43LEtct0qSwi5qWJk-LHFZFsl8_69E

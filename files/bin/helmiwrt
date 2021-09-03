@@ -179,3 +179,14 @@ if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	logger "  helmilog : patching read-write done..."
 	echo -e "  helmilog : patching read-write done..."
 fi
+
+# Set default theme
+if [[ -s /bin/default-theme ]]; then
+	if ! grep -q "netgear" /etc/config/luci; then
+		/bin/default-theme
+		rm /bin/default-theme
+		logger "  helmilog : default theme set..."
+		echo -e "  helmilog : default theme set..."
+	fi
+fi
+
