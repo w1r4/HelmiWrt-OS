@@ -269,7 +269,7 @@ elif [[ $OPT = "g" ]];then
 elif [[ $OPT = "h" ]];then
 	echo "  Stopping OpenClash...."
 	helmi_clash_stop
-elif [[ $OPT = "i" ]];then
+elif [[ $OPT = "a" ]];then
 	echo "  Downloading OpenClash App...."
 	helmi_download_ipk
 	echo "  Installing OpenClash App...."
