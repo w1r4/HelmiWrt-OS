@@ -249,21 +249,29 @@ if [[ $OPT = "s" ]];then
 elif [[ $OPT = "p" ]];then
 	echo "  Downloading Premium Core...."
 	helmi_download_premium
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing Premium Core...."
 	helmi_install_premium
 elif [[ $OPT = "o" ]];then
 	echo "  Downloading Original Core...."
 	helmi_download_original
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing Original Core...."
 	helmi_install_original
 elif [[ $OPT = "t" ]];then
 	echo "  Downloading TUN Core...."
 	helmi_download_tun
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing TUN Core...."
 	helmi_install_tun
 elif [[ $OPT = "g" ]];then
 	echo "  Downloading Game Core...."
 	helmi_download_game
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing Game Core...."
 	helmi_install_game
 elif [[ $OPT = "h" ]];then
@@ -272,6 +280,8 @@ elif [[ $OPT = "h" ]];then
 elif [[ $OPT = "a" ]];then
 	echo "  Downloading OpenClash App...."
 	helmi_download_ipk
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing OpenClash App...."
 	helmi_install_ipk
 elif [[ $OPT = "b" ]];then
@@ -280,6 +290,8 @@ elif [[ $OPT = "b" ]];then
 elif [[ $OPT = "u" ]];then
 	echo "  Downloading Premium Core...."
 	helmi_download_premium
+	echo "  Stopping OpenClash...."
+	helmi_clash_stop
 	echo "  Installing Premium Core...."
 	helmi_install_premium
 	echo "  Downloading Original Core...."
