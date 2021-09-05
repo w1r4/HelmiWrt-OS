@@ -42,7 +42,7 @@ chmod +x /bin/ssr-stop
 # Added neofetch on oh-my-zsh
 echo "neofetch" > /root/.oh-my-zsh/custom/example.zsh
 chmod +x /bin/neofetch
-./bin/neofetch #run neofetch
+/bin/neofetch
 
 # Vmess creator shortcut
 chmod +x /bin/vmess

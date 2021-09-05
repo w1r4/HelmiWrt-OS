@@ -24,6 +24,6 @@ git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugi
 cp ../../../data/zsh/.zshrc .
 
 # Patch HelmiWrt
-wget -O /.oh-my-zsh/themes/ys.zsh-theme "https://github.com/helmiau/helmiau/releases/download/helmiwrt/ys.zsh-theme"
+wget -O ./.oh-my-zsh/themes/ys.zsh-theme "https://github.com/helmiau/helmiau/releases/download/helmiwrt/ys.zsh-theme"
 
 popd

@@ -182,7 +182,7 @@ fi
 
 # Set default theme
 if [[ -s /bin/default-theme ]]; then
-	if ! grep -q "netgear" /etc/config/luci; then
+	if ! grep -q "mediaurlbase '/luci-static/netgear'" /etc/config/luci; then
 		/bin/default-theme
 		rm /bin/default-theme
 		logger "  helmilog : default theme set..."
