@@ -31,7 +31,7 @@ CURRENTCORE=$(if [[ -f $CORE ]] && [[ -f $PREM ]]; then echo "Original"; elif [[
 IPKVER=$(opkg list-installed | grep luci-app-openclash | sed -e 's/luci-app-openclash - //g' )
 IPKSTAT=$(if [[ $IPKVER == *"."* ]]; then echo "Installed";else echo "Not Available"; fi)
 #wget $(curl -sL https://github.com/vernesong/OpenClash/releases | grep luci-app-openclash_ | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | awk 'FNR <= 1')
-SCRIPTVER="2.6"
+SCRIPTVER="2.7"
 
 echo -e "${G}"
 echo "==============================="
