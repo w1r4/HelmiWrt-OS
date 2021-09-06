@@ -75,7 +75,7 @@ if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
 fi
 
 # Add HelmiWrt firmware informations
-if [ -f /etc/openwrt_release ];then
+if [ -f /etc/openwrt_release ]; then
 	if ! grep -q Helmi /etc/openwrt_release;then
 		logger "  helmilog : openwrt_release file available, patching..."
 		sed -i -e 's/openwrt/HelmiWrt/iIg' -i -e 's/snapshot/Dev/iIg' /etc/openwrt_release
@@ -84,7 +84,7 @@ if [ -f /etc/openwrt_release ];then
 else
 	logger "helmilog : /etc/openwrt_release file is not exist..."
 fi
-if [ -f /usr/lib/os-release ];then
+if [ -f /usr/lib/os-release ]; then
 	if ! grep -q Helmi /usr/lib/os-release;then
 		logger "  helmilog : os-release file available, patching..."
 		sed -i -e 's/"openwrt/"helmiwrt/g' -i -e 's/openwrt"/helmiwrt"/g' -i -e 's/"OpenWrt/"HelmiWrt/g' -i -e 's/"snapshot/"Dev/g' -i -e 's/"SNAPSHOT/"Dev/g' -i -e 's/ SNAPSHOT/ Dev/g' -i -e 's#openwrt.org/#www.helmiau.com/blog/helmiwrt-os#g' -i -e 's#bugs.##g' -i -e 's#forum.##g' /usr/lib/os-release
@@ -167,7 +167,504 @@ EOF
 	echo -e "  helmilog : helmiwrt already applied to on-boot..."
 fi
 
+# Set default theme
+if [[ -s /bin/default-theme ]]; then
+	if ! grep -q "mediaurlbase '/luci-static/netgear'" /etc/config/luci; then
+		/bin/default-theme
+		rm /bin/default-theme
+		logger "  helmilog : default theme set..."
+		echo -e "  helmilog : default theme set..."
+	fi
+fi
+
+# Skip confirmation screen when start speedtest
+if [ ! -d /root/.config/ookla ]; then
+	mkdir -p /root/.config/ookla;
+	cat << 'EOF' > /root/.config/ookla/speedtest-cli.json
+{
+    "Settings": {
+        "LicenseAccepted": "604ec27f828456331ebf441826292c49276bd3c1bee1a2f65a6452f505c4061c"
+    }
+}
+EOF
+	logger "  helmilog : speedtest patched..."
+	echo -e "  helmilog : speedtest patched..."
+fi
+
+# Add reboot, poweroff, shutdown, shadowsocksr++ restart/stop, mwan3 restart to LuCI -> System -> Custom Command
+if ! grep -q "Shutdown" /etc/config/luci; then
+	cat << "EOF" >> /etc/config/luci
+
+config command
+	option name 'Shutdown'
+	option command 'halt'
+
+config command
+	option name 'Power Off'
+	option command 'poweroff'
+
+config command
+	option name 'Reboot'
+	option command 'reboot'
+
+config command
+	option name 'ShadowsocksR Restart'
+	option command '/etc/init.d/shadowsocksr restart'
+
+config command
+	option name 'ShadowsocksR Stop'
+	option command '/etc/init.d/shadowsocksr stop'
+
+config command
+	option name 'Restart Load Balance'
+	option command 'mwan3 restart'
+
+EOF
+	logger "  helmilog : LuCI power menu added..."
+	echo -e "  helmilog : LuCI power menu added..."
+fi
+
+# LuCI -> System -> Terminal (a.k.a) luci-app-ttyd without login
+if ! grep -q "/bin/login -f root" /etc/config/ttyd; then
+	cat << "EOF" > /etc/config/ttyd
+
+config ttyd
+	option interface '@lan'
+	option command '/bin/login -f root'
+
+EOF
+	logger "  helmilog : Terminal ttyd patched..."
+	echo -e "  helmilog : Terminal ttyd patched..."
+fi
+
+# QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
+# source docs.google.com/document/d/10ldzikC9EdvXT43LEtct0qSwi5qWJk-LHFZFsl8_69E
+if [ -f /lib/netifd/proto/qmi.sh ];then
+	if ! grep -q "helmiau" /lib/netifd/proto/qmi.sh;then
+		sed -i 's$local uninitialized_timeout=0$local uninitialized_timeout=0\n#------ Patched by Helmi Amirudin a.k.a helmiau------\n		helmiau1\n		helmiau2\n		helmiau3\n#------ Patched by Helmi Amirudin a.k.a helmiau ------$g' /lib/netifd/proto/qmi.sh
+		sed -i 's#helmiau1#uqmi -s -d "$ device" --get-pin-status \&#g' /lib/netifd/proto/qmi.sh
+		sed -i 's#helmiau2#sleep 3#g' /lib/netifd/proto/qmi.sh
+		sed -i 's#helmiau3#killall uqmi || echo "UQMI works fine!"#g' /lib/netifd/proto/qmi.sh
+		logger "  helmilog : QMI scripts patched..."
+		echo -e "  helmilog : QMI scripts patched..."
+	fi
+fi
+
+# Add USB Hilink, Ethernet, QMI Modem Interface by default
+# Add my Load Balance network interfaces to default network config
+if ! grep -q 'ueth1' /etc/config/network; then
+	cat << "EOF" >> /etc/config/network
+
+config interface 'l2tp'
+	option proto 'l2tp'
+	option ipv6 'auto'
+	option auto '0'
+	option metric '2'
+
+config interface 'umd1'
+	option proto 'modemmanager'
+
+config interface 'uqmi1'
+	option proto 'qmi'
+	option device '/dev/cdc-wdm0'
+	option auth 'none'
+	option apn 'home'
+
+config interface 'xderm'
+	option proto 'none'
+	option ifname 'tun0'
+	option auto '0'
+
+config interface 'libernet'
+	option proto 'none'
+	option ifname 'tun1'
+	option auto '0'
+
+config interface '3g'
+	option proto '3g'
+	option ipv6 'auto'
+	option metric '3'
+
+config interface 'wg1'
+	option proto 'wireguard'
+	option auto '0'
+	option metric '4'
+
+config interface 'ueth1'
+	option proto 'dhcp'
+	option ifname 'eth1'
+	option metric '10'
+
+config interface 'ueth2'
+	option proto 'dhcp'
+	option ifname 'eth2'
+	option metric '20'
+
+config interface 'ueth3'
+	option proto 'dhcp'
+	option ifname 'eth3'
+	option metric '30'
+
+config interface 'ueth4'
+	option proto 'dhcp'
+	option ifname 'eth4'
+	option metric '40'
+
+EOF
+	logger "  helmilog : network interfaces for mwan3 loadbalance added..."
+	echo -e "  helmilog : network interfaces for mwan3 loadbalance added..."
+fi
+
+# Add my Load Balance network interfaces to firewall
+if ! grep -q 'fweth' /etc/config/firewall; then
+	cat << "EOF" >> /etc/config/firewall
+
+
+config zone
+	option name 'libernet'
+	option masq '1'
+	option mtu_fix '1'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'libernet'
+
+config forwarding
+	option dest 'libernet'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'libernet'
+
+config zone
+	option output 'ACCEPT'
+	option name 'xderm'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'xderm'
+
+config forwarding
+	option dest 'xderm'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'xderm'
+
+config zone
+	option name 'ipsec'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'l2tp'
+
+config forwarding
+	option src 'lan'
+	option dest 'ipsec'
+
+config forwarding
+	option src 'ipsec'
+	option dest 'wan'
+
+config zone
+	option name 'fw3g'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network '3g'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fw3g'
+	option src 'lan'
+
+config zone
+	option name 'fwumd1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'umd1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fwumd1'
+	option src 'lan'
+
+config zone
+	option name 'fwuqmi1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'uqmi1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fwuqmi1'
+	option src 'lan'
+
+config zone
+	option name 'fweth1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth1'
+	option src 'lan'
+
+config zone
+	option name 'fweth2'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth2'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth2'
+	option src 'lan'
+
+config zone
+	option name 'fweth3'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth3'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth3'
+	option src 'lan'
+
+config zone
+	option name 'fweth4'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth4'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth4'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'lan'
+
+EOF
+	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'wg1'#g" /etc/config/firewall
+	sed -i "s#wan wan6#wan wan6 wg1#g" /etc/config/firewall=
+	logger "  helmilog : firewall for mwan3 loadbalance added..."
+	echo -e "  helmilog : firewall for mwan3 loadbalance added..."
+fi
+
+# Add my Load Balance settings to default config mwan3
+if ! grep -q 'mueth' /etc/config/mwan3); then
+	cat << "EOF" > /etc/config/mwan3
+config globals 'globals'
+	option mmx_mask '0x3F00'
+	option rtmon_interval '5'
+
+config policy 'balanced'
+	option last_resort 'default'
+	option last_resort 'unreachable'
+	list use_member 'm3g'
+	list use_member 'mumd1'
+	list use_member 'muqmi1'
+	list use_member 'mueth1'
+	list use_member 'mueth2'
+	list use_member 'mueth3'
+	list use_member 'mueth4'
+
+config rule 'default_rule'
+	option dest_ip '0.0.0.0/0'
+	option use_policy 'balanced'
+	option proto 'all'
+
+config interface '3g'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'umd1'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'uqmi1'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth1'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth2'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth3'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config interface 'ueth4'
+	option enabled '1'
+	option initial_state 'online'
+	list track_ip '0.0.0.0'
+	option family 'ipv4'
+	option track_method 'ping'
+	option reliability '1'
+	option check_quality '0'
+	option keep_failure_interval '1'
+	option timeout '5'
+	option interval '3'
+	option failure_interval '3'
+	option recovery_interval '1'
+	option down '5'
+	option up '5'
+	option count '4'
+	option size '24'
+
+config member 'm3g'
+	option interface '3g'
+	option metric '1'
+	option weight '1'
+
+config member 'mumd1'
+	option interface 'umd1'
+	option metric '1'
+	option weight '1'
+
+config member 'muqmi1'
+	option interface 'uqmi1'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth1'
+	option interface 'ueth1'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth2'
+	option interface 'ueth2'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth3'
+	option interface 'ueth3'
+	option metric '1'
+	option weight '1'
+
+config member 'mueth4'
+	option interface 'ueth4'
+	option metric '1'
+	option weight '1'
+
+EOF
+	echo "  helmilb_log : patching mwan3 done..."
+	logger "  helmilog : mwan3 config file added..."
+	echo -e "  helmilog : mwan3 config file added..."
+fi
+
 # Auto mount rw/read-write for ro/read-only partitions
+# These lines below, must be written at the last script
 if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	logger "  helmilog : rootfs partition is read-only..."
 	logger "  helmilog : mounting read-write..."
@@ -179,14 +676,3 @@ if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	logger "  helmilog : patching read-write done..."
 	echo -e "  helmilog : patching read-write done..."
 fi
-
-# Set default theme
-if [[ -s /bin/default-theme ]]; then
-	if ! grep -q "mediaurlbase '/luci-static/netgear'" /etc/config/luci; then
-		/bin/default-theme
-		rm /bin/default-theme
-		logger "  helmilog : default theme set..."
-		echo -e "  helmilog : default theme set..."
-	fi
-fi
-
