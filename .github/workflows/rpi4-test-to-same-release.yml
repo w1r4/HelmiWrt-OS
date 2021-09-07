@@ -89,6 +89,7 @@ jobs:
           [ -e files ] && mv files $OPENWRTROOT/files
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
+          cat config/universal.config >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> target/linux/bcm27xx/bcm2711/config-5.4
           mkdir -p files/lib/firmware/brcm/
@@ -185,8 +186,8 @@ jobs:
             echo -e $(readlink -f ${FILE}) ;
             mv "${FILE}" "${newfile}" ;
           done
-          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-${{ env.DEVICE_NAME }}-config.txt" \;
-          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-${{ env.DEVICE_NAME }}-sha256sums.txt" \;
+          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-config-${{ env.DEVICE_NAME }}.txt" \;
+          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-sha256sums-${{ env.DEVICE_NAME }}.txt" \;
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
