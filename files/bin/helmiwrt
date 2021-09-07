@@ -468,7 +468,7 @@ config forwarding
 
 EOF
 	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'wg1'#g" /etc/config/firewall
-	sed -i "s#wan wan6#wan wan6 wg1#g" /etc/config/firewall=
+	sed -i "s#wan wan6#wan wan6 wg1#g" /etc/config/firewall
 	logger "  helmilog : firewall for mwan3 loadbalance added..."
 	echo -e "  helmilog : firewall for mwan3 loadbalance added..."
 fi
