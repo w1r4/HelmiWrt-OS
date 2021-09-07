@@ -175,7 +175,7 @@ jobs:
 
       - name: Organize Files
         id: organize
-        if: env.GENERATE_STATUS == 'success' && !cancelled()
+        if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
         run: |
           find . -type f -name '*.ipk' | while read FILE ; do
             echo -e $(readlink -f ${FILE}) ;
