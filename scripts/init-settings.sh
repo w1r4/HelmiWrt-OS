@@ -42,7 +42,7 @@ chmod +x /bin/ssr-stop
 # Added neofetch on oh-my-zsh
 echo "neofetch" > /root/.oh-my-zsh/custom/example.zsh
 chmod +x /bin/neofetch
-/bin/neofetch
+neofetch
 
 # Vmess creator shortcut
 chmod +x /bin/vmess
@@ -75,7 +75,7 @@ ln -sf /usr/sbin/trojan /usr/bin/trojan
 
 # HelmiWrt Patches
 chmod +x /bin/helmiwrt
-/bin/helmiwrt
+helmiwrt
 
 # HelmiWrt Patches
 if ! grep -q "helmiwrt" /etc/rc.local; then
@@ -93,7 +93,7 @@ fi
 # Set default theme to luci-theme-netgear
 echo -e "uci set luci.main.mediaurlbase='/luci-static/netgear'\nuci commit luci" > /bin/default-theme
 chmod +x /bin/default-theme
-/bin/default-theme
+default-theme
 
 # Patch english language for luci-app-fileassistant
 chmod +x /bin/patch-fileassistant
@@ -101,6 +101,7 @@ patch-fileassistant
 
 # Add my Load Balance settings
 chmod +x /bin/helmilb
+helmilb
 
 # Add clashcs script : OpenClash Core switcher
 chmod +x /bin/ocsm
