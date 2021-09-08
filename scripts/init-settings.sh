@@ -5,6 +5,9 @@
 # Author: SuLingGG
 # Blog: https://mlapp.cn
 #=================================================
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 
 # Disable autostart by default for some packages
 rm -f /etc/rc.d/S98udptools || true

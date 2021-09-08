@@ -9,10 +9,16 @@
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 CFGMWAN="/etc/config/mwan3"
 CFGNET="/etc/config/network"
 CFGFW="/etc/config/firewall"
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 echo "==========================================="
 echo -e "   Current total USB interface : $(( $(grep -c mueth $CFGMWAN) / 2 ))"
 echo "==========================================="
@@ -22,6 +28,9 @@ echo "   Enter Your Option : 1~99"
 echo ""
 echo "==========================================="  
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function helmilb_main() {
 
 	if [[ $(grep -c 'mueth1' $CFGMWAN) = "0" ]];then
@@ -122,6 +131,9 @@ EOF
 		echo "  helmilb_log : firewall config file already patched. Skipping..."
 	fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add my Load Balance network interfaces to default network config
 	if [[ $(grep -c 'ueth1' $CFGNET) = "0" ]] && [[ $(grep -c 'wwan' $CFGNET) = "0" ]];then
 	echo "  helmilb_log : network config file available, patching..."
@@ -144,6 +156,9 @@ EOF
 
 }
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function helmilb_multi() {
 
 for i in {0..$ETH..1}
@@ -222,6 +237,9 @@ done
 helmilb_main \ &&
 helmilb_multi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #/etc/init.d/mwan3 restart
 #/etc/init.d/network restart
 #/etc/init.d/firewall restart

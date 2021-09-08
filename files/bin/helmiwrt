@@ -3,6 +3,8 @@
 #   Don't remove this section for credits
 #   Don't rename this file
 #--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #   My command lists
 #   by Helmi Amirudin a.k.a helmiau
 #   my profile page https://wwww.helmiau.com
@@ -33,6 +35,9 @@ echo -e "  ocsm        : OpenClash Script Manager."
 echo -e "  vasm        : v2rayA Script Manager."
 echo -e "${R}======================================================"
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Set auto as default language
 if grep -q "option lang 'zh" /etc/config/luci; then
 	logger "  helmilog : chinese language detected !..."
@@ -41,6 +46,9 @@ if grep -q "option lang 'zh" /etc/config/luci; then
 	logger "  helmilog : switched default languange to auto..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Autofix download index.php
 if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
 	echo -e "  helmilog : system not using php-cgi, patching php config ..."
@@ -74,6 +82,9 @@ if ! grep -q ".php=/usr/bin/php-cgi" /etc/config/uhttpd; then
 	/etc/init.d/rpcd restart
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add HelmiWrt firmware informations
 if [ -f /etc/openwrt_release ]; then
 	if ! grep -q Helmi /etc/openwrt_release;then
@@ -94,6 +105,9 @@ else
 	logger "helmilog : os-release file is not exist..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Patch OpenClash codes
 if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/openclash/status.htm; then
 	sed -i '/<img id="logo"/c\<img id="logo" src="/luci-static/helmiwrt/clashpremium.svg" title="Clash Premium for HelmiWrt" alt="Clash Premium for HelmiWrt" width="50%" onclick="return helmiwrt()" />' /usr/lib/lua/luci/view/openclash/status.htm
@@ -102,6 +116,9 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/openclash/status.htm; then
 	echo -e "  helmilog : Clash Premium Patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Patch System Status
 if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/admin_status/index.htm; then
 	sed -i 's$<h2 name="content"><%:Status%></h2>$<!--<h2 name="content"><%:Status%></h2>-->$g' /usr/lib/lua/luci/view/admin_status/index.htm 
@@ -110,6 +127,9 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/admin_status/index.htm; then
 	echo -e "  helmilog : System Status Patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Patching Interfaces
 if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/themes/bootstrap/header.htm; then
 	#patching favicon
@@ -139,6 +159,9 @@ if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/themes/bootstrap/header.htm; then
 	echo -e "  helmilog : User interfaces patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Configuring aria2
 if ! grep -q "aria2" /etc/rc.local; then
 	sed -i 's#exit 0#\n#g' /etc/rc.local
@@ -154,6 +177,9 @@ EOF
 	echo -e "  helmilog : Aria2c configuration patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # HelmiWrt Patches
 if ! grep -q "helmiwrt" /etc/rc.local; then
 	sed -i 's#exit 0#\n#g' /etc/rc.local
@@ -167,6 +193,9 @@ EOF
 	echo -e "  helmilog : helmiwrt already applied to on-boot..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Set default theme
 if [[ -s /bin/default-theme ]]; then
 	if ! grep -q "mediaurlbase '/luci-static/netgear'" /etc/config/luci; then
@@ -177,6 +206,9 @@ if [[ -s /bin/default-theme ]]; then
 	fi
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Skip confirmation screen when start speedtest
 if [ ! -d /root/.config/ookla ]; then
 	mkdir -p /root/.config/ookla;
@@ -191,6 +223,9 @@ EOF
 	echo -e "  helmilog : speedtest patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add reboot, poweroff, shutdown, shadowsocksr++ restart/stop, mwan3 restart to LuCI -> System -> Custom Command
 if ! grep -q "Shutdown" /etc/config/luci; then
 	cat << "EOF" >> /etc/config/luci
@@ -224,6 +259,9 @@ EOF
 	echo -e "  helmilog : LuCI power menu added..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # LuCI -> System -> Terminal (a.k.a) luci-app-ttyd without login
 if ! grep -q "/bin/login -f root" /etc/config/ttyd; then
 	cat << "EOF" > /etc/config/ttyd
@@ -237,6 +275,9 @@ EOF
 	echo -e "  helmilog : Terminal ttyd patched..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # QMI modem reconnect interface without reboot /lib/netifd/proto/qmi.sh
 # source docs.google.com/document/d/10ldzikC9EdvXT43LEtct0qSwi5qWJk-LHFZFsl8_69E
 if [ -f /lib/netifd/proto/qmi.sh ];then
@@ -250,6 +291,9 @@ if [ -f /lib/netifd/proto/qmi.sh ];then
 	fi
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Auto mount rw/read-write for ro/read-only partitions
 # These lines below, must be written at the last script
 if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then

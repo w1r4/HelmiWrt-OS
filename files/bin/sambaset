@@ -9,6 +9,9 @@
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #-- Warna Teks Installer
 RED='\033[0;31m' # Merah
 GRE='\033[1;32m' # Hijau Muda
@@ -16,6 +19,9 @@ CYA='\033[0;36m' # Biru Muda
 YEL='\033[1;33m' # Kuning
 NOR='\033[1;37m' # Putih
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #-- Theme Info
 OPKGSMB=$(if [[ $(opkg list-installed samba36-server | grep -c samba36-server) = "1" ]]; then echo -e "${GRE}Installed"; else echo -e "${RED}Unavailable"; fi)
 LUCISMB=$(if [[ $(opkg list-installed luci-app-samba | grep -c luci-app-samba) = "1" ]]; then echo -e "${GRE}Installed"; else echo -e "${RED}Unavailable"; fi)
@@ -27,6 +33,9 @@ ETCSHADOW=$(if grep -q "USER:" /etc/shadow; then echo -e "${GRE}Available"; else
 #-- Uneditable Info for script checking purpose
 #INSTALLERNAME="$(basename "$0")"
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #-- Installer Scripts
 echo -e "${NOR}==========================================="
 echo -e "       ${YEL}Samba Server Setup by helmiau${NOR}" #Do not remove this
@@ -42,6 +51,10 @@ echo -e "   And disable ${CYA}Allow guests${NOR}"
 echo "==========================================="
 echo -e "           ${YEL}Exit = type anything !${NOR}"
 echo "==========================================="
+
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 if [[ $(opkg list-installed samba36-server | grep -c samba36-server) = "1" ]]; then
 	echo "  Samba36 Server package already installed..."
 else
@@ -56,6 +69,10 @@ else
 	opkg update && opkg install luci-app-samba
 	echo "  Done !."
 fi
+
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 echo "==========================================="
 echo -e "   ${CYA}List available path under /mnt directory :${NOR}"
 echo -e "==========================================="
@@ -100,6 +117,9 @@ echo -e "   At LUCI, under ${CYA}Allowed Users${YEL}, enter ${CYA}USER${YEL}"
 echo -e "   uncheck ${CYA}Allowed Guest${YEL} for added security."
 echo -e "${NOR}==========================================="
 exit
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 #
 #   This script is used to install Xderm Mini GUI custom theme
 #   Installation script by helmiau a.k.a Helmi Amirudin

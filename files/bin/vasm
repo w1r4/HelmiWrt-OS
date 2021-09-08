@@ -16,6 +16,9 @@ C='\033[0;36m' # Biru Muda
 Y='\033[1;33m' # Kuning
 N='\033[1;37m' # Putih
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 SCRIPTNAME="$(basename "$0")"
 SCRIPTUPD="${SCRIPTNAME}upd"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/OpenWrt-Rpi/main/files/bin/v2rayamgr"
@@ -28,6 +31,9 @@ if [[ -f /bin/$SCRIPTUPD ]]; then
 fi
 
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
 VAUSRBIN="/usr/bin/v2raya"
@@ -77,6 +83,9 @@ echo -e "              Type anything to exit"
 echo -e "======================================================"
 echo -e "     Type one of command above to run its command"
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function helmiau_unsupported() {
 	if [[ $INSTALLSUPPORT = "Unsupported" ]];then
 		echo -e "${R}  Sorry, your device is unsupported for v2rayA installation"
@@ -100,6 +109,9 @@ function helmiau_checknet() {
 		return_installer
 	fi
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function return_installer() {
 	clear
 	if [[ -f /root/$SCRIPTNAME ]]; then
@@ -117,6 +129,9 @@ function return_installer() {
 		exit
 	fi
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function update_installer() {
 	clear
 	echo -e "======================================================"
@@ -194,6 +209,9 @@ EOF
 	trap /root/$SCRIPTUPD EXIT
 	exit
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function opkg_reqs() {
 	echo -e "${G}  Installing requirements packages....${Y}"
 	opkg update
@@ -201,6 +219,9 @@ function opkg_reqs() {
 	echo -e "${G}  Requirements packages installed....${N}"
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2ray_core() {
 	echo -e "${G}  Installing v2ray core....${Y}"
 	V2RAYSRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
@@ -215,6 +236,9 @@ function v2ray_core() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2ray_core_mini() {
 	echo -e "${G}  Installing v2ray core mini....${Y}"
 	V2RAYMINISRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core-mini_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
@@ -229,6 +253,9 @@ function v2ray_core_mini() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2ray_core_install_option() {
 	echo -e "${G}  Select v2ray core type :${Y}"
 	echo -e "  1. Normal core"
@@ -242,6 +269,9 @@ function v2ray_core_install_option() {
 	fi
 	echo -e "${N}======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2ray_core_check() {
 	echo -e "${G}  Checking v2ray core....${Y}"
 	if [[ $(opkg list-installed | grep -c v2ray-core) = "1" ]]; then
@@ -253,6 +283,9 @@ function v2ray_core_check() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2fly_core() {
 	echo -e "${G}  Installing v2ray v2fly core...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
@@ -285,6 +318,9 @@ function v2fly_core() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_web() {
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
 	wget -qO $V2RAYAWEBZIP $V2RAYAWEBSRC
@@ -319,6 +355,9 @@ function v2raya_web() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_binary() {
 	echo -e "${G}  Installing v2rayA binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
@@ -351,6 +390,9 @@ function v2raya_binary() {
 	fi
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_daemon() {
 	echo -e "${G}  Installing v2rayA daemon....${Y}"
 	cat <<'EOF' >$INITD
@@ -373,6 +415,9 @@ EOF
 	echo -e "${G}  v2rayA daemon installed....${N}"
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_start() {
 	echo -e "${G}  Starting v2rayA service....${Y}"
 	$INITD start
@@ -380,6 +425,9 @@ function v2raya_start() {
 	echo -e "${G}  v2rayA service started....${N}"
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_stop() {
 	echo -e "${G}  Stopping v2rayA service....${Y}"
 	$INITD stop
@@ -387,6 +435,9 @@ function v2raya_stop() {
 	echo -e "${G}  v2rayA service stopped....${N}"
 	echo -e "======================================================"
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function v2raya_uninstall() {
 	echo -e "${G}  Uninstalling v2rayA service....${Y}"
 	sleep 1
@@ -410,10 +461,16 @@ function v2raya_uninstall() {
 	echo -e "======================================================"
 }
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 helmiau_unsupported
 echo -n " "
 read -r OPT
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 if [[ $OPT = "1" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
@@ -460,3 +517,6 @@ elif [[ $OPT = "88" ]];then
 elif [[ $OPT = "99" ]];then
 	update_installer
 fi
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------

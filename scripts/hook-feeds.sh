@@ -4,6 +4,9 @@
 # Author: SuLingGG
 # Blog: https://mlapp.cn
 #=================================================
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 
 # Svn checkout packages from immortalwrt's repository
 pushd customfeeds

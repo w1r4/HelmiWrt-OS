@@ -1,4 +1,7 @@
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add USB Hilink, Ethernet, QMI Modem Interface by default
 # Add my Load Balance network interfaces to default network config
 if ! grep -q 'ueth1' /etc/config/network; then
@@ -64,6 +67,9 @@ EOF
 	echo -e "  helmilog : network interfaces for mwan3 loadbalance added..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add my Load Balance network interfaces to firewall
 if ! grep -q 'fweth' /etc/config/firewall; then
 	cat << "EOF" >> /etc/config/firewall
@@ -222,6 +228,9 @@ EOF
 	echo -e "  helmilog : firewall for mwan3 loadbalance added..."
 fi
 
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Add my Load Balance settings to default config mwan3
 if ! grep -q 'mueth' /etc/config/mwan3; then
 	cat << "EOF" > /etc/config/mwan3
@@ -411,3 +420,7 @@ EOF
 	logger "  helmilog : mwan3 config file added..."
 	echo -e "  helmilog : mwan3 config file added..."
 fi
+
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
