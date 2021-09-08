@@ -121,8 +121,11 @@ fi
 #--------------------------------------------------------
 # Patch System Status
 if ! grep -q "helmiwrt" /usr/lib/lua/luci/view/admin_status/index.htm; then
-	sed -i 's$<h2 name="content"><%:Status%></h2>$<!--<h2 name="content"><%:Status%></h2>-->$g' /usr/lib/lua/luci/view/admin_status/index.htm 
-	sed -i '/%:System%/c\	<!--<legend><%:System%></legend>-->\n	<br><center><img height="70px" width="80%" src="/luci-static/helmiwrt/helmiwrtos.svg" ></center><br><br>' /usr/lib/lua/luci/view/admin_status/index.htm 
+	sed -i 's$<h2 name="content"><%:Status%></h2>$<!--<h2 name="content"><%:Status%></h2>-->$g' /usr/lib/lua/luci/view/admin_status/index.htm
+	sed -i '/%:System%/c\	<!--<legend><%:System%></legend>-->\n	<br><center><img height="70px" width="80%" src="/luci-static/helmiwrt/helmiwrtos.svg" ></center><br><br>' /usr/lib/lua/luci/view/admin_status/index.htm
+	sed -i 's$<%=pcdata(ver.distversion)%> /$<%=pcdata(ver.distversion)%>$g' /usr/lib/lua/luci/view/admin_status/index.htm
+	sed -i 's$<%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)$</td></tr><tr><td width="33%"><%:LuCI Version%></td><td><%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)</td></tr>$g' /usr/lib/lua/luci/view/admin_status/index.htm
+	sed -i 's$<%=unameinfo.release or "?"%>$<%=unameinfo.release or "?"%>-HWOS$g' /usr/lib/lua/luci/view/admin_status/index.htm
 	logger "  helmilog : System Status Patched..."
 	echo -e "  helmilog : System Status Patched..."
 fi
