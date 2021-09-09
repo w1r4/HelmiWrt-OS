@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_generic Lean's OpenWrt
+name: x86_generic Lean's OpenWrt Squashfs
 
 on:
   workflow_dispatch:

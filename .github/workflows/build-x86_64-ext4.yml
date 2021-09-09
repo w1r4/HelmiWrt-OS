@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_64 Lean's OpenWrt Squashfs
+name: x86_64 Lean's OpenWrt Ext4
 
 on:
   workflow_dispatch:
@@ -91,6 +91,8 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/x86-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/CONFIG_TARGET_ROOTFS_EXT4FS=n/CONFIG_TARGET_ROOTFS_EXT4FS=y/g' $OPENWRTROOT/.config
+          sed -i 's/CONFIG_TARGET_ROOTFS_SQUASHFS=y/CONFIG_TARGET_ROOTFS_SQUASHFS=n/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh amd64
