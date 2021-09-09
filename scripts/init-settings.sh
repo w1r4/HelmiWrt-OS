@@ -116,6 +116,9 @@ chmod +x /bin/vasm
 # Bye-bye zh_cn
 opkg remove $(opkg list-installed | grep zh-cn)
 
+# start v2rayA
+/etc/init.d/v2raya start
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------

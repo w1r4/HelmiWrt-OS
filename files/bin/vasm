@@ -70,11 +70,12 @@ echo -e "  V2rayA Service Status     : $V2RAYASVC"
 # echo -e "  V2rayA Service Stat Debug : $V2RAYASVCDEBUG"
 echo -e "  V2rayA WebGUI Address     : ${G}$VAIP${N}"
 echo -e "======================================================"
-echo -e "  Run commands 1-5          : 1"
+echo -e "  Run commands 1-6          : 1"
 echo -e "  Install required packages : 2"
 echo -e "  Install v2ray core        : 3"
 echo -e "  Install/Update v2rayA     : 4"
-echo -e "  Start and Run v2rayA      : 5"
+echo -e "  Install v2rayA Web GUI    : 5"
+echo -e "  Start and Run v2rayA      : 6"
 echo -e "  Stop v2rayA Program       : 77"
 echo -e "  Uninstall v2rayA          : 88"
 echo -e "  Update v2rayamgr script   : 99"
@@ -486,10 +487,12 @@ if [[ $OPT = "1" ]];then
 elif [[ $OPT = "2" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
+	sleep 3
 	return_installer
 elif [[ $OPT = "3" ]];then
 	helmiau_checknet \ &&
 	v2ray_core_check \ &&
+	sleep 3
 	return_installer
 elif [[ $OPT = "4" ]];then
 	helmiau_checknet \ &&
@@ -502,6 +505,11 @@ elif [[ $OPT = "4" ]];then
 	sleep 3
 	return_installer
 elif [[ $OPT = "5" ]];then
+	helmiau_checknet \ &&
+	v2raya_web \ &&
+	sleep 3
+	return_installer
+elif [[ $OPT = "6" ]];then
 	v2raya_start \ &&
 	sleep 3
 	return_installer
