@@ -187,8 +187,8 @@ mkdir -p "package/base-files/files/www/luci-static/helmiwrt"
 wget --no-check-certificate $(curl -L https://github.com/helmiau/helmiau/releases/helmiwrt | grep "/helmiau/helmiau/releases/download" | grep ".svg" | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g') -P package/base-files/files/www/luci-static/helmiwrt/
 
 # Preinstalled v2rayA web GUI
-mkdir -p package/base-files/etc/v2raya
-git clone http://github.com/v2rayA/v2raya-web package/base-files/etc/v2raya/web
+mkdir -p package/base-files/files/etc/v2raya
+git clone http://github.com/v2rayA/v2raya-web package/base-files/files/etc/v2raya/web
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
