@@ -187,45 +187,8 @@ mkdir -p "package/base-files/files/www/luci-static/helmiwrt"
 wget --no-check-certificate $(curl -L https://github.com/helmiau/helmiau/releases/helmiwrt | grep "/helmiau/helmiau/releases/download" | grep ".svg" | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g') -P package/base-files/files/www/luci-static/helmiwrt/
 
 # Preinstalled v2rayA web GUI
-ETCWEB="package/base-files/etc/v2raya/web"
-V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
-V2RAYAWEBZIP="package/base-files/root/v2rayweb.zip"
-V2RAYAWEBEXT="package/base-files/root/v2raya-web-master"
-function v2raya_web_helmiau() {
-	echo -e "  Installing v2rayA Web GUI...."
-	wget -qO $V2RAYAWEBZIP $V2RAYAWEBSRC
-	#Check size, unzip file if size is not null
-	if [[ -s $V2RAYAWEBZIP ]]; then
-		#Check v2rayA web directory, delete recursive if exist
-		if [[ -d $ETCWEB ]]; then
-			echo -e "  v2rayA web path is exist, cleaning..."
-			mkdir -p $ETCWEB
-			rm -rf $ETCWEB || true
-			echo -e "  v2rayA web path cleaned..."
-		fi
-		#Check v2raya-web-master directory, delete recursive if exist
-		if [[ -d $V2RAYAWEBEXT ]]; then
-			echo -e "  Older v2raya-web-master directory is exist, cleaning..."
-			rm -rf $V2RAYAWEBEXT || true
-			echo -e "  Older v2raya-web-master cleaned..."
-		fi
-		echo -e "  Extracting files...."
-		sleep 2
-		unzip -q $V2RAYAWEBZIP
-		sleep 2
-		rm -f $V2RAYAWEBZIP || true
-		echo -e "  Extract done...."
-		echo -e "  Moving files...."
-		mkdir -p package/base-files/etc/v2raya
-		mv $V2RAYAWEBEXT $ETCWEB
-		echo -e "  Moving done...."
-		echo -e "  v2rayA Web GUI installed...."
-	else
-		echo -e "  v2rayA Web GUI install failed...."
-	fi
-	echo -e "======================================================"
-}
-v2raya_web_helmiau
+mkdir -p package/base-files/etc/v2raya
+git clone http://github.com/v2rayA/v2raya-web package/base-files/etc/v2raya/web
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
