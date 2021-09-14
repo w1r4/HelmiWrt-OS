@@ -6,12 +6,6 @@
 # Blog: https://p3terx.com
 #=================================================
 
-#Patches for Pi 1
-if grep "bcm27xx_bcm2708_DEVICE_rpi=y" .config; then
-	sed -i 's/luci-app-passwall_INCLUDE_NaiveProxy=y/luci-app-passwall_INCLUDE_NaiveProxy=n/g' .config
-	echo -e "  helmilog : patches for Pi 1 applied..."
-fi
-
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 

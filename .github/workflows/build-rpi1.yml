@@ -91,6 +91,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/NaiveProxy=y/NaiveProxy=n/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv6

@@ -118,6 +118,8 @@ opkg remove $(opkg list-installed | grep zh-cn)
 
 # start v2rayA
 /etc/init.d/v2raya start
+/etc/init.d/v2raya enabled
+ln -s /etc/v2raya/web /www/v2raya
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
