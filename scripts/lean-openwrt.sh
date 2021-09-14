@@ -56,10 +56,6 @@ svn co https://github.com/sirpdboy/sirpdboy-package/trunk/luci-app-wrtbwmon
 svn co https://github.com/sirpdboy/sirpdboy-package/trunk/wrtbwmon
 rm -rf ../lean/luci-app-wrtbwmon
 
-# Add luci-app-unblockneteasemusic
-git clone --depth=1 https://github.com/immortalwrt/luci-app-unblockneteasemusic
-rm -rf ../lean/luci-app-unblockmusic
-
 # Add luci-theme-argon
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
@@ -68,12 +64,6 @@ rm -rf ../lean/luci-theme-argon
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
-
-# Add luci-proto-modemmanager
-# git clone --depth=1 https://github.com/nickberry17/luci-proto-modemmanager.git #For OpenWrt 18.xx and below only. 
-# git clone --depth=1 https://github.com/rickydee/luci-proto-modemmanager.git #For OpenWrt 19.xx and above only.
-# git clone --depth=1 https://github.com/helmiau/luci-proto-modemmanager.git #For OpenWrt snapshot.
-# luci-proto-modemmanager has been through hook-feeds.sh
 
 # Add modeminfo
 git clone --depth=1 https://github.com/koshev-msk/luci-app-modeminfo
@@ -92,12 +82,6 @@ git clone --depth=1 https://github.com/4IceG/luci-app-sms-tool
 
 # Add luci-app-atinout-mod
 git clone --depth=1 https://github.com/4IceG/luci-app-atinout-mod
-
-# Add luci-app-cpu-status
-git clone --depth=1 https://github.com/gSpotx2f/luci-app-cpu-status
-
-# Add luci-app-internet-detector
-git clone --depth=1 https://github.com/4IceG/luci-app-internet-detector
 
 # HelmiWrt packages
 git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
@@ -150,12 +134,6 @@ popd
 pushd feeds/packages/net
 rm -rf https-dns-proxy
 svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
-popd
-
-# Use snapshots' syncthing package
-pushd feeds/packages/utils
-rm -rf syncthing
-svn co https://github.com/openwrt/packages/trunk/utils/syncthing
 popd
 
 # Fix mt76 wireless driver
