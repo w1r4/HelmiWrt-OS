@@ -297,6 +297,220 @@ fi
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
+# Add USB Hilink, Ethernet, QMI Modem Interface by default
+# Add my Load Balance network interfaces to default network config
+if ! grep -q 'libernet' /etc/config/network; then
+	cat << "EOF" >> /etc/config/network
+
+config interface 'l2tp'
+	option proto 'l2tp'
+	option ipv6 'auto'
+	option auto '0'
+	option metric '2'
+
+config interface 'umd1'
+	option proto 'modemmanager'
+	option force_link '1'
+	option apn 'aha'
+	option auth 'none'
+	option iptype 'ipv4'
+
+config interface 'xderm'
+	option proto 'none'
+	option ifname 'tun0'
+	option auto '0'
+
+config interface 'libernet'
+	option proto 'none'
+	option ifname 'tun1'
+	option auto '0'
+
+config interface '3g'
+	option proto '3g'
+	option ipv6 'auto'
+	option metric '3'
+
+config interface 'wg1'
+	option proto 'wireguard'
+	option auto '0'
+	option metric '4'
+
+config interface 'ueth1'
+	option proto 'dhcp'
+	option ifname 'eth1'
+	option metric '10'
+
+config interface 'ueth2'
+	option proto 'dhcp'
+	option ifname 'eth2'
+	option metric '20'
+
+config interface 'ueth3'
+	option proto 'dhcp'
+	option ifname 'eth3'
+	option metric '30'
+
+config interface 'ueth4'
+	option proto 'dhcp'
+	option ifname 'eth4'
+	option metric '40'
+
+EOF
+	logger "  helmilog : network interfaces patched..."
+	echo -e "  helmilog : network interfaces patched..."
+fi
+
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
+# Add my Load Balance network interfaces to firewall
+if ! grep -q 'libernet' /etc/config/firewall; then
+	cat << "EOF" >> /etc/config/firewall
+
+
+config zone
+	option name 'libernet'
+	option masq '1'
+	option mtu_fix '1'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'libernet'
+
+config forwarding
+	option dest 'libernet'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'libernet'
+
+config zone
+	option output 'ACCEPT'
+	option name 'xderm'
+	option input 'REJECT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'xderm'
+
+config forwarding
+	option dest 'xderm'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'xderm'
+
+config zone
+	option name 'ipsec'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'l2tp'
+
+config forwarding
+	option src 'lan'
+	option dest 'ipsec'
+
+config forwarding
+	option src 'ipsec'
+	option dest 'wan'
+
+config zone
+	option name 'fw3g'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network '3g'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fw3g'
+	option src 'lan'
+
+config zone
+	option name 'fwumd1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'umd1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fwumd1'
+	option src 'lan'
+
+config zone
+	option name 'fweth1'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth1'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth1'
+	option src 'lan'
+
+config zone
+	option name 'fweth2'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth2'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth2'
+	option src 'lan'
+
+config zone
+	option name 'fweth3'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth3'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth3'
+	option src 'lan'
+
+config zone
+	option name 'fweth4'
+	option forward 'REJECT'
+	option output 'ACCEPT'
+	option network 'ueth4'
+	option input 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+
+config forwarding
+	option dest 'fweth4'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'lan'
+
+EOF
+	sed -i "s#list network 'wan'#list network 'wan'\n	list network 'wan6'\n	list network 'wg1'#g" /etc/config/firewall
+	sed -i "s#wan wan6#wan wan6 wg1#g" /etc/config/firewall
+	logger "  helmilog : firewall patched..."
+	echo -e "  helmilog : firewall patched..."
+fi
+
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 # Auto mount rw/read-write for ro/read-only partitions
 # These lines below, must be written at the last script
 if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
