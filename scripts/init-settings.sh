@@ -104,7 +104,7 @@ patch-fileassistant
 
 # Add my Load Balance settings
 chmod +x /bin/helmilb
-helmilb
+#helmilb
 
 # Add clashcs script : OpenClash Core switcher
 chmod +x /bin/ocsm
