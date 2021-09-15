@@ -97,7 +97,7 @@ jobs:
           echo -e "CONFIG_SUN8I_THERMAL=y" >> target/linux/sunxi/config-5.4
           wget -q https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-18.06-k5.4/target/linux/sunxi/patches-5.4/012-thermal-drivers-sun8i-Add-thermal-driver.patch -O target/linux/sunxi/patches-5.4/012-thermal-drivers-sun8i-Add-thermal-driver.patch
           wget -q https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-18.06-k5.4/target/linux/sunxi/files-5.4/drivers/thermal/sun8i_thermal.c -O target/linux/sunxi/files-5.4/drivers/thermal/sun8i_thermal.c
-          sed -i "s/devm_thermal_add_hwmon_sysfs/thermal_add_hwmon_sysfs/g" target/linux/sunxi/patches-5.4/012-thermal-drivers-sun8i-Add-thermal-driver.patch
+          sed -i "s/devm_thermal_add_hwmon_sysfs/thermal_add_hwmon_sysfs/g" target/linux/sunxi/files-5.4/drivers/thermal/sun8i_thermal.c
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv7
           ../scripts/preset-terminal-tools.sh
