@@ -307,6 +307,7 @@ if grep "[[:space:]]ro[[:space:],]" /proc/mounts; then
 	echo -e "  helmilog : dmounting read-write..."
 	echo -e "  helmilog : device will reboot after patching..."
 	e2fsck -y /dev/mmcblk0p2
+	reboot
 	logger "  helmilog : patching read-write done..."
 	echo -e "  helmilog : patching read-write done..."
 fi
