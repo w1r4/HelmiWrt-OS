@@ -92,6 +92,8 @@ jobs:
           cat config/opi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i "s/kmod-video-core=y/kmod-video-core=n/g" $OPENWRTROOT/.config
+          sed -i "s/kmod-i2c-core=y/kmod-i2c-core=n/g" $OPENWRTROOT/.config
           cd $OPENWRTROOT
           mkdir -p target/linux/sunxi/files-5.4/drivers/thermal
           echo -e "CONFIG_SUN8I_THERMAL=y" >> target/linux/sunxi/config-5.4
