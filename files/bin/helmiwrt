@@ -302,28 +302,22 @@ fi
 if ! grep -q 'libernet' /etc/config/network; then
 	cat << "EOF" >> /etc/config/network
 
-config interface 'l2tp'
-	option proto 'l2tp'
-	option ipv6 'auto'
-	option auto '0'
-	option metric '2'
 
-config interface 'umd1'
-	option proto 'modemmanager'
-	option force_link '1'
-	option apn 'aha'
-	option auth 'none'
-	option iptype 'ipv4'
+config interface 'libernet'
+	option proto 'none'
+	option ifname 'tun1'
+	option auto '0'
 
 config interface 'xderm'
 	option proto 'none'
 	option ifname 'tun0'
 	option auto '0'
 
-config interface 'libernet'
-	option proto 'none'
-	option ifname 'tun1'
+config interface 'l2tp'
+	option proto 'l2tp'
+	option ipv6 'auto'
 	option auto '0'
+	option metric '2'
 
 config interface '3g'
 	option proto '3g'
@@ -334,6 +328,14 @@ config interface 'wg1'
 	option proto 'wireguard'
 	option auto '0'
 	option metric '4'
+
+config interface 'umd1'
+	option proto 'modemmanager'
+	option force_link '1'
+	option apn 'aha'
+	option auth 'none'
+	option iptype 'ipv4'
+	option metric '5'
 
 config interface 'ueth1'
 	option proto 'dhcp'

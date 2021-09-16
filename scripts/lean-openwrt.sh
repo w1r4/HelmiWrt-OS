@@ -94,6 +94,9 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomato k
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomcat kenzok8/luci-theme-opentomcat
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd kenzok8/luci-theme-opentopd
 
+# Add Xradio kernel for Orange Pi Zero
+svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
@@ -163,10 +166,6 @@ wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/h
 #HelmiWrt Patches
 mkdir -p "package/base-files/files/www/luci-static/helmiwrt"
 wget --no-check-certificate $(curl -L https://github.com/helmiau/helmiau/releases/helmiwrt | grep "/helmiau/helmiau/releases/download" | grep ".svg" | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g') -P package/base-files/files/www/luci-static/helmiwrt/
-
-# Add Xradio kernel for Orange Pi Zero
-svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx
-mv xradio-Openwrt_kernel-5.4.xx xradio
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
