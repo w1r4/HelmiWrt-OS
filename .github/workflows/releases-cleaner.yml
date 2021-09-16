@@ -1,4 +1,4 @@
-name: Delete All Older Releases, Tags and Drafts
+name: Release GitHub Cleaner
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ jobs:
   del_runs:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete Older Releases and Tags
+      - name: Delete All Releases and Tags
         uses: dev-drprasad/delete-older-releases@v0.2.0
         with:
           keep_latest: 0
@@ -18,7 +18,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Delete drafts
+      - name: Delete Drafts
         uses: hugo19941994/delete-draft-releases@v0.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
