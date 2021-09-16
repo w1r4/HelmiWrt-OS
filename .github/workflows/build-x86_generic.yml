@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_generic squashfs Build
+name: Build x86_generic squashfs
 
 on:
   workflow_dispatch:

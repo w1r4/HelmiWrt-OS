@@ -8,7 +8,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Orange Pi Zero Build
+name: Build Orange Pi Zero
 
 on:
   workflow_dispatch:

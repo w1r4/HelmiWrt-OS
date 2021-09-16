@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_64 squashfs Build
+name: Build x86_64 squashfs
 
 on:
   workflow_dispatch:

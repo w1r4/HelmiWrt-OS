@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Raspberry Pi 4 Build
+name: Build Raspberry Pi 4
 
 on:
   workflow_dispatch:

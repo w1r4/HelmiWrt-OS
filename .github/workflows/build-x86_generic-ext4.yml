@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_generic ext4 Build
+name: Build x86_generic ext4
 
 on:
   workflow_dispatch:
