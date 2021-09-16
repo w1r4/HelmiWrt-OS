@@ -16,6 +16,10 @@ rm -f /etc/rc.d/S99dockerman || true
 rm -f /etc/rc.d/S30stubby || true
 rm -f /etc/rc.d/S90stunnel || true
 
+# Check file system during boot
+uci set fstab.@global[0].check_fs=1
+uci commit
+
 # Disable opkg signature check
 sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
 
