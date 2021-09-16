@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Gl.iNet GL-AR300M Nand Lean's OpenWrt
+name: GL-AR300M Nand Build
 
 on:
   repository_dispatch:

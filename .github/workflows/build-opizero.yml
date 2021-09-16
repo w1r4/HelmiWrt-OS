@@ -8,7 +8,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Orange Pi Zero Lean's OpenWrt
+name: Orange Pi Zero Build
 
 on:
   workflow_dispatch:

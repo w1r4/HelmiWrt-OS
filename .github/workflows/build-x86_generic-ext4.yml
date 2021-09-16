@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: x86_generic Lean's OpenWrt Ext4
+name: x86_generic ext4 Build
 
 on:
   workflow_dispatch:

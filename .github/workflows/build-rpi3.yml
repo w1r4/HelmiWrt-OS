@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Raspberry Pi 3 Lean's OpenWrt
+name: Raspberry Pi 3 Build
 
 on:
   workflow_dispatch:

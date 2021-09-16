@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Raspberry Pi 2 Lean's OpenWrt
+name: Raspberry Pi 2 Build
 
 on:
   workflow_dispatch:

@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com   
 #=================================================
 
-name: NanoPi R2S/R4S
+name: NanoPi R2S/R4S Build
 
 on:
   workflow_dispatch:
