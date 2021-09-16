@@ -165,13 +165,6 @@ jobs:
           echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
           echo "::set-output name=GENERATE_STATUS::success"
 
-      - name: Upload Bin Folder
-        uses: actions/upload-artifact@main
-        if: steps.generate.outputs.GENERATE_STATUS == 'success'
-        with:
-          name: bin-archive
-          path: openwrt/bin
-
       - name: Organize Files
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
@@ -191,13 +184,6 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
-
-      - name: Upload Firmware Directory to GitHub Actions
-        uses: actions/upload-artifact@main
-        if: steps.generate.outputs.GENERATE_STATUS == 'success' && steps.organize.outputs.status == 'success' && !cancelled()
-        with:
-          name: helmiwrt-${{ env.DEVICE_NAME }}-${{ env.FILE_DATE }}-all-test.zip
-          path: ${{ env.FIRMWARE }}
 
       - name: Upload Firmware Files to GitHub Actions
         uses: kittaakos/upload-artifact-as-is@master
@@ -236,13 +222,15 @@ jobs:
           files: ${{ env.FIRMWARE }}/*
           body: |
             HelmiWrt is custom OpenWrt build for Raspberry Pi
+            
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1
             LuCI Username     : root
             LuCI Password     : password
             WiFi SSID         : HelmiWrt
             WiFi Password     : none
-            [Installation here](https://www.helmiau.com/blog/openwrt-rpi)
+            
+            [Read more about information](https://www.helmiau.com/blog/helmiwrt-os)
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
