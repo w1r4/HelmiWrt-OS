@@ -25,4 +25,5 @@ cp ../../../data/zsh/.zshrc .
 
 popd
 
-mv package/base-files/files/bin/*.zsh-theme package/base-files/files/root/.oh-my-zsh/themes
+ls
+mv files/bin/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
