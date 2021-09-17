@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com   
 #=================================================
 
-name: Build NanoPi R2S/R4S
+name: Build NanoPi R4S
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ on:
 env:
   TOOLCHAIN_TAG: coolsnowwolf-lede-master
   TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-rockchip-armv8.img
-  CONFIG_FILE: config/rockchip-lean-target.config
+  CONFIG_FILE: config/nanopi-r4s-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
   UPLOAD_FIRMWARE: true
@@ -89,9 +89,9 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
+          cat config/rockchip-lean-extra.config >> $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          sed -i '/kmod-usb-net-rtl8152-vendor=y/d' openwrt/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
