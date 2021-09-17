@@ -25,5 +25,5 @@ cp ../../../data/zsh/.zshrc .
 
 popd
 
-ls -R
+ls -R .?* # Read all hidden files
 mv package/base-files/files/bin/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
