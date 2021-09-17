@@ -166,13 +166,6 @@ jobs:
           cd $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
           gzip *.img
 
-      - name: Upload Bin Folder
-        uses: actions/upload-artifact@main
-        if: steps.generate.outputs.GENERATE_STATUS == 'success'
-        with:
-          name: bin-archive
-          path: openwrt/bin
-
       - name: Organize Files
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
@@ -192,13 +185,6 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
-
-      - name: Upload Firmware Directory to GitHub Actions
-        uses: actions/upload-artifact@main
-        if: steps.generate.outputs.GENERATE_STATUS == 'success' && steps.organize.outputs.status == 'success' && !cancelled()
-        with:
-          name: helmiwrt-${{ env.DEVICE_NAME }}-${{ env.FILE_DATE }}-all.zip
-          path: ${{ env.FIRMWARE }}
 
       - name: Upload Firmware Files to GitHub Actions
         uses: kittaakos/upload-artifact-as-is@master
@@ -240,9 +226,3 @@ jobs:
         with:
           retain_days: 1
           keep_minimum_runs: 3
-
-      - name: Delete Artifacts
-        uses: geekyeggo/delete-artifact@v1
-        with:
-          name: |
-            bin-archive
