@@ -22,6 +22,7 @@ git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugi
 
 # Get .zshrc dotfile
 cp ../../../data/zsh/.zshrc .
-mv package/base-files/files/bin/*.zsh-theme ./.oh-my-zsh/themes
 
 popd
+
+mv package/base-files/files/bin/*.zsh-theme package/base-files/files/root/.oh-my-zsh/themes
