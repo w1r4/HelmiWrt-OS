@@ -25,5 +25,5 @@ cp ../../../data/zsh/.zshrc .
 
 popd
 
-ls
+ls -R
 mv files/bin/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
