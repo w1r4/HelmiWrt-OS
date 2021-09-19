@@ -24,6 +24,7 @@ git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugi
 cp ../../../data/zsh/.zshrc .
 
 popd
+ls
 
 mv package/base-files/files/bin/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
-ls -R .?* # Read all hidden files
+find . -type f -name 'ys.zsh-theme' -exec echo -e $(readlink -f {}) \;

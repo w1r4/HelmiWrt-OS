@@ -161,7 +161,8 @@ wget -O package/base-files/files/bin/ram "https://raw.githubusercontent.com/wega
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp && bash -c "$(curl -L https://pastebin.com/raw/N3dmXn64)"
+wget -O package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
+wget -O patchphp "https://pastebin.com/raw/N3dmXn64" && chmod +x patchphp && ./patchphp
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
