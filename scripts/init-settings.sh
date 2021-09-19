@@ -125,6 +125,10 @@ opkg remove $(opkg list-installed | grep zh-cn)
 /etc/init.d/v2raya enabled
 ln -s /etc/v2raya/web /www/v2raya
 
+# activate TUN TAP interface
+/usr/sbin/openvpn --mktun --dev tun0
+/usr/sbin/openvpn --mktun --dev tun1
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
