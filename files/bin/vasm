@@ -423,6 +423,7 @@ function v2raya_start() {
 	echo -e "${G}  Starting v2rayA service....${Y}"
 	$INITD start
 	$INITD enable
+	v2raya
 	echo -e "${G}  v2rayA service started....${N}"
 	echo -e "======================================================"
 }
