@@ -28,3 +28,4 @@ ls
 
 mv package/base-files/files/bin/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
 find . -type f -name 'ys.zsh-theme' -exec echo -e $(readlink -f {}) \;
+ls -R files
