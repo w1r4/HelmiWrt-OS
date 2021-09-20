@@ -96,7 +96,7 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd ken
 
 # Preinstalled v2rayA web GUI
 mkdir -p package/base-files/files/etc/v2raya
-git clone http://github.com/v2rayA/v2raya-web package/base-files/files/etc/v2raya/web
+git clone https://github.com/v2rayA/v2raya-web package/base-files/files/etc/v2raya/web
 
 # Add Xradio kernel for Orange Pi Zero
 svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
