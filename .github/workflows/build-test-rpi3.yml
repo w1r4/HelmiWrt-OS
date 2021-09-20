@@ -94,6 +94,7 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-terminal-tools.sh
+          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
 
       - name: Download Package
         id: package

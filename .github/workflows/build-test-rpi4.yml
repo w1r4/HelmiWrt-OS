@@ -65,10 +65,6 @@ jobs:
           sudo mount -o loop /mnt/toolchain-image.img /mnt/openwrt-ro
           sudo mount -t overlay overlay -o lowerdir=/mnt/openwrt-ro,upperdir=overlay,workdir=workdir openwrt
           cd openwrt
-          if [[ $TOOLCHAIN_NAME == *"bcm27xx"* ]]; then
-            sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
-            find target/linux/bcm27xx -type f -name 'Makefile' -exec grep "KERNEL_PATCHVER" "{}" \;
-          fi
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
           git pull                                  
@@ -102,6 +98,7 @@ jobs:
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
+          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
 
       - name: Download Package
         id: package
