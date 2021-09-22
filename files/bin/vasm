@@ -30,14 +30,14 @@ if [[ -f /bin/$SCRIPTUPD ]]; then
 	rm /bin/$SCRIPTUPD
 fi
 
-
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
 VAUSRBIN="/usr/bin/v2raya"
-VABIN="/bin/v2raya"
+VAUSRSHARE="/usr/share/v2raya"
+VAETCBIN="/etc/v2raya/bin"
 ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
 
@@ -292,27 +292,27 @@ function v2fly_core() {
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
 	if [[ $ARCH == *"aarch"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm64...."
-		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | awk 'FNR <= 1')
 	elif [[	$ARCH == *"arm"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm...."
-		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm.' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm.' | awk 'FNR <= 1')
 	elif [[ $ARCH == *"x86_64"* ]]; then
 		echo -e "  Downloading v2raya_linux_x64...."
-		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | awk 'FNR <= 1')
 	elif [[ $ARCH == *"x86_generic"* ]]; then
 		echo -e "  Downloading v2raya_linux_x86...."
-		wget -qO $VAUSRBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | awk 'FNR <= 1')
 	else
 		echo -e "${R}  v2ray binary download failed....${N}"	
 	fi
 	#Check size then symlink and set permissions
-	if [[ -s $VAUSRBIN ]]; then
-		echo -e "  $VAUSRBIN downloaded, installing...."
-		chmod +x $VAUSRBIN
-		echo -e "  symlinking $VAUSRBIN to $VABIN...."
-		ln -sf $VAUSRBIN $VABIN
+	if [[ -s $VAETCBIN ]]; then
+		echo -e "  $VABIN downloaded, installing...."
+		chmod +x $VAETCBIN
+		echo -e "  symlinking $VABIN to $VAUSRBIN...."
+		ln -sf $VAETCBIN $VAUSRBIN
 		echo -e "  Set binary permissions...."
-		chmod +x $VABIN
+		chmod +x $VAUSRBIN
 		echo -e "${G}  v2ray v2fly installed....${N}"
 	else
 		echo -e "${R}  v2ray v2fly install failed....${N}"		
@@ -324,9 +324,7 @@ function v2fly_core() {
 #--------------------------------------------------------
 function v2raya_web() {
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
-	wget -qO $V2RAYAWEBZIP $V2RAYAWEBSRC
-	#Check size, unzip file if size is not null
-	if [[ -s $V2RAYAWEBZIP ]]; then
+	if opkg list-installed | grep git; then
 		#Check v2rayA web directory, delete recursive if exist
 		if [[ -d $ETCWEB ]]; then
 			echo -e "  v2rayA web path is exist, cleaning..."
@@ -334,25 +332,45 @@ function v2raya_web() {
 			rm -rf $ETCWEB || true
 			echo -e "  v2rayA web path cleaned..."
 		fi
-		#Check v2raya-web-master directory, delete recursive if exist
-		if [[ -d $V2RAYAWEBEXT ]]; then
-			echo -e "  Older v2raya-web-master directory is exist, cleaning..."
-			rm -rf $V2RAYAWEBEXT || true
-			echo -e "  Older v2raya-web-master cleaned..."
-		fi
-		echo -e "  Extracting files...."
-		sleep 2
-		unzip -q $V2RAYAWEBZIP
-		sleep 2
-		rm -f $V2RAYAWEBZIP || true
-		echo -e "  Extract done...."
-		echo -e "  Moving files...."
+		echo -e "  Downloading files...."
 		mkdir -p /etc/v2raya
-		mv $V2RAYAWEBEXT $ETCWEB
-		echo -e "  Moving done...."
+		#Downloading v2rayA web using git
+		echo -e "  git package installed, downloading using git methode..."
+		GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
+		git $GITWEB /etc/v2raya
+		echo -e "  Download done...."
 		echo -e "${G}  v2rayA Web GUI installed....${N}"
 	else
-		echo -e "${R}  v2rayA Web GUI install failed....${N}"
+		wget -qO $V2RAYAWEBZIP $V2RAYAWEBSRC
+		#Check size, unzip file if size is not null
+		if [[ -s $V2RAYAWEBZIP ]]; then
+			#Check v2rayA web directory, delete recursive if exist
+			if [[ -d $ETCWEB ]]; then
+				echo -e "  v2rayA web path is exist, cleaning..."
+				mkdir -p $ETCWEB
+				rm -rf $ETCWEB || true
+				echo -e "  v2rayA web path cleaned..."
+			fi
+			#Check v2raya-web-master directory, delete recursive if exist
+			if [[ -d $V2RAYAWEBEXT ]]; then
+				echo -e "  Older v2raya-web-master directory is exist, cleaning..."
+				rm -rf $V2RAYAWEBEXT || true
+				echo -e "  Older v2raya-web-master cleaned..."
+			fi
+			echo -e "  Extracting files...."
+			sleep 2
+			unzip -q $V2RAYAWEBZIP
+			sleep 2
+			rm -f $V2RAYAWEBZIP || true
+			echo -e "  Extract done...."
+			echo -e "  Moving files...."
+			mkdir -p /etc/v2raya
+			mv $V2RAYAWEBEXT $ETCWEB
+			echo -e "  Moving done...."
+			echo -e "${G}  v2rayA Web GUI installed....${N}"
+		else
+			echo -e "${R}  v2rayA Web GUI install failed....${N}"
+		fi
 	fi
 	echo -e "======================================================"
 }

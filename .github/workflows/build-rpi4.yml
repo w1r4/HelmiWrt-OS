@@ -40,50 +40,49 @@ jobs:
       GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@main
-
       - name: Initialization Environment
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) rdate
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
           sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+          docker image prune -a -f
+
+      - name: Free Up More Space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 256
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          overprovision-lvm: 'true'
+
+      - name: Checkout
+        uses: actions/checkout@main
 
       - name: Prepare Toolchain Image
         id: prepare
         run: |
           df -hT $PWD
-          sudo swapoff -a
-          sudo chown -R runner:runner /mnt
-          sudo rm -f /mnt/swapfile
-          wget -q https://github.com/helmiau/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O /mnt/toolchain-image.img
-          mkdir /mnt/openwrt-ro openwrt workdir overlay
-          sudo mount -o loop /mnt/toolchain-image.img /mnt/openwrt-ro
-          sudo mount -t overlay overlay -o lowerdir=/mnt/openwrt-ro,upperdir=overlay,workdir=workdir openwrt
+          wget -q https://github.com/helmiau/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O toolchain-image.img
+          mkdir openwrt-ro openwrt workdir overlay
+          sudo mount -o loop toolchain-image.img openwrt-ro
+          sudo mount -t overlay overlay -o lowerdir=openwrt-ro,upperdir=overlay,workdir=workdir openwrt
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
-          git pull                                  
-
-      - name: Update Feeds
-        id: update
-        run: |
-          cd $OPENWRTROOT
-          mkdir customfeeds
-          git clone --depth=1 https://github.com/coolsnowwolf/packages customfeeds/packages
-          git clone --depth=1 https://github.com/coolsnowwolf/luci customfeeds/luci
-          chmod +x ../scripts/*.sh
-          ../scripts/hook-feeds.sh
+          git pull
 
       - name: Install Feeds
+        id: feeds
         run: |
           cd $OPENWRTROOT
-          ./scripts/feeds install -a
+          chmod +x ../scripts/*.sh
+          ../scripts/hook-feeds.sh
 
       - name: Load Custom Configuration
         run: |
@@ -110,12 +109,18 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
+      - name: Compile Tools
+        id: tools
+        run: |
+          cd $OPENWRTROOT
+          echo -e "$(nproc) thread compile"
+          make tools/compile -j$(nproc) || make tools/compile -j1 V=s
+
       - name: Compile Packages
         id: compile
         run: |
           cd $OPENWRTROOT
           echo -e "$(nproc) thread compile"
-          make tools/compile -j$(nproc) || make tools/compile -j1 V=s
           make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
           make diffconfig
           make package/compile -j$(nproc) IGNORE_ERRORS=1 || make package/compile -j1 V=s IGNORE_ERRORS=1
