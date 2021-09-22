@@ -243,9 +243,3 @@ jobs:
         with:
           retain_days: 1
           keep_minimum_runs: 3
-
-      - name: Delete Artifacts
-        uses: geekyeggo/delete-artifact@v1
-        with:
-          name: |
-            bin-archive
