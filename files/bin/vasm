@@ -96,6 +96,9 @@ function helmiau_unsupported() {
 		exit
 	fi
 }
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
 function helmiau_checknet() {
 	echo -e "${G}  Checking connections...${Y}"
 	if wget -S --spider "$CHECKNET" 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
@@ -292,18 +295,18 @@ function v2fly_core() {
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
 	if [[ $ARCH == *"aarch"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm64...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | grep -v 'dgst' )
 	elif [[	$ARCH == *"arm"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm.' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm.' | grep -v 'dgst' )
 	elif [[ $ARCH == *"x86_64"* ]]; then
 		echo -e "  Downloading v2raya_linux_x64...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | grep -v 'dgst' )
 	elif [[ $ARCH == *"x86_generic"* ]]; then
 		echo -e "  Downloading v2raya_linux_x86...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | awk 'FNR <= 1')
+		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | grep -v 'dgst' )
 	else
-		echo -e "${R}  v2ray binary download failed....${N}"	
+		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
 	fi
 	#Check size then symlink and set permissions
 	if [[ -s $VAETCBIN ]]; then
@@ -324,7 +327,7 @@ function v2fly_core() {
 #--------------------------------------------------------
 function v2raya_web() {
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
-	if opkg list-installed | grep git; then
+	if opkg list-installed | grep "git - "; then
 		#Check v2rayA web directory, delete recursive if exist
 		if [[ -d $ETCWEB ]]; then
 			echo -e "  v2rayA web path is exist, cleaning..."
