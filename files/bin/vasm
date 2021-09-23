@@ -230,7 +230,7 @@ function opkg_reqs() {
 #--------------------------------------------------------
 function v2ray_core_check() {
 	echo -e "${G}  Checking v2ray core....${Y}"
-	if [[ -s $VAETCBIN ]]; then
+	if [[ -s $VAETCBIN/v2ray ]]; then
 		echo -e "${G}  v2ray core already installed....${Y}"
 		echo -e "  Resuming script runs....${N}"
 	else
@@ -280,7 +280,7 @@ function v2ray_core() {
 		mkdir -p $VUSRSHARE
 	fi
 	# Downloading geoip files for v2ray core
-	if [[ -s $VUSRSHARE ]]; then
+	if [[ -d $VUSRSHARE ]]; then
 		VARULES="https://raw.githubusercontent.com/v2rayA/dist-v2ray-rules-dat/master"
 		wget -qO --show-progress $VUSRSHARE/geosite.dat $VARULES/geosite.dat
 		wget -qO --show-progress $VUSRSHARE/geoip.dat $VARULES/geoip.dat
@@ -466,6 +466,9 @@ EOF
 #--------------------------------------------------------
 function v2raya_start() {
 	echo -e "${G}  Starting v2rayA service....${Y}"
+	sed -i "s#v2ray_bin ''#v2ray_bin '/etc/v2raya/bin/v2ray'#g" /etc/config/v2raya
+	sed -i "s#v2ray_confdir ''#v2ray_confdir '/etc/v2raya'#g" /etc/config/v2raya
+	uci commit v2raya
 	$INITD start
 	$INITD enable
 	v2raya
