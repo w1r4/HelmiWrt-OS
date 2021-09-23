@@ -17,10 +17,10 @@ open_clash_main_url=$(curl -sL https://api.github.com/repos/vernesong/OpenClash/
 clash_tun_url=$(curl -sL https://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-linux-$1 | sed 's/.*url\": \"//g' | sed 's/\"//g')
 clash_game_url=$(curl -sL https://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN | grep /clash-linux-$1 | sed 's/.*url\": \"//g' | sed 's/\"//g')
 
-wget -qO- $open_clash_premium_url | gunzip -c > files/etc/openclash/core/clash
-wget -qO- $open_clash_main_url | tar xOvz > files/etc/openclash/core/clash_original
-# wget -qO- $offical_clash_main_url | gunzip -c > files/etc/openclash/core/clash
-wget -qO- $clash_tun_url | gunzip -c > files/etc/openclash/core/clash_tun
-wget -qO- $clash_game_url | tar xOvz > files/etc/openclash/core/clash_game
+wget --show-progress -qO- $open_clash_premium_url | gunzip -c > files/etc/openclash/core/clash
+wget --show-progress -qO- $open_clash_main_url | tar xOvz > files/etc/openclash/core/clash_original
+# wget --show-progress -qO- $offical_clash_main_url | gunzip -c > files/etc/openclash/core/clash
+wget --show-progress -qO- $clash_tun_url | gunzip -c > files/etc/openclash/core/clash_tun
+wget --show-progress -qO- $clash_game_url | tar xOvz > files/etc/openclash/core/clash_game
 
 chmod +x files/etc/openclash/core/clash*

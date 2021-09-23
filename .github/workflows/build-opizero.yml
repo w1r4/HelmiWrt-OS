@@ -102,6 +102,7 @@ jobs:
           sed -i "s/devm_thermal_add_hwmon_sysfs/thermal_add_hwmon_sysfs/g" target/linux/sunxi/files-5.4/drivers/thermal/sun8i_thermal.c
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv7
+          ../scripts/preset-v2raya.sh arm32-v7a
           ../scripts/preset-terminal-tools.sh
 
       - name: Download Package

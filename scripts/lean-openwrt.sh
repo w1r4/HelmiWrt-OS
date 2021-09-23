@@ -149,20 +149,20 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #-----------------------------------------------------------------------------
 
 # Add speedtest
-wget -O --show-progress package/base-files/files/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x package/base-files/files/bin/speedtest
+wget --show-progress -qO package/base-files/files/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x package/base-files/files/bin/speedtest
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget -O --show-progress package/base-files/files/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x package/base-files/files/bin/vmess
+wget --show-progress -qO package/base-files/files/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x package/base-files/files/bin/vmess
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget -O --show-progress package/base-files/files/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x package/base-files/files/bin/ram
+wget --show-progress -qO package/base-files/files/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x package/base-files/files/bin/ram
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget -O --show-progress package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
-wget -O --show-progress patchphp "https://pastebin.com/raw/N3dmXn64" && chmod +x patchphp && readlink -f patchphp && ./patchphp
+wget --show-progress -qO package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
+wget --show-progress -qO patchphp "https://pastebin.com/raw/N3dmXn64" && chmod +x patchphp && readlink -f patchphp && ./patchphp
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu

@@ -93,6 +93,7 @@ jobs:
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh amd64
+          ../scripts/preset-v2raya.sh 64
           ../scripts/preset-terminal-tools.sh
 
       - name: Download Package
