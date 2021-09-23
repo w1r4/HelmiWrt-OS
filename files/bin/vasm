@@ -22,7 +22,7 @@ N='\033[1;37m' # Putih
 SCRIPTNAME="$(basename "$0")"
 SCRIPTUPD="${SCRIPTNAME}upd"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/HelmiWrt-OS/main/files/bin/v2rayamgr"
-SCRIPTVER="2.3"
+SCRIPTVER="2.4"
 if [[ -f /root/$SCRIPTUPD ]]; then
 	rm /root/$SCRIPTUPD
 fi
@@ -35,7 +35,9 @@ fi
 #--------------------------------------------------------
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
+VUSRBIN="/usr/bin/v2ray"
 VAUSRBIN="/usr/bin/v2raya"
+VUSRSHARE="/usr/share/v2ray"
 VAUSRSHARE="/usr/share/v2raya"
 VAETCBIN="/etc/v2raya/bin"
 ETCWEB="/etc/v2raya/web"
@@ -226,99 +228,65 @@ function opkg_reqs() {
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
-function v2ray_core() {
-	echo -e "${G}  Installing v2ray core....${Y}"
-	V2RAYSRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
-	wget -qO --show-progress $V2RAYIPK $V2RAYSRC
-	#CHECK SIZE THEN INSTALL
-	if [[ -s $V2RAYIPK ]]; then
-		echo -e "  $V2RAYIPK downloaded, installing...."
-		opkg install $V2RAYIPK
-		echo -e "${G}  v2ray core installed....${N}"
-	else
-		echo -e "${R}  v2ray core install failed....${N}"		
-	fi
-	echo -e "======================================================"
-}
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
-function v2ray_core_mini() {
-	echo -e "${G}  Installing v2ray core mini....${Y}"
-	V2RAYMINISRC=$(curl -sL http://github.com/kuoruan/openwrt-v2ray/releases/latest | grep 'v2ray-core-mini_' | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep $ARCH | grep http)
-	wget -qO --show-progress $V2RAYIPK $V2RAYMINISRC
-	#CHECK SIZE THEN INSTALL
-	if [[ -s $V2RAYIPK ]]; then
-		echo -e "  $V2RAYIPK downloaded, installing...."
-		opkg install $V2RAYIPK
-		echo -e "${G}  v2ray core mini installed....${N}"
-	else
-		echo -e "${R}  v2ray core mini install failed....${N}"		
-	fi
-	echo -e "======================================================"
-}
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
-function v2ray_core_install_option() {
-	echo -e "${G}  Select v2ray core type :${Y}"
-	echo -e "  1. Normal core"
-	echo -e "  2. Mini core"
-	echo -n "  "
-	read -r VIO
-	if [[ $VIO = "1" ]];then
-		v2ray_core
-	elif [[ $VIO = "2" ]];then
-		v2ray_core_mini
-	fi
-	echo -e "${N}======================================================"
-}
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
 function v2ray_core_check() {
 	echo -e "${G}  Checking v2ray core....${Y}"
-	if [[ $(opkg list-installed | grep -c v2ray-core) = "1" ]]; then
+	if [[ -s $VAETCBIN ]]; then
 		echo -e "${G}  v2ray core already installed....${Y}"
 		echo -e "  Resuming script runs....${N}"
 	else
 		echo -e "${R}  v2ray core is not installed....${N}"
-		v2ray_core_install_option
+		v2ray_core
 	fi
 	echo -e "======================================================"
 }
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
-function v2fly_core() {
-	echo -e "${G}  Installing v2ray v2fly core...."
+function v2ray_core() {
+	echo -e "${G}  Installing v2ray core by v2fly...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
-	if [[ $ARCH == *"aarch"* ]]; then
-		echo -e "  Downloading v2raya_linux_arm64...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | grep -v 'dgst' )
-	elif [[	$ARCH == *"arm"* ]]; then
-		echo -e "  Downloading v2raya_linux_arm...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm.' | grep -v 'dgst' )
+	if [[ $ARCH == *"arm_arm1"* ]]; then
+		echo -e "  Downloading v2ray-linux-arm32-v6...."
+		wget -qO --show-progress $VAETCBIN/v2ray-core.zip $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm32-v6' | grep -v 'dgst' )
+	elif [[	$ARCH == *"arm_cortex-a7"* ]]; then
+		echo -e "  Downloading v2ray-linux-arm32-v7a...."
+		wget -qO --show-progress $VAETCBIN/v2ray-core.zip $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm32-v7a' | grep -v 'dgst' )
+	elif [[ $ARCH == *"aarch64"* ]]; then
+		echo -e "  Downloading v2ray-linux-arm64...."
+		wget -qO --show-progress $VAETCBIN/v2ray-core.zip $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-arm64' | grep -v 'dgst' )
 	elif [[ $ARCH == *"x86_64"* ]]; then
-		echo -e "  Downloading v2raya_linux_x64...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | grep -v 'dgst' )
-	elif [[ $ARCH == *"x86_generic"* ]]; then
-		echo -e "  Downloading v2raya_linux_x86...."
-		wget -qO --show-progress $VAETCBIN $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | grep -v 'dgst' )
+		echo -e "  Downloading v2ray-linux-64...."
+		wget -qO --show-progress $VAETCBIN/v2ray-core.zip $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-64' | grep -v 'dgst' )
+	elif [[ $ARCH == *"i386"* ]]; then
+		echo -e "  Downloading v2ray-linux-32...."
+		wget -qO --show-progress $VAETCBIN/v2ray-core.zip $(curl -sL http://github.com/v2fly/v2ray-core/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2ray-linux-32' | grep -v 'dgst' )
 	else
 		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
 	fi
-	#Check size then symlink and set permissions
+	#Check size v2ray-core.zip then symlink and set permissions
 	if [[ -s $VAETCBIN ]]; then
 		echo -e "  $VABIN downloaded, installing...."
-		chmod +x $VAETCBIN
-		echo -e "  symlinking $VABIN to $VAUSRBIN...."
-		ln -sf $VAETCBIN $VAUSRBIN
-		echo -e "  Set binary permissions...."
-		chmod +x $VAUSRBIN
-		echo -e "${G}  v2ray v2fly installed....${N}"
+		unzip -d $VAETCBIN $VAETCBIN/v2ray-core.zip
+		find $VAETCBIN -type f -name '*.json' -exec rm $VAETCBIN/*.json \;
+		find $VAETCBIN -type f -name '*.dat' -exec rm $VAETCBIN/*.dat \;
+		find $VAETCBIN -type f -name '*.zip' -exec rm $VAETCBIN/*.zip \;
+		rm -rf $VAETCBIN/systemd
+		echo -e "${G}  v2ray core by v2fly installed....${N}"
 	else
-		echo -e "${R}  v2ray v2fly install failed....${N}"		
+		echo -e "${R}  v2ray core by v2fly install failed....${N}"		
+	fi
+	# Check usr/bin/v2raya directory
+	if [[ ! -d $VUSRSHARE ]]; then
+		mkdir -p $VUSRSHARE
+	fi
+	# Downloading geoip files for v2ray core
+	if [[ -s $VUSRSHARE ]]; then
+		VARULES="https://raw.githubusercontent.com/v2rayA/dist-v2ray-rules-dat/master"
+		wget -qO --show-progress $VUSRSHARE/geosite.dat $VARULES/geosite.dat
+		wget -qO --show-progress $VUSRSHARE/geoip.dat $VARULES/geoip.dat
+		wget -qO --show-progress $VUSRSHARE/LoyalsoldierSite.dat $VARULES/geosite.dat
+	else
+		echo -e "${R}  v2ray core by v2fly install failed....${N}"		
 	fi
 	echo -e "======================================================"
 }
@@ -328,6 +296,7 @@ function v2fly_core() {
 function v2raya_web() {
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
 	if opkg list-installed | grep "git - "; then
+		echo -e "  git package installed, downloading using git methode..."
 		#Check v2rayA web directory, delete recursive if exist
 		if [[ -d $ETCWEB ]]; then
 			echo -e "  v2rayA web path is exist, cleaning..."
@@ -338,7 +307,6 @@ function v2raya_web() {
 		echo -e "  Downloading files...."
 		mkdir -p /etc/v2raya
 		#Downloading v2rayA web using git
-		echo -e "  git package installed, downloading using git methode..."
 		GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
 		git $GITWEB /etc/v2raya
 		echo -e "  Download done...."
@@ -383,20 +351,20 @@ function v2raya_web() {
 function v2raya_binary() {
 	echo -e "${G}  Installing v2rayA binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
-	if [[ $ARCH == *"aarch"* ]]; then
-		echo -e "  Downloading v2raya_linux_arm64...."
-		wget -qO --show-progress $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm64_')
-	elif [[	$ARCH == *"arm"* ]]; then
-		echo -e "  Downloading v2raya_linux_arm...."
+	if [[	$ARCH == *"arm"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm binary...."
 		wget -qO --show-progress $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm_')
+	elif [[ $ARCH == *"aarch64"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm64 binary...."
+		wget -qO --show-progress $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm64_')
 	elif [[ $ARCH == *"x86_64"* ]]; then
-		echo -e "  Downloading v2raya_linux_x64...."
+		echo -e "  Downloading v2raya_linux_x64 binary...."
 		wget -qO --show-progress $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x64_')
-	elif [[ $ARCH == *"x86_generic"* ]]; then
-		echo -e "  Downloading v2raya_linux_x86...."
+	elif [[ $ARCH == *"i386"* ]]; then
+		echo -e "  Downloading v2raya_linux_x86 binary...."
 		wget -qO --show-progress $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x86_')
 	else
-		echo -e "${R}  v2ray binary download failed....${N}"	
+		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
 	fi
 	#Check size then symlink and set permissions
 	if [[ -s $VAUSRBIN ]]; then
@@ -419,19 +387,75 @@ function v2raya_daemon() {
 	echo -e "${G}  Installing v2rayA daemon....${Y}"
 	cat <<'EOF' >$INITD
 #!/bin/sh /etc/rc.common
-command=/usr/bin/v2raya
-PIDFILE=/var/run/v2raya.pid
-depend() {
- need net
- after firewall
- use dns logger
+# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
+
+USE_PROCD=1
+START=99
+
+CONF="v2raya"
+PROG="/usr/bin/v2raya"
+
+is_enabled() {
+        local enabled
+        config_get_bool enabled "$1" "$2" "${3:-0}"
+        if [ "$enabled" -eq "1" ]; then
+                return 0
+        else
+                return 1
+        fi
 }
-start() {
- start-stop-daemon -b -S -m -p "${PIDFILE}" -x $command
+
+append_param() {
+        procd_append_param command "$1" $2
 }
-stop() {
- start-stop-daemon -K -p "${PIDFILE}"
+
+append_param_arg() {
+        local value
+        config_get value "$1" "$2" $3
+        [ -n "$value" ] && append_param "--${2//_/-}" "$value"
 }
+
+append_param_bool() {
+        is_enabled "$1" "$2" && append_param "--${2//_/-}"
+}
+
+start_service() {
+        config_load "$CONF"
+
+        is_enabled "config" "enabled" || exit 1
+
+        procd_open_instance "$CONF"
+        procd_set_param command "$PROG"
+
+        append_param_arg "config" "address" "0.0.0.0:2017"
+        append_param_arg "config" "config" "/etc/v2raya"
+        append_param_arg "config" "ipv6_support" "auto"
+        append_param_arg "config" "log_level" "info"
+        append_param_arg "config" "log_file" "/tmp/v2raya.log"
+        append_param_arg "config" "log_max_days" "3"
+        append_param_arg "config" "v2ray_bin"
+        append_param_arg "config" "v2ray_confdir"
+        append_param_arg "config" "vless_grpc_inbound_cert_key"
+        append_param_bool "config" "log_disable_color"
+        append_param_bool "config" "log_disable_timestamp"
+
+        procd_set_param limits core="unlimited"
+        procd_set_param respawn
+        procd_set_param stdout 1
+        procd_set_param stderr 1
+
+        procd_close_instance
+}
+
+reload_service() {
+        stop
+        start
+}
+
+service_triggers() {
+        procd_add_reload_trigger "$CONF"
+}
+
 EOF
 	chmod +x $INITD
 	echo -e "${G}  v2rayA daemon installed....${N}"
