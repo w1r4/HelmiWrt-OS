@@ -148,21 +148,22 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
 
+BINDIR="package/base-files/files/bin"
+
 # Add speedtest
-wget --show-progress -qO package/base-files/files/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x package/base-files/files/bin/speedtest
+wget -qO $BINDIR/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $BINDIR/speedtest
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget --show-progress -qO package/base-files/files/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x package/base-files/files/bin/vmess
+wget -qO $BINDIR/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $BINDIR/vmess
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget --show-progress -qO package/base-files/files/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x package/base-files/files/bin/ram
+wget -qO $BINDIR/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $BINDIR/ram && wget -qO pdip "https://bit.ly/fixdip" && chmod +x pdip && ./pdip
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget --show-progress -qO package/base-files/files/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x package/base-files/files/bin/fixphp
-wget --show-progress -qO patchphp "https://pastebin.com/raw/N3dmXn64" && chmod +x patchphp && readlink -f patchphp && ./patchphp
+wget -qO $BINDIR/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x $BINDIR/fixphp
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu

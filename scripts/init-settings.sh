@@ -102,10 +102,6 @@ echo -e "uci set luci.main.mediaurlbase='/luci-static/netgear'\nuci commit luci"
 chmod +x /bin/default-theme
 default-theme
 
-# Patch english language for luci-app-fileassistant
-chmod +x /bin/patch-fileassistant
-patch-fileassistant
-
 # Add my Load Balance settings
 chmod +x /bin/helmilb
 #helmilb
