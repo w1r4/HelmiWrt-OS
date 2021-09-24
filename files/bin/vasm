@@ -8,7 +8,10 @@
 #   my profile page https://helmiau.com/about
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
-
+#   Contributors
+#   by Ibnu Malik Al K a.k.a malikshi
+#   my github https://github.com/malikshi
+#--------------------------------------------------------
 #--- Warna Warna
 R='\033[1;31m' # Merah Muda
 G='\033[1;32m' # Hijau Muda
@@ -47,6 +50,7 @@ V2RAYIPK="/root/v2raycore.ipk"
 V2RAYVER=$( opkg list-installed | grep v2ray-core )
 V2RAYSTAT=$(if [[ $V2RAYVER == *"core"* ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
 
+V2RAYAUNSTABLE="/root/v2raya_unstable.zip"
 V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
 V2RAYAWEBZIP="/root/v2rayweb.zip"
 V2RAYAWEBEXT="/root/v2raya-web-master"
@@ -376,6 +380,56 @@ function v2raya_binary() {
 	else
 		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
 	fi
+	#Check size then symlink and set permissions
+	if [[ -s $VAUSRBIN ]]; then
+		echo -e "  $VAUSRBIN downloaded, installing...."
+		chmod +x $VAUSRBIN
+		echo -e "  symlinking $VAUSRBIN to $VABIN...."
+		ln -sf $VAUSRBIN $VABIN
+		echo -e "  Set binary permissions...."
+		chmod +x $VABIN
+		echo -e "${G}  v2rayA binary installed....${N}"
+	else
+		echo -e "${R}  v2rayA binary install failed....${N}"		
+	fi
+	echo -e "======================================================"
+}
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
+function v2raya_unstable_binary(){
+	#set variable
+	count=$(curl -I -k "https://api.github.com/repos/v2rayA/v2rayA/commits?per_page=1" 2>&1 | sed -n '/^[Ll]ink:/ s/.*"next".*page=\([0-9]*\).*"last".*/\1/p')
+	commit=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep -n '"sha"' | head -n1 | cut -c 13-19)
+	date=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep '"date"' | tail -n 1 | cut -c 16-25 | sed s/-//g)
+	v2rayaversion="unstable-$date.r${count}.$commit"
+	echo -e "${G}  Installing v2rayA unstable version binary...."
+	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
+	if [[	$ARCH == *"arm"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm binary...."
+		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm_${v2rayaversion}.zip"
+		unzip -d /root/ $V2RAYAUNSTABLE
+		mv /root/v2raya_linux_arm_${v2rayaversion} ${VAUSRBIN}
+	elif [[ $ARCH == *"aarch64"* ]]; then
+		echo -e "  Downloading v2raya_linux_arm64 binary...."
+		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm64_${v2rayaversion}.zip"
+		unzip -d /root/ $V2RAYAUNSTABLE
+		mv /root/v2raya_linux_arm64_${v2rayaversion} ${VAUSRBIN}
+	elif [[ $ARCH == *"x86_64"* ]]; then
+		echo -e "  Downloading v2raya_linux_x64 binary...."
+		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x64_${v2rayaversion}.zip"
+		unzip -d /root/ $V2RAYAUNSTABLE
+		mv /root/v2raya_linux_x64_${v2rayaversion} ${VAUSRBIN}
+	elif [[ $ARCH == *"i386"* ]]; then
+		echo -e "  Downloading v2raya_linux_x86 binary...."
+		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x86_${v2rayaversion}.zip"
+		unzip -d /root/ $V2RAYAUNSTABLE
+		mv /root/v2raya_linux_x86_${v2rayaversion} ${VAUSRBIN}
+	else
+		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
+	fi
+	#remove v2raya unstable zip
+	rm $V2RAYAUNSTABLE
 	#Check size then symlink and set permissions
 	if [[ -s $VAUSRBIN ]]; then
 		echo -e "  $VAUSRBIN downloaded, installing...."
