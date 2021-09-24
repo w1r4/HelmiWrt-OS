@@ -152,15 +152,15 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 #-----------------------------------------------------------------------------
 
 # Add speedtest
-wget -qO $HWOSDIR/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $HWOSDIR/bin/speedtest
+wget -O $HWOSDIR/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $HWOSDIR/bin/speedtest
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget -qO $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $HWOSDIR/bin/vmess
+wget -O $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $HWOSDIR/bin/vmess
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget -qO $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram && chmod +x shelix && ./shelix
+wget -O $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram && chmod +x shelix && ./shelix
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
