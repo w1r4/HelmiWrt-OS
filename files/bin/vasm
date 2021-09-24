@@ -8,7 +8,10 @@
 #   my profile page https://helmiau.com/about
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
-
+#   Contributors
+#   by Ibnu Malik Al K a.k.a malikshi
+#   my github https://github.com/malikshi
+#--------------------------------------------------------
 #--- Warna Warna
 R='\033[1;31m' # Merah Muda
 G='\033[1;32m' # Hijau Muda
