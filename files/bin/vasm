@@ -147,7 +147,9 @@ function update_installer() {
 	echo -e "======================================================"
 	echo -e "        ${C}v2raya script manager update menu${N}"
 	echo -e "======================================================"
-	cat <<'EOF' >/bin/$SCRIPTUPD
+
+	cat << EOF > /bin/$SCRIPTUPD
+
 #!/bin/bash
 SCRIPTNAME="vasm"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/HelmiWrt-OS/main/files/bin/vasm"
@@ -193,7 +195,9 @@ else
 	clear
 	exit
 fi
+
 EOF
+
 	echo -e "  Downloading needed files."
 	sleep 1
 	echo -e "  Downloading needed files...."
@@ -202,7 +206,6 @@ EOF
 	sleep 1
 	echo -e "  Downloading needed files.............."
 	sleep 1
-	cat /bin/$SCRIPTUPD
 	echo -e "  Downloading needed files.................."
 	chmod +x /bin/$SCRIPTUPD
 	chmod 755 /bin/$SCRIPTUPD
@@ -216,7 +219,7 @@ EOF
 	echo -e "  Exiting in 2 secs."
 	echo -e "======================================================"
 	sleep 2
-	trap ./bin/$SCRIPTUPD EXIT
+	trap /bin/$SCRIPTUPD EXIT
 	exit
 }
 #--------------------------------------------------------
