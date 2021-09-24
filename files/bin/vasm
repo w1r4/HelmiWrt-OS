@@ -12,6 +12,7 @@
 #   by Ibnu Malik Al K a.k.a malikshi
 #   my github https://github.com/malikshi
 #--------------------------------------------------------
+
 #--- Warna Warna
 R='\033[1;31m' # Merah Muda
 G='\033[1;32m' # Hijau Muda
@@ -25,7 +26,8 @@ N='\033[1;37m' # Putih
 SCRIPTNAME="$(basename "$0")"
 SCRIPTUPD="${SCRIPTNAME}upd"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/HelmiWrt-OS/main/files/bin/v2rayamgr"
-SCRIPTVER="2.4"
+SCRIPTVER="2.5"
+
 if [[ -f /root/$SCRIPTUPD ]]; then
 	rm /root/$SCRIPTUPD
 fi
@@ -50,11 +52,7 @@ V2RAYIPK="/root/v2raycore.ipk"
 V2RAYVER=$( opkg list-installed | grep v2ray-core )
 V2RAYSTAT=$(if [[ $V2RAYVER == *"core"* ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
 
-V2RAYAUNSTABLE="/root/v2raya_unstable.zip"
-V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
-V2RAYAWEBZIP="/root/v2rayweb.zip"
-V2RAYAWEBEXT="/root/v2raya-web-master"
-V2RAYAVER=$( opkg list-installed | grep v2ray-core )
+V2RAYADEV="/root/v2raya_dev.zip"
 V2RAYASTAT=$(if [[ -f $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
 V2RAYASVC=$( if [[ $( pgrep -l v2raya | grep -c v2raya ) > "4" ]]; then echo -e "${G}Running${N}"; else echo -e "${R}Not Running${N}"; fi )
 V2RAYASVCDEBUG=$( pgrep -l v2raya | grep -c v2raya )
@@ -67,24 +65,26 @@ echo -e "${N}======================================================${Y}"
 echo -e "          v2rayA OpenWrt Script Manager v$SCRIPTVER"
 echo -e "             Copyright(R)2021 helmiau.com"
 echo -e "${N}======================================================"
-echo -e "  Device Architecture       : ${G}$ARCH${N}"
-echo -e "  Installation Support      : $INSTALLSUPPORT"
-echo -e "  Requirement Packages      : $OPKGS"
-echo -e "  V2ray Core Status         : $V2RAYSTAT"
-echo -e "  V2rayA Binaries           : $V2RAYASTAT"
-echo -e "  V2rayA Service Status     : $V2RAYASVC"
+echo -e "  Device Architecture         : ${G}$ARCH${N}"
+echo -e "  Installation Support        : $INSTALLSUPPORT"
+echo -e "  Requirement Packages        : $OPKGS"
+echo -e "  V2ray Core Status           : $V2RAYSTAT"
+echo -e "  V2rayA Binaries             : $V2RAYASTAT"
+echo -e "  V2rayA Service Status       : $V2RAYASVC"
 # echo -e "  V2rayA Service Stat Debug : $V2RAYASVCDEBUG"
-echo -e "  V2rayA WebGUI Address     : ${G}$VAIP${N}"
+echo -e "  V2rayA WebGUI Address       : ${G}$VAIP${N}"
 echo -e "======================================================"
-echo -e "  Run commands 1-6          : 1"
-echo -e "  Install required packages : 2"
-echo -e "  Install v2ray core        : 3"
-echo -e "  Install/Update v2rayA     : 4"
-echo -e "  Install v2rayA Web GUI    : 5"
-echo -e "  Start and Run v2rayA      : 6"
-echo -e "  Stop v2rayA Program       : 77"
-echo -e "  Uninstall v2rayA          : 88"
-echo -e "  Update v2rayamgr script   : 99"
+echo -e "  Run stable commands 3,4,5,7 : 1"
+echo -e "  Run beta commands 3,4,6,7   : 2"
+echo -e "  Install required packages   : 3"
+echo -e "  Install v2ray core          : 4"
+echo -e "  Install/Upd v2rayA - stable : 5"
+echo -e "  Install/Upd v2rayA - beta   : 6"
+echo -e "  Install/Upd v2rayA - WebGUI : 7"
+echo -e "  Start and Run v2rayA        : 8"
+echo -e "  Stop v2rayA Program         : 77"
+echo -e "  Uninstall v2rayA            : 88"
+echo -e "  Update v2rayamgr script     : 99"
 echo -e "======================================================"
 echo -e "              Type anything to exit"
 echo -e "======================================================"
@@ -249,6 +249,11 @@ function v2ray_core_check() {
 function v2ray_core() {
 	echo -e "${G}  Installing v2ray core by v2fly...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
+	# Check etc/v2raya/bin/v2ray binary, delete when exist
+	if [[ -s $VAETCBIN/v2ray ]]; then
+		rm -f $VAETCBIN/v2ray
+		rm -f $VAETCBIN/v2ctl
+	fi
 	# Check etc/v2raya/bin directory
 	if [[ ! -d $VAETCBIN ]]; then
 		mkdir -p $VAETCBIN
@@ -283,9 +288,9 @@ function v2ray_core() {
 		rm -rf $VAETCBIN/systemd
 		echo -e "${G}  v2ray core by v2fly installed....${N}"
 	else
-		echo -e "${R}  v2ray core by v2fly install failed....${N}"	
+		echo -e "${R}  v2ray core by v2fly install failed....${N}"
 		sleep 3
-		return_installer	
+		return_installer
 	fi
 	# Check usr/bin/v2raya directory
 	if [[ ! -d $VUSRSHARE ]]; then
@@ -308,6 +313,10 @@ function v2ray_core() {
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
 function v2raya_web() {
+	V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
+	V2RAYAWEBZIP="/root/v2rayweb.zip"
+	V2RAYAWEBEXT="/root/v2raya-web-master"
+	GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
 	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
 	if [[ $(opkg list-installed | grep "git - ") = 1 ]]; then
 		echo -e "  git package installed, downloading using git methode..."
@@ -321,7 +330,6 @@ function v2raya_web() {
 		echo -e "  Downloading files...."
 		mkdir -p /etc/v2raya
 		#Downloading v2rayA web using git
-		GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
 		git $GITWEB /etc/v2raya
 		echo -e "  Download done...."
 		echo -e "${G}  v2rayA Web GUI installed....${N}"
@@ -378,7 +386,7 @@ function v2raya_binary() {
 		echo -e "  Downloading v2raya_linux_x86 binary...."
 		wget -O $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x86_')
 	else
-		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
+		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"
 	fi
 	#Check size then symlink and set permissions
 	if [[ -s $VAUSRBIN ]]; then
@@ -390,46 +398,46 @@ function v2raya_binary() {
 		chmod +x $VABIN
 		echo -e "${G}  v2rayA binary installed....${N}"
 	else
-		echo -e "${R}  v2rayA binary install failed....${N}"		
+		echo -e "${R}  v2rayA binary install failed....${N}"
 	fi
 	echo -e "======================================================"
 }
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
-function v2raya_unstable_binary(){
+function v2raya_dev_binary(){
 	#set variable
 	count=$(curl -I -k "https://api.github.com/repos/v2rayA/v2rayA/commits?per_page=1" 2>&1 | sed -n '/^[Ll]ink:/ s/.*"next".*page=\([0-9]*\).*"last".*/\1/p')
 	commit=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep -n '"sha"' | head -n1 | cut -c 13-19)
 	date=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep '"date"' | tail -n 1 | cut -c 16-25 | sed s/-//g)
-	v2rayaversion="unstable-$date.r${count}.$commit"
-	echo -e "${G}  Installing v2rayA unstable version binary...."
+	V2RAYABETAVER="unstable-$date.r${count}.$commit"
+	echo -e "${G}  Installing v2rayA developer version binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
-	if [[	$ARCH == *"arm"* ]]; then
+	if [[ $ARCH == *"arm"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm binary...."
-		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm_${v2rayaversion}.zip"
-		unzip -d /root/ $V2RAYAUNSTABLE
-		mv /root/v2raya_linux_arm_${v2rayaversion} ${VAUSRBIN}
+		wget -O $V2RAYADEV "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm_${V2RAYABETAVER}.zip"
+		unzip -d /root/ $V2RAYADEV
+		mv /root/v2raya_linux_arm_${V2RAYABETAVER} ${VAUSRBIN}
 	elif [[ $ARCH == *"aarch64"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm64 binary...."
-		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm64_${v2rayaversion}.zip"
-		unzip -d /root/ $V2RAYAUNSTABLE
-		mv /root/v2raya_linux_arm64_${v2rayaversion} ${VAUSRBIN}
+		wget -O $V2RAYADEV "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_arm64_${V2RAYABETAVER}.zip"
+		unzip -d /root/ $V2RAYADEV
+		mv /root/v2raya_linux_arm64_${V2RAYABETAVER} ${VAUSRBIN}
 	elif [[ $ARCH == *"x86_64"* ]]; then
 		echo -e "  Downloading v2raya_linux_x64 binary...."
-		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x64_${v2rayaversion}.zip"
-		unzip -d /root/ $V2RAYAUNSTABLE
-		mv /root/v2raya_linux_x64_${v2rayaversion} ${VAUSRBIN}
+		wget -O $V2RAYADEV "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x64_${V2RAYABETAVER}.zip"
+		unzip -d /root/ $V2RAYADEV
+		mv /root/v2raya_linux_x64_${V2RAYABETAVER} ${VAUSRBIN}
 	elif [[ $ARCH == *"i386"* ]]; then
 		echo -e "  Downloading v2raya_linux_x86 binary...."
-		wget -O $V2RAYAUNSTABLE "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x86_${v2rayaversion}.zip"
-		unzip -d /root/ $V2RAYAUNSTABLE
-		mv /root/v2raya_linux_x86_${v2rayaversion} ${VAUSRBIN}
+		wget -O $V2RAYADEV "https://nightly.link/v2rayA/v2rayA/workflows/release/master/v2raya_linux_x86_${V2RAYABETAVER}.zip"
+		unzip -d /root/ $V2RAYADEV
+		mv /root/v2raya_linux_x86_${V2RAYABETAVER} ${VAUSRBIN}
 	else
-		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"	
+		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"
 	fi
-	#remove v2raya unstable zip
-	rm $V2RAYAUNSTABLE
+	#remove v2raya dev zip
+	rm $V2RAYADEV
 	#Check size then symlink and set permissions
 	if [[ -s $VAUSRBIN ]]; then
 		echo -e "  $VAUSRBIN downloaded, installing...."
@@ -440,7 +448,7 @@ function v2raya_unstable_binary(){
 		chmod +x $VABIN
 		echo -e "${G}  v2rayA binary installed....${N}"
 	else
-		echo -e "${R}  v2rayA binary install failed....${N}"		
+		echo -e "${R}  v2rayA binary install failed....${N}"
 	fi
 	echo -e "======================================================"
 }
@@ -581,10 +589,6 @@ function v2raya_uninstall() {
 helmiau_unsupported
 echo -n " "
 read -r OPT
-
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
 if [[ $OPT = "1" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
@@ -600,16 +604,27 @@ if [[ $OPT = "1" ]];then
 elif [[ $OPT = "2" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
+	v2ray_core_check \ &&
+	v2raya_web \ &&
+	v2raya_dev_binary \ &&
+	v2raya_daemon \ &&
+	v2raya_start \ &&
+	echo -e "  ${Y}Please Reboot Immediately !${N}"
+	echo -e "======================================================"
 	sleep 3
 	return_installer
 elif [[ $OPT = "3" ]];then
 	helmiau_checknet \ &&
-	v2ray_core_check \ &&
+	opkg_reqs \ &&
 	sleep 3
 	return_installer
 elif [[ $OPT = "4" ]];then
 	helmiau_checknet \ &&
-	v2raya_web \ &&
+	v2ray_core_check \ &&
+	sleep 3
+	return_installer
+elif [[ $OPT = "5" ]];then
+	helmiau_checknet \ &&
 	v2raya_binary \ &&
 	v2raya_daemon \ &&
 	v2raya_start
@@ -617,12 +632,21 @@ elif [[ $OPT = "4" ]];then
 	echo -e "======================================================"
 	sleep 3
 	return_installer
-elif [[ $OPT = "5" ]];then
+elif [[ $OPT = "6" ]];then
+	helmiau_checknet \ &&
+	v2raya_dev_binary \ &&
+	v2raya_daemon \ &&
+	v2raya_start
+	echo -e "  ${Y}Please Reboot Immediately !${N}"
+	echo -e "======================================================"
+	sleep 3
+	return_installer
+elif [[ $OPT = "7" ]];then
 	helmiau_checknet \ &&
 	v2raya_web \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "6" ]];then
+elif [[ $OPT = "8" ]];then
 	v2raya_start \ &&
 	sleep 3
 	return_installer
@@ -632,6 +656,7 @@ elif [[ $OPT = "77" ]];then
 	return_installer
 elif [[ $OPT = "88" ]];then
 	v2raya_stop \ &&
+	sleep 20
 	v2raya_uninstall
 	sleep 3
 	return_installer
