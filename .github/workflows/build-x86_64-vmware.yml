@@ -11,8 +11,8 @@ name: Build x86_64 squashfs
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 17 * * *
+#  schedule:
+#    - cron: 0 17 * * *
 #  watch:
 #    types: started
 
@@ -90,6 +90,9 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/x86-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/CONFIG_TARGET_ROOTFS_SQUASHFS=n/CONFIG_TARGET_ROOTFS_SQUASHFS=n/g' $OPENWRTROOT/.config
+          sed -i 's/CONFIG_VDI_IMAGES=n/CONFIG_VDI_IMAGES=y/g' $OPENWRTROOT/.config
+          sed -i 's/CONFIG_VMDK_IMAGES=n/CONFIG_VMDK_IMAGES=y/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh amd64
@@ -199,7 +202,7 @@ jobs:
         with:
           keep_latest: 10
           delete_tags: true
-          delete_tag_pattern: helmiwrt
+          delete_tag_pattern: helmiwrt-test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -208,7 +211,7 @@ jobs:
         if: steps.generate.outputs.GENERATE_STATUS == 'success' && steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
           sleep 20
-          echo "::set-output name=release_tag::helmiwrt-${{ env.FILE_DATE }}"
+          echo "::set-output name=release_tag::helmiwrt-test-${{ env.FILE_DATE }}"
           touch release.txt
           echo "::set-output name=status::success"
 
@@ -218,9 +221,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: HelmiWrt ${{ env.FILE_DATE }}
+          prerelease: true
+          name: HelmiWrt Test ${{ env.FILE_DATE }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ${{ env.FIRMWARE }}/*
+          body: |
+            HelmiWrt is custom OpenWrt build for Raspberry Pi
+            
+            **Firmware Information**
+            LuCI IP Address   : 192.168.1.1
+            LuCI Username     : root
+            LuCI Password     : password
+            WiFi SSID         : HelmiWrt
+            WiFi Password     : none
+            
+            [Read more about information](https://www.helmiau.com/blog/helmiwrt-os)
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
