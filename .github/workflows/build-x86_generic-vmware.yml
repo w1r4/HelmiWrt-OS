@@ -170,6 +170,11 @@ jobs:
           echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
           echo "::set-output name=GENERATE_STATUS::success"
 
+      - name: Compress Img Files
+        run: |
+          cd $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
+          gzip *.img
+
       - name: Organize Files
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && steps.generate.outputs.GENERATE_STATUS == 'success' && !cancelled()
