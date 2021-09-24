@@ -148,7 +148,7 @@ function update_installer() {
 	echo -e "        ${C}v2raya script manager update menu${N}"
 	echo -e "======================================================"
 	cat <<'EOF' >/bin/$SCRIPTUPD
-
+#!/bin/bash
 SCRIPTNAME="v2rayamgr"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/HelmiWrt-OS/main/files/bin/v2rayamgr"
 
@@ -205,7 +205,9 @@ EOF
 	cat /bin/$SCRIPTUPD > /root/$SCRIPTUPD
 	echo -e "  Downloading needed files.................."
 	chmod +x /bin/$SCRIPTUPD
+	chmod 755 /bin/$SCRIPTUPD
 	chmod +x /root/$SCRIPTUPD
+	chmod 755 /root/$SCRIPTUPD
 	echo -e "  Files and patches downloaded.............."
 	echo -e "======================================================"
 	echo -e "  Now screen will show update screen installation"
@@ -216,7 +218,7 @@ EOF
 	echo -e "  Exiting in 2 secs."
 	echo -e "======================================================"
 	sleep 2
-	trap /root/$SCRIPTUPD EXIT
+	trap ./bin/$SCRIPTUPD EXIT
 	exit
 }
 #--------------------------------------------------------
