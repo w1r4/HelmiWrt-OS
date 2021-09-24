@@ -202,12 +202,10 @@ EOF
 	sleep 1
 	echo -e "  Downloading needed files.............."
 	sleep 1
-	cat /bin/$SCRIPTUPD > /root/$SCRIPTUPD
+	cat /bin/$SCRIPTUPD
 	echo -e "  Downloading needed files.................."
 	chmod +x /bin/$SCRIPTUPD
 	chmod 755 /bin/$SCRIPTUPD
-	chmod +x /root/$SCRIPTUPD
-	chmod 755 /root/$SCRIPTUPD
 	echo -e "  Files and patches downloaded.............."
 	echo -e "======================================================"
 	echo -e "  Now screen will show update screen installation"
