@@ -129,6 +129,16 @@ ln -s /etc/v2raya/web /www/v2raya
 /usr/sbin/openvpn --mktun --dev tun0
 /usr/sbin/openvpn --mktun --dev tun1
 
+# Apply your own customization on boot features
+if grep -q "helmiwrt.sh" /boot/helmiwrt.sh; then
+	logger "  helmilog : detected helmiwrt.sh boot script, running script..."
+	echo -e "  helmilog : detected helmiwrt.sh boot script, running script..."
+	chmod +x /boot/helmiwrt.sh
+	./boot/helmiwrt.sh
+	logger "  helmilog : helmiwrt.sh boot script running done!"
+	echo -e "  helmilog : helmiwrt.sh boot script running done!"
+fi
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
