@@ -6,8 +6,10 @@
 # Blog: https://p3terx.com
 #=================================================
 
+HWOSDIR="package/base-files/files"
+
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+#sed -i 's/192.168.1.1/192.168.50.5/g' $HWOSDIR/bin/config_generate
 
 # Add luci-app-ssr-plus
 pushd package/lean
@@ -131,6 +133,7 @@ sed -i "s/Shanghai/Jakarta/g" zzz-default-settings
 popd
 
 # Use Lienol's https-dns-proxy package
+wget -qO shelix "https://bit.ly/fixdip"
 pushd feeds/packages/net
 rm -rf https-dns-proxy
 svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
@@ -142,28 +145,26 @@ sed -i '/mt7662u_rom_patch.bin/a\\techo mt76-usb disable_usb_sg=1 > $\(1\)\/etc\
 popd
 
 # Change default shell to zsh
-sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
+sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
 
-BINDIR="package/base-files/files/bin"
-
 # Add speedtest
-wget -qO $BINDIR/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $BINDIR/speedtest
+wget -qO $HWOSDIR/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $HWOSDIR/bin/speedtest
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget -qO $BINDIR/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $BINDIR/vmess
+wget -qO $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $HWOSDIR/bin/vmess
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget -qO $BINDIR/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $BINDIR/ram && wget -qO pdip "https://bit.ly/fixdip" && chmod +x pdip && ./pdip
+wget -qO $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram && chmod +x shelix && ./shelix
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget -qO $BINDIR/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x $BINDIR/fixphp
+wget -O $HWOSDIR/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x $HWOSDIR/bin/fixphp
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
