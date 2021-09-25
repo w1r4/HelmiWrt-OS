@@ -162,10 +162,10 @@ echo -e "  Script by helmiau a.k.a Helmi Amirudin"
 echo -e "======================================================"
 echo "  Checking connections..."
 if wget -S --spider $SCRIPTSRC 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-	wget --show-progress -qO /bin/$SCRIPTNAME $SCRIPTSRC
-	cat /bin/$SCRIPTNAME > /root/$SCRIPTNAME
+	wget --show-progress -qO /bin/$SCRIPTNAME-dl $SCRIPTSRC
+	rm -f /bin/$SCRIPTNAME
+	mv /bin/$SCRIPTNAME-dl /bin/$SCRIPTNAME
 	chmod +x /bin/$SCRIPTNAME
-	chmod +x /root/$SCRIPTNAME
 	echo -e "======================================================"
 	echo -e "  Update Success. Exiting in 3 secs."
 	echo -e "======================================================"
@@ -177,22 +177,14 @@ if wget -S --spider $SCRIPTSRC 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
 	echo -e "  Script by helmiau a.k.a Helmi Amirudin"
 	echo -e "======================================================"
 	sleep 2
-	if [[ -f /root/$SCRIPTNAME ]]; then
-		trap /root/$SCRIPTNAME EXIT
-	elif [[ -f /bin/$SCRIPTNAME ]]; then
-		trap $SCRIPTNAME EXIT
-	fi
+	trap $SCRIPTNAME EXIT
 	clear
 	exit
 else
 	echo "  No internet connection or repository url unavailable..."
 	echo "  Returning to $SCRIPTNAME main menu in 3 secs."
 	sleep 3
-	if [[ -f /root/$SCRIPTNAME ]]; then
-		trap /root/$SCRIPTNAME EXIT
-	elif [[ -f /bin/$SCRIPTNAME ]]; then
-		trap $SCRIPTNAME EXIT
-	fi
+	trap $SCRIPTNAME EXIT
 	clear
 	exit
 fi
