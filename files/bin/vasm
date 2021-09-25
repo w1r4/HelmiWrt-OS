@@ -48,18 +48,14 @@ VAETCBIN="/etc/v2raya/bin"
 ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
 
-V2RAYIPK="/root/v2raycore.ipk"
-V2RAYVER=$( opkg list-installed | grep v2ray-core )
-V2RAYSTAT=$(if [[ $V2RAYVER == *"core"* ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
-
-V2RAYADEV="/root/v2raya_dev.zip"
-V2RAYASTAT=$(if [[ -f $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
+V2RAYSTAT=$(if [[ -s $VAETCBIN/v2ray ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
+V2RAYASTAT=$(if [[ -s $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
 V2RAYASVC=$( if [[ $( pgrep -l v2raya | grep -c v2raya ) > "4" ]]; then echo -e "${G}Running${N}"; else echo -e "${R}Not Running${N}"; fi )
 V2RAYASVCDEBUG=$( pgrep -l v2raya | grep -c v2raya )
 VAIP="$(uci show network | grep network.lan.ipaddr | cut -d \' -f2):2017"
 
-OPKGS=$( if [[ $(opkg list-installed | grep -c "v2ray-core\|ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
-INSTALLSUPPORT=$(if [[ $ARCH == *"aarch"* || $ARCH == *"arm"* || $ARCH == *"x86"* ]]; then echo -e "${G}Supported${N}"; else echo -e "${R}Unsupported${N}"; fi)
+OPKGS=$( if [[ $(opkg list-installed | grep -c "ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
+INSTALLSUPPORT=$(if [[ $ARCH == *"aarch64"* || $ARCH == *"arm"* || $ARCH == *"x86"* || $ARCH == *"i386"* ]]; then echo -e "${G}Supported${N}"; else echo -e "${R}Unsupported${N}"; fi)
 
 echo -e "${N}======================================================${Y}"
 echo -e "          v2rayA OpenWrt Script Manager v$SCRIPTVER"
@@ -81,10 +77,15 @@ echo -e "  Install v2ray core          : 4"
 echo -e "  Install/Upd v2rayA - stable : 5"
 echo -e "  Install/Upd v2rayA - beta   : 6"
 echo -e "  Install/Upd v2rayA - WebGUI : 7"
-echo -e "  Start and Run v2rayA        : 8"
-echo -e "  Stop v2rayA Program         : 77"
+echo -e "  Start v2rayA                : 8"
+echo -e "  Stop v2rayA                 : 9"
+echo -e "  Enable v2rayA on-boot       : 10"
+echo -e "  Disable v2rayA on-boot      : 11"
 echo -e "  Uninstall v2rayA            : 88"
 echo -e "  Update vasm script          : 99"
+echo -e "======================================================"
+echo -e "     Use regular connection for Install/Update"
+echo -e " Gunakan kuota reguler untuk melakukan install/update"
 echo -e "======================================================"
 echo -e "              Type anything to exit"
 echo -e "======================================================"
@@ -376,7 +377,15 @@ function v2raya_web() {
 function v2raya_binary() {
 	echo -e "${G}  Installing v2rayA binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
-	if [[	$ARCH == *"arm"* ]]; then
+	# Check if v2rayA run then stop it
+	if [[ $V2RAYASVC = "Running" ]]; then
+		v2raya_stop
+	fi
+	# Check /usr/bin/v2raya binary, delete when exist
+	if [[ -s $VAUSRBIN ]]; then
+		rm -f $VAUSRBIN
+	fi
+	if [[ $ARCH == *"arm"* ]]; then
 		echo -e "  Downloading v2raya_linux_arm binary...."
 		wget -O $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_arm_')
 	elif [[ $ARCH == *"aarch64"* ]]; then
@@ -389,7 +398,7 @@ function v2raya_binary() {
 		echo -e "  Downloading v2raya_linux_x86 binary...."
 		wget -O $VAUSRBIN $(curl -sL http://github.com/v2rayA/v2rayA/releases/latest | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | grep http | grep 'v2raya_linux_x86_')
 	else
-		echo -e "${R}  v2ray binary download failed or device unsupported....${N}"
+		echo -e "${R}  v2rayA binary download failed or device unsupported....${N}"
 	fi
 	#Check size then symlink and set permissions
 	if [[ -s $VAUSRBIN ]]; then
@@ -414,6 +423,7 @@ function v2raya_dev_binary(){
 	commit=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep -n '"sha"' | head -n1 | cut -c 13-19)
 	date=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep '"date"' | tail -n 1 | cut -c 16-25 | sed s/-//g)
 	V2RAYABETAVER="unstable-$date.r${count}.$commit"
+	V2RAYADEV="/root/v2raya_dev.zip"
 	echo -e "${G}  Installing v2rayA developer version binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
 	if [[ $ARCH == *"arm"* ]]; then
@@ -545,7 +555,6 @@ function v2raya_start() {
 	sed -i "s#v2ray_confdir.*#v2ray_confdir '/etc/v2raya'#g" /etc/config/v2raya
 	uci commit v2raya
 	$INITD start
-	$INITD enable
 	v2raya
 	echo -e "${G}  v2rayA service started....${N}"
 	echo -e "======================================================"
@@ -556,8 +565,25 @@ function v2raya_start() {
 function v2raya_stop() {
 	echo -e "${G}  Stopping v2rayA service....${Y}"
 	$INITD stop
-	$INITD disable
 	echo -e "${G}  v2rayA service stopped....${N}"
+	echo -e "======================================================"
+}
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
+function v2raya_boot_on() {
+	echo -e "${G}  Enabling v2rayA service run on-boot....${Y}"
+	$INITD enable
+	echo -e "${G}  v2rayA service enabled to on-boot....${N}"
+	echo -e "======================================================"
+}
+#--------------------------------------------------------
+#   If you use some codes frome here, please give credit to www.helmiau.com
+#--------------------------------------------------------
+function v2raya_boot_off() {
+	echo -e "${G}  Disabling v2rayA service run on-boot....${Y}"
+	$INITD disable
+	echo -e "${G}  v2rayA service disabled from on-boot....${N}"
 	echo -e "======================================================"
 }
 #--------------------------------------------------------
@@ -583,6 +609,7 @@ function v2raya_uninstall() {
 	echo -e "  v2rayA web ui removed...."
 	sleep 1
 	echo -e "${G}  v2rayA service uninstall success....${N}"
+	echo -e "${R}  Please reboot immediately....${N}"
 	echo -e "======================================================"
 }
 
