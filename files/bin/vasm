@@ -26,7 +26,7 @@ N='\033[1;37m' # Putih
 SCRIPTNAME="$(basename "$0")"
 SCRIPTUPD="${SCRIPTNAME}upd"
 SCRIPTSRC="raw.githubusercontent.com/helmiau/HelmiWrt-OS/main/files/bin/vasm"
-SCRIPTVER="2.6"
+SCRIPTVER="2.7"
 
 if [[ -f /root/$SCRIPTUPD ]]; then
 	rm /root/$SCRIPTUPD
@@ -48,7 +48,7 @@ VAETCBIN="/etc/v2raya/bin"
 ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
 
-V2RAYSTAT=$(if [[ -s $VAETCBIN/v2ray ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
+V2RAYSTAT=$(if [[ -f $VAETCBIN/v2ray ]]; then echo -e "${G}$V2RAYVER${N}"; else echo -e "${R}Not Installed${N}"; fi)
 V2RAYASTAT=$(if [[ -s $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
 V2RAYASVC=$( if [[ $( pgrep -l v2raya | grep -c v2raya ) > "4" ]]; then echo -e "${G}Running${N}"; else echo -e "${R}Not Running${N}"; fi )
 V2RAYASVCDEBUG=$( pgrep -l v2raya | grep -c v2raya )
