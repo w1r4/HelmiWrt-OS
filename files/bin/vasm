@@ -553,6 +553,7 @@ function v2raya_start() {
 	echo -e "${G}  Starting v2rayA service....${Y}"
 	sed -i "s#v2ray_bin.*#v2ray_bin '/etc/v2raya/bin/v2ray'#g" /etc/config/v2raya
 	sed -i "s#v2ray_confdir.*#v2ray_confdir '/etc/v2raya'#g" /etc/config/v2raya
+	sed -i "s#enabled.*#enabled '1'#g" /etc/config/v2raya
 	uci commit v2raya
 	$INITD start
 	v2raya
@@ -573,6 +574,8 @@ function v2raya_stop() {
 #--------------------------------------------------------
 function v2raya_boot_on() {
 	echo -e "${G}  Enabling v2rayA service run on-boot....${Y}"
+	sed -i "s#enabled.*#enabled '1'#g" /etc/config/v2raya
+	uci commit v2raya
 	$INITD enable
 	echo -e "${G}  v2rayA service enabled to on-boot....${N}"
 	echo -e "======================================================"
@@ -582,6 +585,8 @@ function v2raya_boot_on() {
 #--------------------------------------------------------
 function v2raya_boot_off() {
 	echo -e "${G}  Disabling v2rayA service run on-boot....${Y}"
+	sed -i "s#enabled.*#enabled '0'#g" /etc/config/v2raya
+	uci commit v2raya
 	$INITD disable
 	echo -e "${G}  v2rayA service disabled from on-boot....${N}"
 	echo -e "======================================================"
@@ -680,8 +685,16 @@ elif [[ $OPT = "8" ]];then
 	v2raya_start \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "77" ]];then
+elif [[ $OPT = "9" ]];then
 	v2raya_stop \ &&
+	sleep 3
+	return_installer
+elif [[ $OPT = "10" ]];then
+	v2raya_boot_on \ &&
+	sleep 3
+	return_installer
+elif [[ $OPT = "11" ]];then
+	v2raya_boot_off \ &&
 	sleep 3
 	return_installer
 elif [[ $OPT = "88" ]];then
