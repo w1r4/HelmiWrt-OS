@@ -9,8 +9,8 @@
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
 #   Contributors
-#   by Ibnu Malik Al K a.k.a malikshi
-#   my github https://github.com/malikshi
+#   Malik Al a.k.a malikshi
+#   github https://github.com/malikshi
 #--------------------------------------------------------
 
 #--- Warna Warna
@@ -45,7 +45,6 @@ VAUSRBIN="/usr/bin/v2raya"
 VUSRSHARE="/usr/share/v2ray"
 VAUSRSHARE="/usr/share/v2raya"
 VAETCBIN="/etc/v2raya/bin"
-ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
 
 V2RAYSTAT=$(if [[ -f $VAETCBIN/v2ray ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
@@ -76,11 +75,10 @@ echo -e "  Install required packages   : 3"
 echo -e "  Install v2ray core          : 4"
 echo -e "  Install/Upd v2rayA - stable : 5"
 echo -e "  Install/Upd v2rayA - beta   : 6"
-echo -e "  Install/Upd v2rayA - WebGUI : 7"
-echo -e "  Start v2rayA                : 8"
-echo -e "  Stop v2rayA                 : 9"
-echo -e "  Enable v2rayA on-boot       : 10"
-echo -e "  Disable v2rayA on-boot      : 11"
+echo -e "  Start v2rayA                : 7"
+echo -e "  Stop v2rayA                 : 8"
+echo -e "  Enable v2rayA on-boot       : 9"
+echo -e "  Disable v2rayA on-boot      : 10"
 echo -e "  Uninstall v2rayA            : 88"
 echo -e "  Update vasm script          : 99"
 echo -e "======================================================"
@@ -302,64 +300,6 @@ function v2ray_core() {
 		echo -e "${R}  v2ray core by v2fly install failed....${N}"
 		sleep 3
 		return_installer
-	fi
-	echo -e "======================================================"
-}
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
-function v2raya_web() {
-	V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
-	V2RAYAWEBZIP="/root/v2rayweb.zip"
-	V2RAYAWEBEXT="/root/v2raya-web-master"
-	GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
-	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
-	if [[ $(opkg list-installed | grep "git - ") = 1 ]]; then
-		echo -e "  git package installed, downloading using git methode..."
-		#Check v2rayA web directory, delete recursive if exist
-		if [[ -d $ETCWEB ]]; then
-			echo -e "  v2rayA web path is exist, cleaning..."
-			mkdir -p $ETCWEB
-			rm -rf $ETCWEB || true
-			echo -e "  v2rayA web path cleaned..."
-		fi
-		echo -e "  Downloading files...."
-		mkdir -p /etc/v2raya
-		#Downloading v2rayA web using git
-		git $GITWEB /etc/v2raya
-		echo -e "  Download done...."
-		echo -e "${G}  v2rayA Web GUI installed....${N}"
-	else
-		wget -O $V2RAYAWEBZIP $V2RAYAWEBSRC
-		#Check size, unzip file if size is not null
-		if [[ -s $V2RAYAWEBZIP ]]; then
-			#Check v2rayA web directory, delete recursive if exist
-			if [[ -d $ETCWEB ]]; then
-				echo -e "  v2rayA web path is exist, cleaning..."
-				mkdir -p $ETCWEB
-				rm -rf $ETCWEB || true
-				echo -e "  v2rayA web path cleaned..."
-			fi
-			#Check v2raya-web-master directory, delete recursive if exist
-			if [[ -d $V2RAYAWEBEXT ]]; then
-				echo -e "  Older v2raya-web-master directory is exist, cleaning..."
-				rm -rf $V2RAYAWEBEXT || true
-				echo -e "  Older v2raya-web-master cleaned..."
-			fi
-			echo -e "  Extracting files...."
-			sleep 2
-			unzip -q $V2RAYAWEBZIP
-			sleep 2
-			rm -f $V2RAYAWEBZIP || true
-			echo -e "  Extract done...."
-			echo -e "  Moving files...."
-			mkdir -p /etc/v2raya
-			mv $V2RAYAWEBEXT $ETCWEB
-			echo -e "  Moving done...."
-			echo -e "${G}  v2rayA Web GUI installed....${N}"
-		else
-			echo -e "${R}  v2rayA Web GUI install failed....${N}"
-		fi
 	fi
 	echo -e "======================================================"
 }
@@ -620,7 +560,6 @@ if [[ $OPT = "1" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
 	v2ray_core_check \ &&
-	v2raya_web \ &&
 	v2raya_binary \ &&
 	v2raya_daemon \ &&
 	v2raya_start \ &&
@@ -632,7 +571,6 @@ elif [[ $OPT = "2" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
 	v2ray_core_check \ &&
-	v2raya_web \ &&
 	v2raya_dev_binary \ &&
 	v2raya_daemon \ &&
 	v2raya_start \ &&
@@ -669,23 +607,18 @@ elif [[ $OPT = "6" ]];then
 	sleep 3
 	return_installer
 elif [[ $OPT = "7" ]];then
-	helmiau_checknet \ &&
-	v2raya_web \ &&
-	sleep 3
-	return_installer
-elif [[ $OPT = "8" ]];then
 	v2raya_start \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "9" ]];then
+elif [[ $OPT = "8" ]];then
 	v2raya_stop \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "10" ]];then
+elif [[ $OPT = "9" ]];then
 	v2raya_boot_on \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "11" ]];then
+elif [[ $OPT = "10" ]];then
 	v2raya_boot_off \ &&
 	sleep 3
 	return_installer
