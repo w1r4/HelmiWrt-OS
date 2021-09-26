@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009,SC2120,SC2035,SC2004,SC2129,SC2103,SC2001,SC2046,SC2162,SC1083,SC2154,SC2064,SC2071,SC2014,SC2086
 #--------------------------------------------------------
 #   Don't remove this section for credits
 #   Don't rename this file
@@ -9,8 +10,8 @@
 #   my github https://github.com/helmiau
 #--------------------------------------------------------
 #   Contributors
-#   by Ibnu Malik Al K a.k.a malikshi
-#   my github https://github.com/malikshi
+#   Malik Al a.k.a malikshi
+#   github https://github.com/malikshi
 #--------------------------------------------------------
 
 #--- Warna Warna
@@ -40,18 +41,16 @@ fi
 #--------------------------------------------------------
 CHECKNET="http://github.com/v2rayA/v2rayA"
 INITD="/etc/init.d/v2raya"
-VUSRBIN="/usr/bin/v2ray"
 VAUSRBIN="/usr/bin/v2raya"
 VUSRSHARE="/usr/share/v2ray"
-VAUSRSHARE="/usr/share/v2raya"
 VAETCBIN="/etc/v2raya/bin"
-ETCWEB="/etc/v2raya/web"
 ARCH=$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)
 
 V2RAYSTAT=$(if [[ -f $VAETCBIN/v2ray ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
 V2RAYASTAT=$(if [[ -s $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
-V2RAYASVC=$( if [[ $( pgrep -l v2raya | grep -c v2raya ) > "4" ]]; then echo -e "${G}Running${N}"; else echo -e "${R}Not Running${N}"; fi )
-V2RAYASVCDEBUG=$( pgrep -l v2raya | grep -c v2raya )
+CHECKRUN=""
+CHECKRUN=$(netstat -ltnp | grep -w '2017')
+V2RAYASVC=$( if [[ $CHECKRUN = "" ]]; then echo -e "${G}Not Running${N}"; else echo -e "${R}Running${N}"; fi )
 VAIP="$(uci show network | grep network.lan.ipaddr | cut -d \' -f2):2017"
 
 OPKGS=$( if [[ $(opkg list-installed | grep -c "ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
@@ -67,7 +66,6 @@ echo -e "  Requirement Packages        : $OPKGS"
 echo -e "  V2ray Core Status           : $V2RAYSTAT"
 echo -e "  V2rayA Binaries             : $V2RAYASTAT"
 echo -e "  V2rayA Service Status       : $V2RAYASVC"
-# echo -e "  V2rayA Service Stat Debug : $V2RAYASVCDEBUG"
 echo -e "  V2rayA WebGUI Address       : ${G}$VAIP${N}"
 echo -e "======================================================"
 echo -e "  Run stable commands 3,4,5,7 : 1"
@@ -76,11 +74,10 @@ echo -e "  Install required packages   : 3"
 echo -e "  Install v2ray core          : 4"
 echo -e "  Install/Upd v2rayA - stable : 5"
 echo -e "  Install/Upd v2rayA - beta   : 6"
-echo -e "  Install/Upd v2rayA - WebGUI : 7"
-echo -e "  Start v2rayA                : 8"
-echo -e "  Stop v2rayA                 : 9"
-echo -e "  Enable v2rayA on-boot       : 10"
-echo -e "  Disable v2rayA on-boot      : 11"
+echo -e "  Start v2rayA                : 7"
+echo -e "  Stop v2rayA                 : 8"
+echo -e "  Enable v2rayA on-boot       : 9"
+echo -e "  Disable v2rayA on-boot      : 10"
 echo -e "  Uninstall v2rayA            : 88"
 echo -e "  Update vasm script          : 99"
 echo -e "======================================================"
@@ -308,64 +305,6 @@ function v2ray_core() {
 #--------------------------------------------------------
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
-function v2raya_web() {
-	V2RAYAWEBSRC="http://github.com/v2rayA/v2raya-web/archive/refs/heads/master.zip"
-	V2RAYAWEBZIP="/root/v2rayweb.zip"
-	V2RAYAWEBEXT="/root/v2raya-web-master"
-	GITWEB=$(cat $V2RAYAWEBSRC | sed -e 's#http#git#g' -e 's#archive/refs/heads/master.zip##g')
-	echo -e "${G}  Installing v2rayA Web GUI....${Y}"
-	if [[ $(opkg list-installed | grep "git - ") = 1 ]]; then
-		echo -e "  git package installed, downloading using git methode..."
-		#Check v2rayA web directory, delete recursive if exist
-		if [[ -d $ETCWEB ]]; then
-			echo -e "  v2rayA web path is exist, cleaning..."
-			mkdir -p $ETCWEB
-			rm -rf $ETCWEB || true
-			echo -e "  v2rayA web path cleaned..."
-		fi
-		echo -e "  Downloading files...."
-		mkdir -p /etc/v2raya
-		#Downloading v2rayA web using git
-		git $GITWEB /etc/v2raya
-		echo -e "  Download done...."
-		echo -e "${G}  v2rayA Web GUI installed....${N}"
-	else
-		wget -O $V2RAYAWEBZIP $V2RAYAWEBSRC
-		#Check size, unzip file if size is not null
-		if [[ -s $V2RAYAWEBZIP ]]; then
-			#Check v2rayA web directory, delete recursive if exist
-			if [[ -d $ETCWEB ]]; then
-				echo -e "  v2rayA web path is exist, cleaning..."
-				mkdir -p $ETCWEB
-				rm -rf $ETCWEB || true
-				echo -e "  v2rayA web path cleaned..."
-			fi
-			#Check v2raya-web-master directory, delete recursive if exist
-			if [[ -d $V2RAYAWEBEXT ]]; then
-				echo -e "  Older v2raya-web-master directory is exist, cleaning..."
-				rm -rf $V2RAYAWEBEXT || true
-				echo -e "  Older v2raya-web-master cleaned..."
-			fi
-			echo -e "  Extracting files...."
-			sleep 2
-			unzip -q $V2RAYAWEBZIP
-			sleep 2
-			rm -f $V2RAYAWEBZIP || true
-			echo -e "  Extract done...."
-			echo -e "  Moving files...."
-			mkdir -p /etc/v2raya
-			mv $V2RAYAWEBEXT $ETCWEB
-			echo -e "  Moving done...."
-			echo -e "${G}  v2rayA Web GUI installed....${N}"
-		else
-			echo -e "${R}  v2rayA Web GUI install failed....${N}"
-		fi
-	fi
-	echo -e "======================================================"
-}
-#--------------------------------------------------------
-#   If you use some codes frome here, please give credit to www.helmiau.com
-#--------------------------------------------------------
 function v2raya_binary() {
 	echo -e "${G}  Installing v2rayA binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
@@ -373,6 +312,7 @@ function v2raya_binary() {
 	if [[ $V2RAYASVC = "Running" ]]; then
 		v2raya_stop
 	fi
+	sleep 5
 	# Check /usr/bin/v2raya binary, delete when exist
 	if [[ -s $VAUSRBIN ]]; then
 		rm -f $VAUSRBIN
@@ -416,6 +356,15 @@ function v2raya_dev_binary(){
 	date=$(curl https://api.github.com/repos/v2rayA/v2rayA/commits/master 2>&1 | grep '"date"' | tail -n 1 | cut -c 16-25 | sed s/-//g)
 	V2RAYABETAVER="unstable-$date.r${count}.$commit"
 	V2RAYADEV="/root/v2raya_dev.zip"
+	# Check if v2rayA run then stop it
+	if [[ $V2RAYASVC = "Running" ]]; then
+		v2raya_stop
+	fi
+	sleep 5
+	# Check /usr/bin/v2raya binary, delete when exist
+	if [[ -s $VAUSRBIN ]]; then
+		rm -f $VAUSRBIN
+	fi
 	echo -e "${G}  Installing v2rayA developer version binary...."
 	echo -e "${G}  Architecture detected : ${R}$ARCH....${Y}"
 	if [[ $ARCH == *"arm"* ]]; then
@@ -543,12 +492,45 @@ EOF
 #--------------------------------------------------------
 function v2raya_start() {
 	echo -e "${G}  Starting v2rayA service....${Y}"
-	sed -i "s#v2ray_bin.*#v2ray_bin '/etc/v2raya/bin/v2ray'#g" /etc/config/v2raya
-	sed -i "s#v2ray_confdir.*#v2ray_confdir '/etc/v2raya'#g" /etc/config/v2raya
-	sed -i "s#enabled.*#enabled '1'#g" /etc/config/v2raya
+	cat >/etc/config/v2raya <<EOF
+config v2raya 'config'
+        option enabled '1'
+
+        # Listening address
+        option address '0.0.0.0:2017'
+
+        # v2rayA configuration directory
+        option config '/etc/v2raya'
+
+        # Make sure your IPv6 network works fine before you turn it on.
+        # Optional values: auto, on, off.
+        option ipv6_support 'auto'
+
+        # Optional values: trace, debug, info, warn or error
+        option log_level 'info'
+
+        # The path of log file
+        option log_file '/tmp/v2raya.log'
+
+        # Maximum number of days to keep log files
+        option log_max_days '1'
+
+        option log_disable_color '1'
+
+        option log_disable_timestamp '1'
+
+        # Executable v2ray binary path. Auto-detect if put it empty
+        option v2ray_bin '/etc/v2raya/bin/v2ray'
+
+        # Additional v2ray config directory, files in it will be combined with config generated by >
+        option v2ray_confdir '/etc/v2raya'
+
+        # Specify the certification path instead of automatically generating a self-signed certific>
+        # Example: /etc/v2raya/grpc_certificate.crt,/etc/v2raya/grpc_private.key
+        option vless_grpc_inbound_cert_key ''
+EOF
 	uci commit v2raya
 	$INITD start
-	v2raya
 	echo -e "${G}  v2rayA service started....${N}"
 	echo -e "======================================================"
 }
@@ -566,8 +548,6 @@ function v2raya_stop() {
 #--------------------------------------------------------
 function v2raya_boot_on() {
 	echo -e "${G}  Enabling v2rayA service run on-boot....${Y}"
-	sed -i "s#enabled.*#enabled '1'#g" /etc/config/v2raya
-	uci commit v2raya
 	$INITD enable
 	echo -e "${G}  v2rayA service enabled to on-boot....${N}"
 	echo -e "======================================================"
@@ -577,8 +557,6 @@ function v2raya_boot_on() {
 #--------------------------------------------------------
 function v2raya_boot_off() {
 	echo -e "${G}  Disabling v2rayA service run on-boot....${Y}"
-	sed -i "s#enabled.*#enabled '0'#g" /etc/config/v2raya
-	uci commit v2raya
 	$INITD disable
 	echo -e "${G}  v2rayA service disabled from on-boot....${N}"
 	echo -e "======================================================"
@@ -592,6 +570,9 @@ function v2raya_uninstall() {
 	echo -e "  Removing v2rayA init.d service...."
 	rm -f $INITD || true
 	echo -e "  v2rayA init.d service removed...."
+	sleep 1
+	echo -e "  Removing v2rayA Config startup ...."
+	rm -f /etc/config/v2raya || true
 	sleep 1
 	echo -e "  Unlinking v2rayA binary...."
 	rm -f $VABIN || true
@@ -620,7 +601,6 @@ if [[ $OPT = "1" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
 	v2ray_core_check \ &&
-	v2raya_web \ &&
 	v2raya_binary \ &&
 	v2raya_daemon \ &&
 	v2raya_start \ &&
@@ -632,7 +612,6 @@ elif [[ $OPT = "2" ]];then
 	helmiau_checknet \ &&
 	opkg_reqs \ &&
 	v2ray_core_check \ &&
-	v2raya_web \ &&
 	v2raya_dev_binary \ &&
 	v2raya_daemon \ &&
 	v2raya_start \ &&
@@ -669,23 +648,18 @@ elif [[ $OPT = "6" ]];then
 	sleep 3
 	return_installer
 elif [[ $OPT = "7" ]];then
-	helmiau_checknet \ &&
-	v2raya_web \ &&
-	sleep 3
-	return_installer
-elif [[ $OPT = "8" ]];then
 	v2raya_start \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "9" ]];then
+elif [[ $OPT = "8" ]];then
 	v2raya_stop \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "10" ]];then
+elif [[ $OPT = "9" ]];then
 	v2raya_boot_on \ &&
 	sleep 3
 	return_installer
-elif [[ $OPT = "11" ]];then
+elif [[ $OPT = "10" ]];then
 	v2raya_boot_off \ &&
 	sleep 3
 	return_installer
