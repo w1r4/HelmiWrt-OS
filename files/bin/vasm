@@ -50,7 +50,7 @@ V2RAYSTAT=$(if [[ -f $VAETCBIN/v2ray ]]; then echo -e "${G}Installed${N}"; else 
 V2RAYASTAT=$(if [[ -s $VAUSRBIN ]]; then echo -e "${G}Installed${N}"; else echo -e "${R}Not Installed${N}"; fi)
 CHECKRUN=""
 CHECKRUN=$(netstat -ltnp | grep -w '2017')
-V2RAYASVC=$( if [ $CHECKRUN = "" ]; then echo -e "${G}Not Running${N}"; else echo -e "${R}Running${N}"; fi )
+V2RAYASVC=$( if [[ $CHECKRUN = "" ]]; then echo -e "${G}Not Running${N}"; else echo -e "${R}Running${N}"; fi )
 VAIP="$(uci show network | grep network.lan.ipaddr | cut -d \' -f2):2017"
 
 OPKGS=$( if [[ $(opkg list-installed | grep -c "ca-certificates\|wget\|unzip\|tar\|curl\|kmod-ipt-nat6\|kmod-ipt-filter\|iptables-mod-tproxy\|iptables-mod-filter") > "10" ]]; then echo -e "${G}Already Installed${N}"; else echo -e "${R}Install Pkgs First${N}"; fi )
