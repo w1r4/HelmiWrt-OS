@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009,SC2120,SC2035,SC2004,SC2129,SC2103,SC2001,SC2046,SC2162,SC1083,SC2154,SC2064,SC2071,SC2014
 #--------------------------------------------------------
 #   Don't remove this section for credits
 #   Don't rename this file
