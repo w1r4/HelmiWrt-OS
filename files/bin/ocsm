@@ -127,7 +127,7 @@ function helmi_switch_original() {
 #--------------------------------------------------------
 function helmi_download_premium() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/clash-$ARCH$PREMEXT $(curl -L http://api.github.com/repos/Dreamacro/clash/releases/tags/premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
+	wget -q --show-progress -O /root/clash-$ARCH$PREMEXT $(curl -L http://api.github.com/repos/Dreamacro/clash/releases/tags/premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
 	echo -e "${G}"
 }
 
@@ -136,7 +136,7 @@ function helmi_download_premium() {
 #--------------------------------------------------------
 function helmi_download_original() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/clash-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/Clash | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
+	wget -q --show-progress -O /root/clash-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/Clash | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
 	echo -e "${G}"
 }
 
@@ -145,7 +145,7 @@ function helmi_download_original() {
 #--------------------------------------------------------
 function helmi_download_tun() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/clash-tun-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
+	wget -q --show-progress -O /root/clash-tun-$ARCH$PREMEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
 	echo -e "${G}"
 }
 
@@ -154,7 +154,7 @@ function helmi_download_tun() {
 #--------------------------------------------------------
 function helmi_download_game() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/clash-game-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
+	wget -q --show-progress -O /root/clash-game-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
 	echo -e "${G}"
 }
 
@@ -163,7 +163,7 @@ function helmi_download_game() {
 #--------------------------------------------------------
 function helmi_download_ipk() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/luci-app-openclash.ipk $(curl -sL https://github.com/vernesong/OpenClash/releases | grep luci-app-openclash_ | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | awk 'FNR <= 1')
+	wget -q --show-progress -O /root/luci-app-openclash.ipk $(curl -sL https://github.com/vernesong/OpenClash/releases | grep luci-app-openclash_ | sed -e 's/\"//g' -e 's/ //g' -e 's/rel=.*//g' -e 's#<ahref=#http://github.com#g' | awk 'FNR <= 1')
 	echo -e "${G}"
 }
 
@@ -173,7 +173,7 @@ function helmi_download_ipk() {
 function helmi_install_premium() {
 	if [[ -s /root/clash-$ARCH$PREMEXT ]]; then
 		echo -e "${G}"
-		gunzip d /root/clash-$ARCH$PREMEXT
+		gunzip -d /root/clash-$ARCH$PREMEXT
 		if [[ $CURRENTCORE = "Original" ]]; then
 			mv /root/clash-$ARCH $PREM
 		else
@@ -213,11 +213,10 @@ function helmi_install_original() {
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
 function helmi_install_tun() {
-	if [[ -s /root/clash-$ARCH$ORIEXT ]]; then
+	if [[ -s /root/clash-tun-$ARCH$PREMEXT ]]; then
 		echo -e "${G}"
-		tar xzf /root/clash-$ARCH$ORIEXT -C /root/
-		mv /root/clash $TUN
-		rm -f /root/clash-$ARCH$ORIEXT || true
+		gunzip -d /root/clash-tun-$ARCH$PREMEXT
+		mv /root/clash-tun-$ARCH $TUN
 		echo "  TUN Core Install Done...."
 	else
 		echo -e "${R}"
