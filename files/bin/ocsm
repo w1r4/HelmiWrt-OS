@@ -173,7 +173,7 @@ function helmi_download_ipk() {
 function helmi_install_premium() {
 	if [[ -s /root/clash-$ARCH$PREMEXT ]]; then
 		echo -e "${G}"
-		gunzip d /root/clash-$ARCH$PREMEXT
+		gunzip -d /root/clash-$ARCH$PREMEXT
 		if [[ $CURRENTCORE = "Original" ]]; then
 			mv /root/clash-$ARCH $PREM
 		else
@@ -215,9 +215,8 @@ function helmi_install_original() {
 function helmi_install_tun() {
 	if [[ -s /root/clash-$ARCH$ORIEXT ]]; then
 		echo -e "${G}"
-		tar xzf /root/clash-$ARCH$ORIEXT -C /root/
-		mv /root/clash $TUN
-		rm -f /root/clash-$ARCH$ORIEXT || true
+		gunzip -d /root/clash-$ARCH$PREMEXT
+		mv /root/clash-$ARCH$PREMEXT $TUN
 		echo "  TUN Core Install Done...."
 	else
 		echo -e "${R}"
