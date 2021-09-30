@@ -216,7 +216,7 @@ function helmi_install_tun() {
 	if [[ -s /root/clash-$ARCH$ORIEXT ]]; then
 		echo -e "${G}"
 		gunzip -d /root/clash-$ARCH$PREMEXT
-		mv /root/clash-$ARCH$PREMEXT $TUN
+		mv /root/clash-$ARCH $TUN
 		echo "  TUN Core Install Done...."
 	else
 		echo -e "${R}"
