@@ -145,7 +145,7 @@ function helmi_download_original() {
 #--------------------------------------------------------
 function helmi_download_tun() {
 	echo -e "${Y}"
-	wget -qO --show-progress /root/clash-tun-$ARCH$ORIEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
+	wget -qO --show-progress /root/clash-tun-$ARCH$PREMEXT $(curl -sL http://api.github.com/repos/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-$ARCH | sed 's/.*url\": \"//g' | sed 's/\"//g' | sed 's/https/http/g')
 	echo -e "${G}"
 }
 
