@@ -76,6 +76,9 @@ git clone --depth=1 https://github.com/koshev-msk/luci-app-smstools3
 # Add luci-app-mmconfig : configure modem cellular bands via mmcli utility
 git clone --depth=1 https://github.com/koshev-msk/luci-app-mmconfig
 
+# Add support for Fibocom L860-GL l850/l860 ncm
+git clone --depth=1 https://github.com/koshev-msk/xmm-modem
+
 # Add 3ginfo, luci-app-3ginfo
 git clone --depth=1 https://github.com/4IceG/luci-app-3ginfo
 

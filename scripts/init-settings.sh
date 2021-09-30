@@ -135,6 +135,15 @@ if grep -q "helmiwrt.sh" /boot/helmiwrt.sh; then
 	echo -e "  helmilog : helmiwrt.sh boot script running done!"
 fi
 
+# Disable etc/config/xmm-modem on boot first
+if [[ -f /etc/config/xmm-modem ]]; then
+	logger "  helmilog : detected helmiwrt.sh boot script, running script..."
+	echo -e "  helmilog : detected helmiwrt.sh boot script, running script..."
+	sed -i "s#option enable.*#option enable '0'#g" /etc/config/xmm-modem
+	logger "  helmilog : helmiwrt.sh boot script running done!"
+	echo -e "  helmilog : helmiwrt.sh boot script running done!"
+fi
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
