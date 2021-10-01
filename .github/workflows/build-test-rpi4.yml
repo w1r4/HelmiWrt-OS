@@ -16,8 +16,8 @@ on:
 #    types: started
 
 env:
-  TOOLCHAIN_TAG: coolsnowwolf-lede-master
-  TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-bcm27xx-bcm2711.img
+  PREBUILD_TAG: prebuild
+  PREBUILD_NAME: coolsnowwolf-lede-master-bcm27xx-bcm2711-prebuild-image.img
   CONFIG_FILE: config/rpi4-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
@@ -66,10 +66,14 @@ jobs:
       - name: Prepare Toolchain Image
         id: prepare
         run: |
-          df -hT $PWD
-          wget -q https://github.com/helmiau/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O toolchain-image.img
+          for i in {0..10}
+          do
+            wget -q https://github.com/helmiau/OpenWrt-Cache/releases/download/$PREBUILD_TAG/$PREBUILD_NAME.0$i || break
+          done
+          cat $PREBUILD_NAME.* > $PREBUILD_NAME
+          rm -f $PREBUILD_NAME.*
           mkdir openwrt-ro openwrt workdir overlay
-          sudo mount -o loop toolchain-image.img openwrt-ro
+          sudo mount -o loop $PREBUILD_NAME openwrt-ro
           sudo mount -t overlay overlay -o lowerdir=openwrt-ro,upperdir=overlay,workdir=workdir openwrt
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
@@ -98,7 +102,6 @@ jobs:
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
 
       - name: Download Package
         id: package
@@ -115,6 +118,13 @@ jobs:
           cd $OPENWRTROOT
           echo -e "$(nproc) thread compile"
           make tools/compile -j$(nproc) || make tools/compile -j1 V=s
+
+      - name: Compile Toolchain
+        id: toolchain
+        run: |
+          cd $OPENWRTROOT
+          echo -e "$(nproc) thread compile"
+          make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
 
       - name: Compile Packages
         id: compile
@@ -228,7 +238,7 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ${{ env.FIRMWARE }}/*
           body: |
-            HelmiWrt is custom OpenWrt build for Raspberry Pi
+            HelmiWrt Testbuild for Raspberry Pi
             
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1
