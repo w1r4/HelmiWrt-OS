@@ -11,8 +11,8 @@ name: Build NanoPi R4S
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 17 * * *
+#  schedule:
+#    - cron: 0 17 * * *
 #  watch:
 #    types: started
 
