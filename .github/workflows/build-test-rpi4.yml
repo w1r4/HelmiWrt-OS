@@ -67,7 +67,7 @@ jobs:
         id: prepare
         run: |
           df -hT $PWD
-          wget -q https://github.com/SuLingGG/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O toolchain-image.img
+          wget -q https://github.com/helmiau/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O toolchain-image.img
           mkdir openwrt-ro openwrt workdir overlay
           sudo mount -o loop toolchain-image.img openwrt-ro
           sudo mount -t overlay overlay -o lowerdir=openwrt-ro,upperdir=overlay,workdir=workdir openwrt
