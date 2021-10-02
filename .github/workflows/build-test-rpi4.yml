@@ -16,8 +16,11 @@ on:
 #    types: started
 
 env:
-  PREBUILD_TAG: prebuild
-  PREBUILD_NAME: coolsnowwolf-lede-master-bcm27xx-bcm2711-prebuild-image.img
+  SOURCE_URL: https://github.com/coolsnowwolf/lede
+  SOURCE_BRANCH: master
+  TOOLCHAIN_REPO: helmiau/OpenWrt-Cache
+  TOOLCHAIN_NAME: coolsnowwolf-lede-master-bcm27xx-bcm2711.tar.xz
+  TOOLCHAIN_TAG: toolchain
   CONFIG_FILE: config/rpi4-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
@@ -32,10 +35,10 @@ jobs:
 
     outputs:
       OPENWRTROOT: ${{ steps.prepare.outputs.OPENWRTROOT }}
-      PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
-      TARGET: ${{ steps.compile.outputs.TARGET }}
-      SUBTARGET: ${{ steps.compile.outputs.SUBTARGET }}
-      FIRMWARE: ${{ steps.compile.outputs.FIRMWARE }}
+      PLATFORM: ${{ steps.packages.outputs.PLATFORM }}
+      TARGET: ${{ steps.packages.outputs.TARGET }}
+      SUBTARGET: ${{ steps.packages.outputs.SUBTARGET }}
+      FIRMWARE: ${{ steps.packages.outputs.FIRMWARE }}
       GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
 
     steps:
@@ -63,25 +66,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Prepare Toolchain Image
+      - name: Prepare Source
         id: prepare
         run: |
-          for i in {0..10}
-          do
-            wget -q https://github.com/SuLingGG/OpenWrt-Cache/releases/download/$PREBUILD_TAG/$PREBUILD_NAME.0$i || break
-          done
-          cat $PREBUILD_NAME.* > $PREBUILD_NAME
-          rm -f $PREBUILD_NAME.*
-          mkdir openwrt-ro openwrt workdir overlay
-          sudo mount -o loop $PREBUILD_NAME openwrt-ro
-          sudo mount -t overlay overlay -o lowerdir=openwrt-ro,upperdir=overlay,workdir=workdir openwrt
+          git clone $SOURCE_URL -b $SOURCE_BRANCH openwrt
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
-          git pull
           mkdir -p dl
           echo "::set-output name=SOURCE_COMMIT::$(git log -1 --format='%H')"
-          sed -i 's/ $(tool.*\/stamp-compile)//;' Makefile
 
       - name: Install Feeds
         id: feeds
@@ -123,8 +116,24 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
+      - name: Prepare Toolchain
+        id: toolchain
+        run: |
+          cd $OPENWRTROOT
+          export CURRENT_HASH=$(git log --pretty=tformat:"%h" -n1 tools toolchain)
+          echo "CURRENT_HASH is $CURRENT_HASH"
+          export CACHE_HASH=$(curl -fSsL https://github.com/$TOOLCHAIN_REPO/releases/download/$TOOLCHAIN_TAG/cache-hash.txt)
+          echo "CACHE_HASH is $CACHE_HASH"
+          if [ "$CURRENT_HASH" == "$CACHE_HASH" ]; then
+            wget -qc https://github.com/$TOOLCHAIN_REPO/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O - | tar -xJ
+            sed -i 's/ $(tool.*\/stamp-compile)//;' Makefile
+          else
+            make tools/compile -j$(nproc) || make tools/compile -j1 V=s
+            make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
+          fi
+
       - name: Compile Packages
-        id: compile
+        id: packages
         run: |
           cd $OPENWRTROOT
           echo -e "$(nproc) thread compile"
@@ -151,7 +160,7 @@ jobs:
           echo "::set-output name=COMPILE_STATUS::success"
 
       - name: Generate Firmware
-        if: steps.compile.outputs.COMPILE_STATUS == 'success'
+        if: steps.packages.outputs.COMPILE_STATUS == 'success'
         id: generate
         run: |
           cd data/opkg
