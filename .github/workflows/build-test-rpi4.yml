@@ -16,11 +16,8 @@ on:
 #    types: started
 
 env:
-  SOURCE_URL: https://github.com/coolsnowwolf/lede
-  SOURCE_BRANCH: master
-  TOOLCHAIN_REPO: helmiau/OpenWrt-Cache
-  TOOLCHAIN_NAME: coolsnowwolf-lede-master-bcm27xx-bcm2711.tar.xz
-  TOOLCHAIN_TAG: toolchain
+  TOOLCHAIN_TAG: coolsnowwolf-lede-master
+  TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-bcm27xx-bcm2711.img
   CONFIG_FILE: config/rpi4-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
@@ -66,15 +63,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Prepare Source
+      - name: Prepare Toolchain Image
         id: prepare
         run: |
-          git clone $SOURCE_URL -b $SOURCE_BRANCH openwrt
+          df -hT $PWD
+          wget -q https://github.com/SuLingGG/OpenWrt-Toolchain/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O toolchain-image.img
+          mkdir openwrt-ro openwrt workdir overlay
+          sudo mount -o loop toolchain-image.img openwrt-ro
+          sudo mount -t overlay overlay -o lowerdir=openwrt-ro,upperdir=overlay,workdir=workdir openwrt
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
+          git pull
           mkdir -p dl
-          echo "::set-output name=SOURCE_COMMIT::$(git log -1 --format='%H')"
 
       - name: Install Feeds
         id: feeds
@@ -98,6 +99,7 @@ jobs:
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
+          sed -i 's/5.10/5.4/g' target/linux/bcm27xx/Makefile
 
       - name: Cache DL Packages
         uses: actions/cache@v2
@@ -116,21 +118,12 @@ jobs:
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-      - name: Prepare Toolchain
-        id: toolchain
+      - name: Compile Tools
+        id: tools
         run: |
           cd $OPENWRTROOT
-          export CURRENT_HASH=$(git log --pretty=tformat:"%h" -n1 tools toolchain)
-          echo "CURRENT_HASH is $CURRENT_HASH"
-          export CACHE_HASH=$(curl -fSsL https://github.com/$TOOLCHAIN_REPO/releases/download/$TOOLCHAIN_TAG/cache-hash.txt)
-          echo "CACHE_HASH is $CACHE_HASH"
-          if [ "$CURRENT_HASH" == "$CACHE_HASH" ]; then
-            wget -qc https://github.com/$TOOLCHAIN_REPO/releases/download/$TOOLCHAIN_TAG/$TOOLCHAIN_NAME -O - | tar -xJ
-            sed -i 's/ $(tool.*\/stamp-compile)//;' Makefile
-          else
-            make tools/compile -j$(nproc) || make tools/compile -j1 V=s
-            make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
-          fi
+          echo -e "$(nproc) thread compile"
+          make tools/compile -j$(nproc) || make tools/compile -j1 V=s
 
       - name: Compile Packages
         id: packages
@@ -138,9 +131,7 @@ jobs:
           cd $OPENWRTROOT
           echo -e "$(nproc) thread compile"
           make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
-          make package/cleanup
-          make buildinfo
-          make diffconfig buildversion feedsversion
+          make diffconfig
           make package/compile -j$(nproc) IGNORE_ERRORS=1 || make package/compile -j1 V=s IGNORE_ERRORS=1
           make package/index
           cd $OPENWRTROOT/bin/packages/*
@@ -184,7 +175,6 @@ jobs:
           cp ../scripts/ipv6-helper.sh files/bin/ipv6-helper
           make package/install -j$(nproc) || make package/install -j1 V=s
           make target/install -j$(nproc) || make target/install -j1 V=s
-          make json_overview_image_info
           make checksum
           grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
           [ -s DEVICE_NAME ] && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
