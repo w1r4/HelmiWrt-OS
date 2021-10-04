@@ -39,7 +39,6 @@ jobs:
       GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
 
     steps:
-    steps:
       - name: Initialization Environment
         env:
           DEBIAN_FRONTEND: noninteractive
