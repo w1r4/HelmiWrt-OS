@@ -117,9 +117,8 @@ chmod +x /bin/vasm
 opkg remove $(opkg list-installed | grep zh-cn)
 
 # start v2rayA
-/etc/init.d/v2raya start
 /etc/init.d/v2raya enabled
-ln -s /etc/v2raya/web /www/v2raya
+/etc/init.d/v2raya start
 
 # activate TUN TAP interface
 /usr/sbin/openvpn --mktun --dev tun0
