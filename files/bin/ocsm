@@ -247,9 +247,12 @@ function helmi_install_game() {
 #--------------------------------------------------------
 function helmi_install_ipk() {
 	if [[ -s /root/luci-app-openclash.ipk ]]; then
-		echo -e "${G}"
 		opkg install /root/luci-app-openclash.ipk
 		rm -f /root/luci-app-openclash.ipk || true
+		if [[ -f /bin/helmiwrt ]]; then
+			/bin/helmiwrt > /dev/null
+		fi
+		echo -e "${G}"
 		echo "  App Install Done...."
 	else
 		echo -e "${R}"
