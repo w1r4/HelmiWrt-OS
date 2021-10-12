@@ -25,6 +25,9 @@ cp -r temp/packages/net/adguardhome packages/net/adguardhome
 cp -r temp/packages/lang/node-yarn packages/lang/node-yarn
 cp -r temp/packages/devel/packr packages/devel/packr
 
+# Add luci-app-banip
+cp -r temp/luci/applications/luci-app-banip luci/applications/luci-app-banip
+
 # Add luci-app-cpufreq
 cp -r temp/luci/applications/luci-app-cpufreq luci/applications/luci-app-cpufreq
 rm -rf ../package/lean/luci-app-cpufreq
