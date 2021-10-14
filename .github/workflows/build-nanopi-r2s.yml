@@ -183,8 +183,8 @@ jobs:
             echo -e $(readlink -f ${FILE}) ;
             mv "${FILE}" "${newfile}" ;
           done
-          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-config-${{ env.DEVICE_NAME }}.txt" \;
-          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-sha256sums-${{ env.DEVICE_NAME }}.txt" \;
+          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-config-friendlyarm_nanopi-r2s.txt" \;
+          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-sha256sums-friendlyarm_nanopi-r2s.txt" \;
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
