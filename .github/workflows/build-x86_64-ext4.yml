@@ -92,6 +92,7 @@ jobs:
           cat config/universal.config >> $OPENWRTROOT/.config
           sed -i 's/CONFIG_TARGET_ROOTFS_EXT4FS=n/CONFIG_TARGET_ROOTFS_EXT4FS=y/g' $OPENWRTROOT/.config
           sed -i 's/CONFIG_TARGET_ROOTFS_SQUASHFS=y/CONFIG_TARGET_ROOTFS_SQUASHFS=n/g' $OPENWRTROOT/.config
+          sed -i 's/kmod-usb-net-rtl8152=/kmod-usb-net-rtl8152-vendor=/g' openwrt/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh amd64

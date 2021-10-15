@@ -91,7 +91,6 @@ jobs:
           cat config/rockchip-lean-extra.config >> $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          sed -i '/kmod-usb-net-rtl8152-vendor/d' openwrt/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8

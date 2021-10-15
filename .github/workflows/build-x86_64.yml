@@ -90,6 +90,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/x86-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/kmod-usb-net-rtl8152=/kmod-usb-net-rtl8152-vendor=/g' openwrt/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh amd64

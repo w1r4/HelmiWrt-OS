@@ -101,11 +101,6 @@ svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradi
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
 
-# Add luci-udptools
-svn co https://github.com/zcy85611/Openwrt-Package/trunk/luci-udptools
-svn co https://github.com/zcy85611/Openwrt-Package/trunk/udp2raw
-svn co https://github.com/zcy85611/Openwrt-Package/trunk/udpspeeder-tunnel
-
 # Add luci-app-oled (R2S Only)
 git clone --depth=1 https://github.com/NateLol/luci-app-oled
 
@@ -123,7 +118,7 @@ pushd package/lean/default-settings/files
 sed -i '/http/d' zzz-default-settings
 sed -i '/18.06/d' zzz-default-settings
 export orig_version=$(cat "zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-export date_version=$(date -d "$(rdate -n -4 -p ntp.aliyun.com)" +'%Y-%m-%d')
+export date_version=$(date -d "$(rdate -n -4 -p pool.ntp.org)" +'%Y-%m-%d')
 sed -i "s/${orig_version}/${orig_version} ${date_version}/g" zzz-default-settings
 sed -i "s/zh_cn/auto/g" zzz-default-settings
 sed -i "s/uci set system.@system[0].timezone=CST-8/uci set system.@system[0].hostname=HelmiWrt\nuci set system.@system[0].timezone=WIB-7/g" zzz-default-settings
