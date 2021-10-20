@@ -188,6 +188,10 @@ jobs:
           done
           find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-config-${{ env.DEVICE_NAME }}.txt" \;
           find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-sha256sums-${{ env.DEVICE_NAME }}.txt" \;
+          find . -type f -name 'helmiwrt-sha256sums' | while read FILE ; do
+            sed -i -e 's/openwrt-/helmiwrt-/' ${FILE} ;
+            echo -e $(readlink -f ${FILE}) ;
+          done
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
           echo "::set-output name=ORGANIZE_STATUS::success"
@@ -228,7 +232,11 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ${{ env.FIRMWARE }}/*
           body: |
-            HelmiWrt Testbuild for Raspberry Pi
+            **HelmiWrt is custom OpenWrt build for**
+            - Raspberry Pi 1,2,3,4
+            - x86/64 (PC)
+            - NanoPi R2S, R4S
+            - Set-top-box s950x chipset
             
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1
@@ -237,7 +245,7 @@ jobs:
             WiFi SSID         : HelmiWrt
             WiFi Password     : none
             
-            [Read more about information](https://www.helmiau.com/blog/helmiwrt-os)
+            [Read more about this firmware info and guides here](https://www.helmiau.com/blog/helmiwrt-os)
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
