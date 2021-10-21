@@ -116,22 +116,25 @@ chmod +x /bin/vasm
 # Bye-bye zh_cn
 opkg remove $(opkg list-installed | grep zh-cn)
 
-# start v2rayA
+# start v2rayA service on boot
+sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
 /etc/init.d/v2raya enabled
-/etc/init.d/v2raya start
+/etc/init.d/v2raya start_service
+/etc/init.d/v2raya reload_service
 
 # start luci-app-filebrowser
 cat << 'EOF' > /etc/config/filebrowser
 
 config global
+	option enable '1'
 	option port '8088'
 	option root_path '/'
 	option project_directory '/root'
-	option enable '1'
+
 
 EOF
-/etc/init.d/filebrowser enabled
 /etc/init.d/filebrowser start
+/etc/init.d/filebrowser restart
 
 # activate TUN TAP interface
 /usr/sbin/openvpn --mktun --dev tun0
