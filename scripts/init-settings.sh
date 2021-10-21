@@ -120,6 +120,19 @@ opkg remove $(opkg list-installed | grep zh-cn)
 /etc/init.d/v2raya enabled
 /etc/init.d/v2raya start
 
+# start luci-app-filebrowser
+cat << 'EOF' > /etc/config/filebrowser
+
+config global
+	option port '8088'
+	option root_path '/'
+	option project_directory '/root'
+	option enable '1'
+
+EOF
+/etc/init.d/filebrowser enabled
+/etc/init.d/filebrowser start
+
 # activate TUN TAP interface
 /usr/sbin/openvpn --mktun --dev tun0
 /usr/sbin/openvpn --mktun --dev tun1

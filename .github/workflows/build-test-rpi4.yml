@@ -89,6 +89,8 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/adbyby-plus=y/adbyby-plus=n/g' $OPENWRTROOT/.config
+          sed -i 's/adguardhome=n/adguardhome=y/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> target/linux/bcm27xx/bcm2711/config-5.4
           mkdir -p files/lib/firmware/brcm/
@@ -96,6 +98,7 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
+          ../scripts/preset-filebrowser.sh arm64
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"

@@ -91,10 +91,13 @@ jobs:
           cat config/rockchip-lean-extra.config >> $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
+          sed -i 's/adbyby-plus=y/adbyby-plus=n/g' $OPENWRTROOT/.config
+          sed -i 's/adguardhome=n/adguardhome=y/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
+          ../scripts/preset-filebrowser.sh arm64
           ../scripts/preset-terminal-tools.sh
 
       - name: Download Package
