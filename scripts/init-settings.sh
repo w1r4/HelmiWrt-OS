@@ -123,6 +123,7 @@ sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
 /etc/init.d/v2raya reload_service
 
 # start luci-app-filebrowser
+chmod +x /root/filebrowser
 cat << 'EOF' > /etc/config/filebrowser
 
 config global
