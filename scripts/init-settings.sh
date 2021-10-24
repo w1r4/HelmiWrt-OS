@@ -118,9 +118,10 @@ opkg remove $(opkg list-installed | grep zh-cn)
 
 # start v2rayA service on boot
 sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
-/etc/init.d/v2raya enabled
-/etc/init.d/v2raya start_service
-/etc/init.d/v2raya reload_service
+/etc/init.d/v2raya enable
+/etc/init.d/v2raya start
+/etc/init.d/v2raya reload
+/etc/init.d/v2raya restart
 
 # start luci-app-filebrowser
 chmod +x /root/filebrowser
@@ -134,7 +135,9 @@ config global
 
 
 EOF
+/etc/init.d/filebrowser enable
 /etc/init.d/filebrowser start
+/etc/init.d/filebrowser reload
 /etc/init.d/filebrowser restart
 
 # activate TUN TAP interface

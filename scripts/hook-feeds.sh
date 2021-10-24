@@ -32,12 +32,15 @@ cp -r temp/packages/utils/cpulimit packages/cpulimit
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
 
+# Replace coolsnowwolf/lede watchcat and luci-app-watchcat with immortalwrt source
+rm -rf packages/utils/watchcat
+rm -rf luci/applications/luci-app-watchcat
+cp -r temp/luci/applications/luci-app-watchcat luci/applications/luci-app-watchcat
+cp -r temp/packages/utils/watchcat packages/utils/watchcat
+
 # Add tmate
 cp -r temp/packages/net/tmate packages/net/tmate
 cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
-
-# Add gotop
-cp -r temp/packages/admin/gotop packages/admin/gotop
 
 # Add minieap
 cp -r temp/packages/net/minieap packages/net/minieap
