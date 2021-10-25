@@ -239,6 +239,7 @@ jobs:
             - Raspberry Pi 1,2,3,4
             - x86/64 (PC)
             - NanoPi R2S, R4S
+            - OrangePi Zero, R1 Plus
             - Set-top-box s950x chipset
             
             **Firmware Information**
