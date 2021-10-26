@@ -39,11 +39,11 @@ jobs:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ env.BRANCH_NAME }}
-          trigger_workflow: ${{ env.TRIGGER_WF }}
-          wait_interval: ${{ env.DELAY_INT }}
-          wait_workflow: ${{ env.WAIT_WF }}
           workflow_file_name: build-nanopi-r2s.yml
+          ref: ${{ env.BRANCH_NAME }}
+          wait_interval: ${{ env.DELAY_INT }}
+          trigger_workflow: ${{ env.TRIGGER_WF }}
+          wait_workflow: ${{ env.WAIT_WF }}
 
       - name: Running NanoPi R4S Build
         uses: convictional/trigger-workflow-and-wait@v1.5.0
@@ -51,11 +51,11 @@ jobs:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ env.BRANCH_NAME }}
-          trigger_workflow: ${{ env.TRIGGER_WF }}
-          wait_interval: ${{ env.DELAY_INT }}
-          wait_workflow: ${{ env.WAIT_WF }}
           workflow_file_name: build-nanopi-r4s.yml
+          ref: ${{ env.BRANCH_NAME }}
+          wait_interval: ${{ env.DELAY_INT }}
+          trigger_workflow: ${{ env.TRIGGER_WF }}
+          wait_workflow: ${{ env.WAIT_WF }}
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
