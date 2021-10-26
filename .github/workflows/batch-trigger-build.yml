@@ -1,0 +1,64 @@
+#=================================================
+# Description: Batch Trigger Build
+# Lisence: MIT
+# Author: helmiau
+# Blog: https://helmiau.com
+#=================================================
+
+name: Batch Trigger Build
+
+on:
+  workflow_dispatch:
+#  schedule:
+#    - cron: 0 18 * * *
+#  watch:
+#    types: started
+
+env:
+  REPO_OWNER: helmiau
+  REPO_NAME: HelmiWrt-OS
+  BRANCH_NAME: main
+  # wait_interval
+  DELAY_INT: 300
+  # wait_workflow
+  WAIT_WF: false
+  # trigger_workflow
+  TRIGGER_WF: true
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Running NanoPi R2S Build
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
+        with:
+          owner: ${{ env.REPO_OWNER }}
+          repo: ${{ env.REPO_NAME }}
+          github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
+          trigger_workflow: ${{ env.TRIGGER_WF }}
+          wait_interval: ${{ env.DELAY_INT }}
+          wait_workflow: ${{ env.WAIT_WF }}
+          workflow_file_name: build-nanopi-r2s.yml
+
+      - name: Running NanoPi R4S Build
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
+        with:
+          owner: ${{ env.REPO_OWNER }}
+          repo: ${{ env.REPO_NAME }}
+          github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
+          trigger_workflow: ${{ env.TRIGGER_WF }}
+          wait_interval: ${{ env.DELAY_INT }}
+          wait_workflow: ${{ env.WAIT_WF }}
+          workflow_file_name: build-nanopi-r4s.yml
+
+      - name: Delete workflow runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 3
+          keep_minimum_runs: 3

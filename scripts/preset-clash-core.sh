@@ -5,7 +5,7 @@
 # System Required: Linux
 # Version: 1.0
 # Lisence: MIT
-# Author: SuLingGG
+# Author: SuLingGG, Helmi Amirudin
 # Blog: https://mlapp.cn
 #=================================================
 
@@ -24,3 +24,10 @@ wget --show-progress -qO- $clash_tun_url | gunzip -c > files/etc/openclash/core/
 wget --show-progress -qO- $clash_game_url | tar xOvz > files/etc/openclash/core/clash_game
 
 chmod +x files/etc/openclash/core/clash*
+
+# Offline images sources
+mkdir -p files/usr/share/openclash/yacd
+wget --show-progress -qO files/usr/share/openclash/yacd/Tutorials.svg https://img.shields.io/badge/Tutorials--lightgrey?logo=Wikipedia&style=social
+wget --show-progress -qO files/usr/share/openclash/yacd/Star.svg https://img.shields.io/badge/Star--lightgrey?logo=github&style=social
+wget --show-progress -qO files/usr/share/openclash/yacd/Telegram.svg https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&style=social
+wget --show-progress -qO files/usr/share/openclash/yacd/Sponsor.svg https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&style=social
