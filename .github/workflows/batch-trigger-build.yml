@@ -34,11 +34,7 @@ jobs:
         uses: actions/checkout@main
 
       - name: Running NanoPi R2S Build
-        run: |
-          echo "Running NanoPi R2S Build"
-          sleep $DELAY_INT
-
-      - uses: convictional/trigger-workflow-and-wait@v1.5.0
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
@@ -49,12 +45,12 @@ jobs:
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           # wait_workflow: ${{ env.WAIT_WF }}
 
-      - name: Running NanoPi R4S Build
-        run: |
-          echo "Running NanoPi R4S Build"
+      - run: |
           sleep $DELAY_INT
+          echo "Running NanoPi R2S Build done"
 
-      - uses: convictional/trigger-workflow-and-wait@v1.5.0
+      - name: Running NanoPi R4S Build
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
@@ -64,6 +60,10 @@ jobs:
           # wait_interval: ${{ env.DELAY_INT }}
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           #wait_workflow: ${{ env.WAIT_WF }}
+
+      - run: |
+          sleep $DELAY_INT
+          echo "Running NanoPi R4S Build done"
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
