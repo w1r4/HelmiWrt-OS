@@ -28,8 +28,6 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read|write
 
     steps:
       - name: Checkout
