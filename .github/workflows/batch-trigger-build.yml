@@ -28,6 +28,8 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read|write
 
     steps:
       - name: Checkout
@@ -38,7 +40,7 @@ jobs:
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
-          github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.BRANCH_NAME }}
           trigger_workflow: ${{ env.TRIGGER_WF }}
           wait_interval: ${{ env.DELAY_INT }}
@@ -50,7 +52,7 @@ jobs:
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
-          github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.BRANCH_NAME }}
           trigger_workflow: ${{ env.TRIGGER_WF }}
           wait_interval: ${{ env.DELAY_INT }}
