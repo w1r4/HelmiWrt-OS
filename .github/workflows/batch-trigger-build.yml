@@ -21,7 +21,7 @@ env:
   # wait_interval
   DELAY_INT: 300
   # wait_workflow
-  WAIT_WF: false
+  WAIT_WF: true
   # trigger_workflow
   TRIGGER_WF: true
 
