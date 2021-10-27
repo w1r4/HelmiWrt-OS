@@ -41,14 +41,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r2s.yml
           ref: ${{ env.BRANCH_NAME }}
-          # wait_interval: ${{ env.DELAY_INT }}
+          wait_interval: ${{ env.DELAY_INT }}
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           # wait_workflow: ${{ env.WAIT_WF }}
-
-      - name: Processing Delay Time
-        run: |
-          sleep $DELAY_INT
-          echo "Running NanoPi R2S Build done"
 
       - name: Running NanoPi R4S Build
         uses: convictional/trigger-workflow-and-wait@v1.5.0
@@ -58,14 +53,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r4s.yml
           ref: ${{ env.BRANCH_NAME }}
-          # wait_interval: ${{ env.DELAY_INT }}
+          wait_interval: ${{ env.DELAY_INT }}
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           #wait_workflow: ${{ env.WAIT_WF }}
-
-      - name: Processing Delay Time
-        run: |
-          sleep $DELAY_INT
-          echo "Running NanoPi R4S Build done"
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
