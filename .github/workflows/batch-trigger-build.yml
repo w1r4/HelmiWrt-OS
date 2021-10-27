@@ -38,14 +38,15 @@ jobs:
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r2s.yml
           ref: ${{ env.BRANCH_NAME }}
           # wait_interval: ${{ env.DELAY_INT }}
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           # wait_workflow: ${{ env.WAIT_WF }}
 
-      - run: |
+      - name: Processing Delay Time
+        run: |
           sleep $DELAY_INT
           echo "Running NanoPi R2S Build done"
 
@@ -54,14 +55,15 @@ jobs:
         with:
           owner: ${{ env.REPO_OWNER }}
           repo: ${{ env.REPO_NAME }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r4s.yml
           ref: ${{ env.BRANCH_NAME }}
           # wait_interval: ${{ env.DELAY_INT }}
           # trigger_workflow: ${{ env.TRIGGER_WF }}
           #wait_workflow: ${{ env.WAIT_WF }}
 
-      - run: |
+      - name: Processing Delay Time
+        run: |
           sleep $DELAY_INT
           echo "Running NanoPi R4S Build done"
 
