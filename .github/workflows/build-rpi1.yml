@@ -245,6 +245,8 @@ jobs:
             WiFi SSID         : HelmiWrt
             WiFi Password     : none
             
+            [Donation here](https://www.helmiau.com/pay/index_en.html)
+            
             [Read more about this info firmware and guides here](https://www.helmiau.com/blog/helmiwrt-os)
 
       - name: Delete Workflow Runs
