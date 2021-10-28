@@ -29,7 +29,7 @@ env:
   REPO_NAME: HelmiWrt-OS
   BRANCH_NAME: main
   # delay nterval in seconds
-  DELAY_INT: 900
+  DELAY_INT: 600
 
 jobs:
   Build:
@@ -206,6 +206,15 @@ jobs:
         run: |
           sleep $DELAY_INT
           echo "Previous build running succesfully, resuming build"
+
+      - name: Running s905x and s905x3 build
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
+        with:
+          owner: ${{ env.REPO_OWNER }}
+          repo: ${{ env.REPO_NAME }}
+          github_token: ${{ secrets.HELMIWRT_RW }}
+          workflow_file_name: build-s905x.yml
+          ref: ${{ env.BRANCH_NAME }}
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
