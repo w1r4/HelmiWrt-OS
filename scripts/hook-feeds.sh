@@ -49,6 +49,7 @@ cp -r temp/packages/net/minieap packages/net/minieap
 cp -r temp/packages/net/xray-core packages/net/xray-core
 cp -r temp/packages/net/xray-plugin packages/net/xray-plugin
 cp -r temp/packages/net/v2raya packages/net/v2raya
+sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang#g' packages/net/v2raya/Makefile
 
 # Clearing temp directory
 rm -rf temp
