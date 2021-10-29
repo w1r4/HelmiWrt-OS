@@ -30,6 +30,11 @@ env:
   BRANCH_NAME: main
   # delay nterval in seconds
   DELAY_INT: 600
+  # other configs
+  FAILPROP: false
+  TRIGGERWF: true
+  WAITWF: false
+  
 
 jobs:
   Build:
@@ -47,6 +52,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r2s.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -61,6 +69,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-nanopi-r4s.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -75,6 +86,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-opir1plus.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -89,6 +103,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-opizero.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -103,6 +120,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-rpi1.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -117,6 +137,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-rpi2.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -131,6 +154,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-rpi3.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -145,6 +171,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-rpi4.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -159,6 +188,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-x86_64-ext4.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -173,6 +205,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-x86_64.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -187,6 +222,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-x86_generic-ext4.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -201,6 +239,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-x86_generic.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Previous build running succesfully, resuming build
         run: |
@@ -215,6 +256,9 @@ jobs:
           github_token: ${{ secrets.HELMIWRT_RW }}
           workflow_file_name: build-s905x.yml
           ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
