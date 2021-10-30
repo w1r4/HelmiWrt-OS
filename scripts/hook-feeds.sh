@@ -38,6 +38,10 @@ rm -rf luci/applications/luci-app-watchcat
 cp -r temp/luci/applications/luci-app-watchcat luci/applications/luci-app-watchcat
 cp -r temp/packages/utils/watchcat packages/utils/watchcat
 
+# Replace coolsnowwolf/lede php7 with immortalwrt source
+rm -rf packages/lang/php7
+cp -r temp/packages/lang/php7 packages/lang/php7
+
 # Add tmate
 cp -r temp/packages/net/tmate packages/net/tmate
 cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
