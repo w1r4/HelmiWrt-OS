@@ -96,7 +96,6 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh 386
           ../scripts/preset-v2raya.sh 32
-          ../scripts/preset-filebrowser.sh 386
           ../scripts/preset-terminal-tools.sh
 
       - name: Download Package

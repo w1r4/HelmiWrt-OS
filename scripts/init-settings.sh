@@ -123,23 +123,6 @@ sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
 /etc/init.d/v2raya reload
 /etc/init.d/v2raya restart
 
-# start luci-app-filebrowser
-chmod +x /root/filebrowser
-cat << 'EOF' > /etc/config/filebrowser
-
-config global
-	option enable '1'
-	option port '8088'
-	option root_path '/'
-	option project_directory '/root'
-
-
-EOF
-/etc/init.d/filebrowser enable
-/etc/init.d/filebrowser start
-/etc/init.d/filebrowser reload
-/etc/init.d/filebrowser restart
-
 # activate TUN TAP interface
 /usr/sbin/openvpn --mktun --dev tun0
 /usr/sbin/openvpn --mktun --dev tun1

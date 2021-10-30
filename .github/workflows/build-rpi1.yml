@@ -95,7 +95,6 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv6
           ../scripts/preset-v2raya.sh arm32-v6
-          ../scripts/preset-filebrowser.sh armv6
           ../scripts/preset-terminal-tools.sh
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
 
