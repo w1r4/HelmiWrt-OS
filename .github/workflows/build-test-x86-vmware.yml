@@ -21,7 +21,7 @@ on:
 
 jobs:
   release:
-    name: Generating ${{ matrix.rule_name }}-${{ matrix.partition }}-${{ matrix.bootloader }}
+    name: Generating ${{ matrix.name }}-${{ matrix.partition }}-${{ matrix.bootloader }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -72,7 +72,7 @@ jobs:
           sudo -E apt-get -qq clean
           sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
         
-      - name: Downloading latest image
+      - name: Generate ${{ matrix.name }}-${{ matrix.partition }}-${{ matrix.bootloader }} vmdk image file
         id: download
         run: |
           df -hT $PWD
@@ -80,19 +80,15 @@ jobs:
           cd openwrt
           if wget -S --spider $HELMIWRT_REL/$HELMIWRT_GZNAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             wget $HELMIWRT_REL/$HELMIWRT_GZNAME
+            gunzip $HELMIWRT_GZNAME
+            qemu-img connect -f raw -O vmdk $HELMIWRT_IMGNAME $HELMIWRT_VMDKNAME
+            ls -R
+            echo "RELEASE_NAME=HelmiWrt-VMDK" >> $GITHUB_ENV
+            echo "TAG_NAME=helmiwrt-vmdk" >> $GITHUB_ENV
           else
             exit 1
           fi
           echo "::set-output name=COMPILE_STATUS::success"
-
-      - name: Generate ${{ matrix.rule_name }}-${{ matrix.partition }}-${{ matrix.bootloader }} vmdk image file
-        if: steps.download.outputs.COMPILE_STATUS == 'success'
-        run: |
-          gunzip $HELMIWRT_GZNAME
-          qemu-img connect -f raw -O vmdk $HELMIWRT_IMGNAME $HELMIWRT_VMDKNAME
-          ls -R
-          echo "RELEASE_NAME=HelmiWrt-VMDK" >> $GITHUB_ENV
-          echo "TAG_NAME=helmiwrt-vmdk" >> $GITHUB_ENV
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
