@@ -26,8 +26,8 @@ wget --show-progress -qO- $clash_game_url | tar xOvz > files/etc/openclash/core/
 chmod +x files/etc/openclash/core/clash*
 
 # Offline images sources
-mkdir -p files/usr/share/openclash/yacd
-wget --show-progress -qO files/usr/share/openclash/yacd/Tutorials.svg https://img.shields.io/badge/Tutorials--lightgrey?logo=Wikipedia&style=social
-wget --show-progress -qO files/usr/share/openclash/yacd/Star.svg https://img.shields.io/badge/Star--lightgrey?logo=github&style=social
-wget --show-progress -qO files/usr/share/openclash/yacd/Telegram.svg https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&style=social
-wget --show-progress -qO files/usr/share/openclash/yacd/Sponsor.svg https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&style=social
+mkdir -p files/www/luci-static/resources/openclash
+wget --show-progress -qO files/www/luci-static/resources/openclash/Tutorials.svg https://img.shields.io/badge/Tutorials--lightgrey?logo=Wikipedia&style=social
+wget --show-progress -qO files/www/luci-static/resources/openclash/Star.svg https://img.shields.io/badge/Star--lightgrey?logo=github&style=social
+wget --show-progress -qO files/www/luci-static/resources/openclash/Telegram.svg https://img.shields.io/badge/Telegram--lightgrey?logo=Telegram&style=social
+wget --show-progress -qO files/www/luci-static/resources/openclash/Sponsor.svg https://img.shields.io/badge/Sponsor--lightgrey?logo=ko-fi&style=social
