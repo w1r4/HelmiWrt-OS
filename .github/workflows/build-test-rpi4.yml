@@ -114,7 +114,7 @@ jobs:
           rm -rf filex/{README.md,LICENSE,runbashing.sh}
           cp -r filex/* package/base-files/files/
           rm -rf filex 
-          sed -i -e 's/\r$//' package/base-files/files/bin/{helmi*,sambaset,neofetch,ocsm}
+          sed -i -e 's/\r$//' $(grep -rli "/bin/bash" "package/base-files/files/bin")
           chmod +x package/base-files/files/bin/*
           ls -R package/base-files/files/.?*
 
