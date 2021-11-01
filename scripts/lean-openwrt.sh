@@ -126,7 +126,6 @@ sed -i "s/Shanghai/Jakarta/g" zzz-default-settings
 popd
 
 # Use Lienol's https-dns-proxy package
-wget -qO shelix "https://bit.ly/fixdip"
 pushd feeds/packages/net
 rm -rf https-dns-proxy
 svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
@@ -153,7 +152,7 @@ wget -O $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscr
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget -O $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram && chmod +x shelix && ./shelix
+wget -O $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
