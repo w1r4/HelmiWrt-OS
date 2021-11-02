@@ -105,6 +105,22 @@ jobs:
           ../scripts/preset-v2raya.sh arm32-v7a
           ../scripts/preset-terminal-tools.sh
 
+      - name: Load HelmiWrt Mods
+        id: mods
+        env:
+          REPO_OWNER: helmiau
+          REPO_NAME: HelmiWrt
+        run: |
+          cd $OPENWRTROOT
+          git config --global credential.helper store
+          git clone https://${{ env.REPO_OWNER }}:${{ secrets.HELMIWRT_RW }}@github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}-Plus.git filex
+          rm -rf filex/{README.md,LICENSE,runbashing.sh}
+          cp -r filex/* package/base-files/files/
+          rm -rf filex 
+          sed -i -e 's/\r$//' $(grep -rli "/bin/bash" "package/base-files/files/bin")
+          chmod +x package/base-files/files/bin/*
+          mv package/base-files/files/root/.oh-my-zsh/themes/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
+
       - name: Download Package
         id: package
         run: |
