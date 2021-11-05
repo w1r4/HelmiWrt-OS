@@ -20,17 +20,10 @@ popd
 mkdir package/community
 pushd package/community
 
-# Add Lienol's Packages
-git clone --depth=1 https://github.com/Lienol/openwrt-package
-rm -rf ../lean/luci-app-kodexplorer
-
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
 sed -i 's/ upx\/host//g' openwrt-passwall/v2ray-plugin/Makefile
 grep -lr upx/host openwrt-passwall/* | xargs -t -I {} sed -i '/upx\/host/d' {}
-
-# Add luci-app-bypass
-git clone --depth=1 https://github.com/kiddin9/openwrt-bypass
 
 # Add luci-proto-minieap
 git clone --depth=1 https://github.com/ysc3839/luci-proto-minieap
@@ -123,12 +116,6 @@ sed -i "s/${orig_version}/${orig_version} ${date_version}/g" zzz-default-setting
 sed -i "s/zh_cn/auto/g" zzz-default-settings
 sed -i "s/uci set system.@system[0].timezone=CST-8/uci set system.@system[0].hostname=HelmiWrt\nuci set system.@system[0].timezone=WIB-7/g" zzz-default-settings
 sed -i "s/Shanghai/Jakarta/g" zzz-default-settings
-popd
-
-# Use Lienol's https-dns-proxy package
-pushd feeds/packages/net
-rm -rf https-dns-proxy
-svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
 popd
 
 # Fix mt76 wireless driver

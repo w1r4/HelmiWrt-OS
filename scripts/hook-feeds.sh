@@ -46,6 +46,10 @@ cp -r temp/packages/lang/php7 packages/lang/php7
 cp -r temp/packages/net/tmate packages/net/tmate
 cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
 
+# Replace https-dns-proxy with immortalwrt source
+rm -rf packages/net/https-dns-proxy
+cp -r temp/packages/net/https-dns-proxy packages/net/https-dns-proxy
+
 # Add minieap
 cp -r temp/packages/net/minieap packages/net/minieap
 
@@ -54,6 +58,9 @@ cp -r temp/packages/net/xray-core packages/net/xray-core
 cp -r temp/packages/net/xray-plugin packages/net/xray-plugin
 cp -r temp/packages/net/v2raya packages/net/v2raya
 sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang#g' packages/net/v2raya/Makefile
+
+# Add luci-app-ramfree
+cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
 
 # Clearing temp directory
 rm -rf temp
