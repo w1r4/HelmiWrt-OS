@@ -25,10 +25,6 @@ cp -r temp/packages/net/adguardhome packages/net/adguardhome
 cp -r temp/packages/lang/node-yarn packages/lang/node-yarn
 cp -r temp/packages/devel/packr packages/devel/packr
 
-# Add luci-app-cpulimit
-cp -r temp/luci/applications/luci-app-cpulimit luci/applications/luci-app-cpulimit
-cp -r temp/packages/utils/cpulimit packages/cpulimit
-
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
 
