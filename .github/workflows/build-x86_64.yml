@@ -18,7 +18,7 @@ on:
 
 env:
   TOOLCHAIN_TAG: coolsnowwolf-lede-master
-  TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-x86-64.img
+  TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-x86_64.img
   CONFIG_FILE: config/x86_64-lean-target.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
