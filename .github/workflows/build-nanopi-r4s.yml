@@ -197,13 +197,13 @@ jobs:
           #done
           cd openwrt/bin/targets/*/*
           rm -rf packages
-          #find . -type f -name 'openwrt-*' | while read FILE ; do
-            #newfile="$(echo ${FILE} | sed -e 's/openwrt-/helmiwrt-/' #-e 's/r2s/r4s/' -e 's/r2c/r4s/')" ;
-            #echo -e $(readlink -f ${FILE}) ;
-            #mv "${FILE}" "${newfile}" ;
-          #done
-          #find . -type f -name 'config.buildinfo' -exec mv "{}" #"helmiwrt-config-friendlyarm_nanopi-r4s.txt" \;
-          #find . -type f -name 'sha256sums' -exec mv "{}" #"helmiwrt-sha256sums-friendlyarm_nanopi-r4s.txt" \;
+          find . -type f -name 'openwrt-*' | while read FILE ; do
+            newfile="$(echo ${FILE} | sed -e 's/openwrt-/helmiwrt-/')" ;
+            echo -e $(readlink -f ${FILE}) ;
+            mv "${FILE}" "${newfile}" ;
+          done
+          find . -type f -name 'config.buildinfo' -exec mv "{}" "helmiwrt-config-$DEVICE_NAME.txt" \;
+          find . -type f -name 'sha256sums' -exec mv "{}" "helmiwrt-sha256sums-$DEVICE_NAME.txt" \;
           #find . -type f -name 'sha256sums' | while read FILE ; do
             #sed -i 's/openwrt-/helmiwrt-/g' ${FILE} ;
             #echo -e $(readlink -f ${FILE}) ;
