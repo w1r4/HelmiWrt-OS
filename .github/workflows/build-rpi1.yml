@@ -243,9 +243,9 @@ jobs:
             **HelmiWrt is custom OpenWrt build for**
             - Raspberry Pi 1,2,3,4
             - x86/64 (PC)
-            - NanoPi R2S, R4S
+            - NanoPi R2C, R2S and R4S
             - OrangePi Zero, R1 Plus
-            - Set-top-box s950x chipset
+            - Set-top-box s905x/x2/x3 chipset
             
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1
@@ -254,9 +254,7 @@ jobs:
             WiFi SSID         : HelmiWrt
             WiFi Password     : none
             
-            [Donation here](https://www.helmiau.com/pay/index_en.html)
-            
-            [Read more about this info firmware and guides here](https://www.helmiau.com/blog/helmiwrt-os)
+            [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.helmiau.com/blog/helmiwrt-os)
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
