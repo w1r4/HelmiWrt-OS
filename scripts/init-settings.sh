@@ -97,8 +97,8 @@ EOF
 	echo -e "  helmilog : helmipatch already applied to on-boot..."
 fi
 
-# Set default theme to luci-theme-netgear
-echo -e "uci set luci.main.mediaurlbase='/luci-static/netgear'\nuci commit luci" > /bin/default-theme
+# Set default theme to luci-theme-argon
+echo -e "uci set luci.main.mediaurlbase='/luci-static/argon'\nuci commit luci" > /bin/default-theme
 chmod +x /bin/default-theme
 default-theme
 
