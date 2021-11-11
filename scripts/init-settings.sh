@@ -97,8 +97,9 @@ EOF
 	echo -e "  helmilog : helmipatch already applied to on-boot..."
 fi
 
-# Set default theme to luci-theme-argon
-echo -e "uci set luci.main.mediaurlbase='/luci-static/argon'\nuci commit luci" > /bin/default-theme
+# Set default theme to luci-theme-argon and delete default watchcat setting
+echo -e "uci set luci.main.mediaurlbase='/luci-static/argon'\nuci commit luci\n" > /bin/default-theme
+echo -e "uci delete system.@watchcat[0]\nuci commit" >> /bin/default-theme
 chmod +x /bin/default-theme
 default-theme
 

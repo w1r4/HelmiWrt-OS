@@ -121,8 +121,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        prerelease: true
-        name: HelmiWrt ${{ env.PACKAGED_OUTPUTDATE }}
+        name: HelmiWrt ${{ env.BUILD_TAG }}
         tag_name: helmiwrt-${{ env.BUILD_TAG }}
         files: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s905x*
 
