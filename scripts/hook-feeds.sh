@@ -46,8 +46,9 @@ cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
 rm -rf packages/net/https-dns-proxy
 cp -r temp/packages/net/https-dns-proxy packages/net/https-dns-proxy
 
-# Add minieap
+# Add minieap and luci-proto-minieap
 cp -r temp/packages/net/minieap packages/net/minieap
+cp -r temp/luci/protocols/luci-proto-minieap luci/protocols/luci-proto-minieap
 
 # Add v2rayA
 cp -r temp/packages/net/xray-core packages/net/xray-core
@@ -57,6 +58,9 @@ sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang
 
 # Add luci-app-ramfree
 cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
+
+# Add luci-theme-darkmatter
+cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
 
 # Clearing temp directory
 rm -rf temp

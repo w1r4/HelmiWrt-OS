@@ -25,9 +25,6 @@ git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
 sed -i 's/ upx\/host//g' openwrt-passwall/v2ray-plugin/Makefile
 grep -lr upx/host openwrt-passwall/* | xargs -t -I {} sed -i '/upx\/host/d' {}
 
-# Add luci-proto-minieap
-git clone --depth=1 https://github.com/ysc3839/luci-proto-minieap
-
 # Add OpenClash
 git clone --depth=1 -b master https://github.com/vernesong/OpenClash
 
