@@ -99,6 +99,7 @@ jobs:
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-speedtest.sh aarch64
+          ls -R files/bin
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
