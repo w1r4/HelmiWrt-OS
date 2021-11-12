@@ -130,9 +130,6 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
 
-# Add speedtest
-wget -O $HWOSDIR/bin/speedtest "https://raw.githubusercontent.com/vitoharhari/speedtest/main/speedtest" && chmod +x $HWOSDIR/bin/speedtest
-
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
 wget -O $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $HWOSDIR/bin/vmess
