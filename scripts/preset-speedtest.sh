@@ -33,7 +33,7 @@ if [[ ! -d $SPEEDTESTDIR ]]; then
 fi
 
 echo -e "  Downloading ookla-speedtest-$SPEEDTESTVER-$1-linux.tgz...."
-wget --show-progress -qO- $SPEEDTESTURL | tar xOvz > files/bin/speedtest
+wget --show-progress -qO- $SPEEDTESTURL | tar xOvz > files/bin/*
 echo -e "  Installing...."
 
 chmod +x $SPEEDTESTDIR/$SPEEDTESTBIN
