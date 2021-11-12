@@ -99,6 +99,7 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
+          ../scripts/preset-speedtest.sh aarch64
           ../scripts/preset-terminal-tools.sh
 
       - name: Load HelmiWrt Mods

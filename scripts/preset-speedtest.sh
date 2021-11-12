@@ -11,9 +11,8 @@
 #=================================================
 # platform lists informations
 #=================================================
-# arm = arm_arm (rpi1,2)
-# arm = arm_cortex-a7 (orange pi)
-# aarch64 = aarch64
+# arm = arm_arm (rpi1,2,orange pi zero)
+# aarch64 = aarch64 (rpi3,4 nanopi r2c,r2s,r4s, orange pi r1 plus)
 # x86_64 = x86_64
 # i386 = i386
 #=================================================
