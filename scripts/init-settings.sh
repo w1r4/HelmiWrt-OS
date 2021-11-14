@@ -42,9 +42,7 @@ uci commit system
 sed -i "s#option ssid 'OpenWrt'#option ssid 'HelmiWrt'#iIg" /etc/config/wireless
 
 # Add shadowsocksr shortcut
-chmod +x /bin/ssr-rst
-chmod +x /bin/ssr-start
-chmod +x /bin/ssr-stop
+chmod +x /bin/ssr
 
 # Added neofetch on oh-my-zsh
 echo "neofetch" > /root/.oh-my-zsh/custom/example.zsh
