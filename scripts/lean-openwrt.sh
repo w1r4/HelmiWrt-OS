@@ -11,9 +11,17 @@ HWOSDIR="package/base-files/files"
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' $HWOSDIR/bin/config_generate
 
-# Add luci-app-ssr-plus
+# Switch dir to package/lean
 pushd package/lean
+
+# Add luci-app-ssr-plus
 git clone --depth=1 https://github.com/fw876/helloworld
+
+# Remove luci-app-uugamebooster and luci-app-xlnetacc
+rm -rf luci-app-uugamebooster
+rm -rf luci-app-xlnetacc
+
+# Exit from package/lean dir
 popd
 
 # Clone community packages to package/community
