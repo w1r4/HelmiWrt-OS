@@ -132,7 +132,7 @@ jobs:
         prerelease: ${{ env.PRE_RELEASE }}
         name: HelmiWrt ${{ env.BUILD_TAG }}
         tag_name: helmiwrt-${{ env.BUILD_TAG }}
-        files: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s905x*
+        files: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
 
     - name: Delete Workflow Runs
       uses: GitRML/delete-workflow-runs@main
