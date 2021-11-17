@@ -246,7 +246,7 @@ jobs:
             - x86/64 (PC)
             - NanoPi R2C, R2S and R4S
             - OrangePi Zero, R1 Plus
-            - Set-top-box s905x/x2/x3 chipset
+            - Set-top-box s9xxx chipset
             
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1
