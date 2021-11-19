@@ -38,6 +38,10 @@ cp -r temp/packages/utils/watchcat packages/utils/watchcat
 rm -rf packages/lang/php7
 cp -r temp/packages/lang/php7 packages/lang/php7
 
+# Replace coolsnowwolf/lede perl with immortalwrt source
+rm -rf packages/lang/perl
+cp -r temp/packages/lang/perl packages/lang/perl
+
 # Add tmate
 cp -r temp/packages/net/tmate packages/net/tmate
 cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
