@@ -178,6 +178,19 @@ chmod +x /etc/init.d/3ginfo
 chmod +x /usr/share/3ginfo/scripts/*
 chmod +x /usr/share/3ginfo/cgi-bin/*
 
+# Fix xdrtool: Xderm Mini Tool Script permission
+chmod +x /bin/xdrtool
+
+# Fix atinout permission
+chmod +x /sbin/set_at_port.sh
+
+# Fix sms tool
+chmod +x /etc/init.d/smsled
+chmod +x /sbin/cronsync.sh
+chmod +x /sbin/set_sms_ports.sh
+chmod +x /sbin/smsled-init.sh
+chmod +x /sbin/smsled.sh
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
