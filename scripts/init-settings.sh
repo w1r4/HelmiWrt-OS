@@ -173,6 +173,11 @@ fi
 EOF
 fi
 
+# Fix 3ginfo
+chmod +x /etc/init.d/3ginfo
+chmod +x /usr/share/3ginfo/scripts/*
+chmod +x /usr/share/3ginfo/cgi-bin/*
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
