@@ -89,8 +89,6 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          sed -i 's/adbyby-plus=y/adbyby-plus=n/g' $OPENWRTROOT/.config
-          sed -i 's/adguardhome=n/adguardhome=y/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> target/linux/bcm27xx/bcm2711/config-5.4
           mkdir -p files/lib/firmware/brcm/
@@ -119,7 +117,7 @@ jobs:
           git clone https://${{ env.REPO_OWNER }}:${{ secrets.HELMIWRT_RW }}@github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}-Plus.git filex
           rm -rf filex/{README.md,LICENSE,runbashing.sh}
           cp -r filex/* package/base-files/files/
-          rm -rf filex 
+          rm -rf filex
           sed -i -e 's/\r$//' $(grep -rli "/bin/bash" "package/base-files/files/bin")
           chmod +x package/base-files/files/bin/*
           mv package/base-files/files/root/.oh-my-zsh/themes/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
@@ -265,7 +263,7 @@ jobs:
             - x86/64 (PC)
             - NanoPi R2S, R4S
             - OrangePi Zero, R1 Plus
-            - Set-top-box s950x chipset
+            - Set-top-box s9xxx chipset
             
             **Firmware Information**
             LuCI IP Address   : 192.168.1.1

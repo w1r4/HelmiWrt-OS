@@ -4,7 +4,7 @@
 # Lisence: MIT
 # Author: P3TERX
 # Blog: https://p3terx.com
-# HelmiWrt by helmiau.com   
+# HelmiWrt by helmiau.com
 #=================================================
 
 name: Build NanoPi R4S
@@ -93,8 +93,6 @@ jobs:
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
           sed -i 's/kmod-usb-net-rtl8152=y/kmod-usb-net-rtl8152-vendor=y/g' $OPENWRTROOT/.config
-          sed -i 's/adbyby-plus=y/adbyby-plus=n/g' $OPENWRTROOT/.config
-          sed -i 's/adguardhome=n/adguardhome=y/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
@@ -113,7 +111,7 @@ jobs:
           git clone https://${{ env.REPO_OWNER }}:${{ secrets.HELMIWRT_RW }}@github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}-Plus.git filex
           rm -rf filex/{README.md,LICENSE,runbashing.sh}
           cp -r filex/* package/base-files/files/
-          rm -rf filex 
+          rm -rf filex
           sed -i -e 's/\r$//' $(grep -rli "/bin/bash" "package/base-files/files/bin")
           chmod +x package/base-files/files/bin/*
           mv package/base-files/files/root/.oh-my-zsh/themes/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
