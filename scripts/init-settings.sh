@@ -156,8 +156,8 @@ ip6tables -t mangle -I PREROUTING ! -p icmpv6 -i  -j HL --hl-set 65
 EOF
 /etc/config/firewall restart
 
-# Fix Architecture overview for s9xxx amlogic
-if ! grep -q "amlogic" /sbin/cpuinfo; then
+# Fix Architecture overview for s9xxx amlogic and Uninstall luci-app-amlogic for Raspberry Pi 3
+if grep -q "amlogic" /sbin/cpuinfo; then
 	cat << 'EOF' >> /sbin/cpuinfo
 
 # Amlogic board
@@ -170,6 +170,8 @@ if grep -q "amlogic" "/tmp/sysinfo/board_name"; then
 fi
 
 EOF
+else
+	opkg remove luci-app-amlogic
 fi
 
 # Fix 3ginfo
