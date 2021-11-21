@@ -158,18 +158,7 @@ EOF
 
 # Fix Architecture overview for s9xxx amlogic and Uninstall luci-app-amlogic for Raspberry Pi 3
 if grep -q "amlogic" /sbin/cpuinfo; then
-	cat << 'EOF' >> /sbin/cpuinfo
-
-# Amlogic board
-if grep -q "amlogic" "/tmp/sysinfo/board_name"; then
-	cpu_freq="$(expr $(cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_cur_freq) / 1000)MHz"
-	big_cpu_freq="$(expr $(cat /sys/devices/system/cpu/cpufreq/policy4/cpuinfo_cur_freq 2>"/dev/null") / 1000 2>"/dev/null")"
-	[ -n "${big_cpu_freq}" ] && big_cpu_freq="${big_cpu_freq}MHz "
-	cpu_temp="$(awk "BEGIN{printf (\"%.1f\n\",$(cat /sys/class/thermal/thermal_zone0/temp)/1000) }")°C"
-	echo -n "${cpu_arch} x ${cpu_cores} (${big_cpu_freq}${cpu_freq}, ${cpu_temp})"
-fi
-
-EOF
+	sed -i "s#bcm27xx/bcm2710#armvirt/64#iIg" /etc/openwrt_release
 else
 	opkg remove luci-app-amlogic
 fi
