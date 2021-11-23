@@ -108,7 +108,6 @@ uci commit
 
 uci add_list dhcp.@dnsmasq[0].server='8.8.8.8'
 uci add_list dhcp.@dnsmasq[0].server='8.8.4.4'
-uci add_list dhcp.@dnsmasq[0].server='1.1.1.1'
 uci commit dhcp
 /etc/init.d/dnsmasq restart
 
