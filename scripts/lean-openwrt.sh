@@ -161,6 +161,10 @@ wget --show-progress -qO $HWOSDIR/root/akun/tunnel.py "$rawgit/$usergit/stl/main
 wget --show-progress -qO $HWOSDIR/root/akun/ssh.py "$rawgit/$usergit/stl/main/stl/ssh.py"
 wget --show-progress -qO $HWOSDIR/root/akun/inject.py "$rawgit/$usergit/stl/main/stl/inject.py"
 
+# Add wifi id seamless autologin by kopijahe
+# run "kopijahe" using terminal for use
+wget --show-progress -qO $HWOSDIR/bin/kopijahe "$rawgit/kopijahe/wifiid-openwrt/master/scripts/kopijahe"
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------

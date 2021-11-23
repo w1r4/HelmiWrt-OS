@@ -195,6 +195,10 @@ touch ~/.ssh/config
 touch ~/akun/stl.txt
 touch ~/akun/ipmodem.txt 
 
+# Add wifi id seamless autologin by kopijahe
+# run "kopijahe" using terminal for use
+chmod +x /bin/kopijahe
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
