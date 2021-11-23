@@ -136,18 +136,30 @@ sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 #-----------------------------------------------------------------------------
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
+rawgit="https://raw.githubusercontent.com"
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget -O $HWOSDIR/bin/vmess "https://raw.githubusercontent.com/ryanfauzi1/vmesscreator/main/vmess" && chmod +x $HWOSDIR/bin/vmess
+wget --show-progress -qO $HWOSDIR/bin/vmess "$rawgit/ryanfauzi1/vmesscreator/main/vmess"
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
-wget -O $HWOSDIR/bin/ram "https://raw.githubusercontent.com/wegare123/ram/main/ram.sh" && chmod +x $HWOSDIR/bin/ram
+wget --show-progress -qO $HWOSDIR/bin/ram "$rawgit/wegare123/ram/main/ram.sh"
 
 # Add fix download file.php for xderm and libernet
 # run "fixphp" using terminal for use
-wget -O $HWOSDIR/bin/fixphp "https://raw.githubusercontent.com/helmiau/openwrt-config/main/fix-xderm-libernet-gui" && chmod +x $HWOSDIR/bin/fixphp
+wget --show-progress -qO $HWOSDIR/bin/fixphp "$rawgit/helmiau/openwrt-config/main/fix-xderm-libernet-gui"
+
+# Add wegare123 stl tools
+# run "stl" using terminal for use
+usergit="wegare123"
+mkdir -p $HWOSDIR/root/akun $HWOSDIR/usr/bin
+wget --show-progress -qO $HWOSDIR/usr/bin/stl "$rawgit/$usergit/stl/main/stl/stl.sh"
+wget --show-progress -qO $HWOSDIR/usr/bin/gproxy "$rawgit/$usergit/stl/main/stl/gproxy.sh"
+wget --show-progress -qO $HWOSDIR/usr/bin/autorekonek-stl "$rawgit/$usergit/stl/main/stl/autorekonek-stl.sh"
+wget --show-progress -qO $HWOSDIR/root/akun/tunnel.py "$rawgit/$usergit/stl/main/stl/tunnel.py"
+wget --show-progress -qO $HWOSDIR/root/akun/ssh.py "$rawgit/$usergit/stl/main/stl/ssh.py"
+wget --show-progress -qO $HWOSDIR/root/akun/inject.py "$rawgit/$usergit/stl/main/stl/inject.py"
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau terminal scripts additionals menu

@@ -181,6 +181,20 @@ chmod +x /sbin/set_sms_ports.sh
 chmod +x /sbin/smsled-init.sh
 chmod +x /sbin/smsled.sh
 
+# Add wegare123 stl tool
+# run "stl" using terminal for use
+chmod +x /usr/bin/gproxy
+chmod +x /usr/bin/stl
+chmod +x /root/akun/tunnel.py
+chmod +x /root/akun/ssh.py
+chmod +x /root/akun/inject.py
+chmod +x /usr/bin/autorekonek-stl
+mkdir -p ~/.ssh/
+touch ~/akun/ssl.conf
+touch ~/.ssh/config
+touch ~/akun/stl.txt
+touch ~/akun/ipmodem.txt 
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals menu
 #-----------------------------------------------------------------------------
