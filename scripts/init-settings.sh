@@ -94,9 +94,25 @@ EOF
 	echo -e "  helmilog : helmipatch already applied to on-boot..."
 fi
 
-# Set default theme to luci-theme-argon and delete default watchcat setting
-echo -e "uci set luci.main.mediaurlbase='/luci-static/argon'\nuci commit luci\n" > /bin/default-theme
-echo -e "uci delete system.@watchcat[0]\nuci commit" >> /bin/default-theme
+# Set default theme to luci-theme-argon
+# Delete default watchcat setting
+# Set Google DNS as default DNS Forwarding
+cat << 'EOF' > /bin/default-theme
+
+uci set luci.main.mediaurlbase='/luci-static/argon'
+uci commit luci
+
+uci delete system.@watchcat
+uci commit
+/etc/init.d/watchcat restart
+
+uci add_list dhcp.@dnsmasq[0].server='8.8.8.8'
+uci add_list dhcp.@dnsmasq[0].server='8.8.4.4'
+uci add_list dhcp.@dnsmasq[0].server='1.1.1.1'
+uci commit dhcp
+/etc/init.d/dnsmasq restart
+
+EOF
 chmod +x /bin/default-theme
 default-theme
 
