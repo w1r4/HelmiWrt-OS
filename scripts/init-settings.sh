@@ -189,11 +189,11 @@ chmod +x /root/akun/tunnel.py
 chmod +x /root/akun/ssh.py
 chmod +x /root/akun/inject.py
 chmod +x /usr/bin/autorekonek-stl
-mkdir -p ~/.ssh/
-touch ~/akun/ssl.conf
-touch ~/.ssh/config
-touch ~/akun/stl.txt
-touch ~/akun/ipmodem.txt 
+mkdir -p /root/.ssh/
+touch /root/akun/ssl.conf
+touch /root/.ssh/config
+touch /root/akun/stl.txt
+touch /root/akun/ipmodem.txt 
 
 # Add wifi id seamless autologin by kopijahe
 # run "kopijahe" using terminal for use
