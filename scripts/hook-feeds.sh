@@ -22,8 +22,8 @@ git clone --depth=1 https://github.com/immortalwrt/luci -b openwrt-18.06-k5.4 te
 # Add luci-app-adguardhome
 cp -r temp/luci/applications/luci-app-adguardhome luci/applications/luci-app-adguardhome
 cp -r temp/packages/net/adguardhome packages/net/adguardhome
+sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang#g' packages/net/adguardhome/Makefile
 cp -r temp/packages/lang/node-yarn packages/lang/node-yarn
-cp -r temp/packages/lang/golang packages/lang/golang
 cp -r temp/packages/devel/packr packages/devel/packr
 
 # Add luci-proto-modemmanager
