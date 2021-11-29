@@ -21,8 +21,8 @@ git clone --depth=1 https://github.com/immortalwrt/luci -b openwrt-18.06-k5.4 te
 
 # Add luci-app-adguardhome
 cp -r temp/luci/applications/luci-app-adguardhome luci/applications/luci-app-adguardhome
+sed -i 's#include ../../lang#include \$\(TOPDIR\)/feeds/packages/lang#g' temp/packages/net/adguardhome/Makefile
 cp -r temp/packages/net/adguardhome packages/net/adguardhome
-sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang#g' packages/net/adguardhome/Makefile
 cp -r temp/packages/lang/node-yarn packages/lang/node-yarn
 cp -r temp/packages/devel/packr packages/devel/packr
 
@@ -59,7 +59,7 @@ cp -r temp/luci/protocols/luci-proto-minieap luci/protocols/luci-proto-minieap
 cp -r temp/packages/net/xray-core packages/net/xray-core
 cp -r temp/packages/net/xray-plugin packages/net/xray-plugin
 cp -r temp/packages/net/v2raya packages/net/v2raya
-sed -i 's#include ../../lang/golang#include $(TOPDIR)/feeds/packages/lang/golang#g' packages/net/v2raya/Makefile
+sed -i 's#include ../../lang/golang#include \$\(TOPDIR\)/feeds/packages/lang/golang#g' packages/net/v2raya/Makefile
 
 # Add luci-app-ramfree
 cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
