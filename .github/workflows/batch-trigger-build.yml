@@ -44,6 +44,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
+      - name: Actions Checkout running succesfully, resuming build
+        run: |
+          sleep 30
+          echo "Actions Checkout running succesfully, resuming build"
+
       - name: Running NanoPi R2C Build
         uses: convictional/trigger-workflow-and-wait@v1.5.0
         with:
