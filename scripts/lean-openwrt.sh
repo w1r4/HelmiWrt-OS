@@ -83,6 +83,7 @@ git clone --depth=1 https://github.com/4IceG/luci-app-atinout-mod
 
 # HelmiWrt packages
 git clone --depth=1 https://github.com/helmiau/helmiwrt-packages
+rm -rf helmiwrt-packages/luci-app-v2raya
 
 # Add themes from kenzok8 openwrt-packages
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-atmaterial_new kenzok8/luci-theme-atmaterial_new
@@ -97,6 +98,10 @@ svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradi
 
 # Add luci-app-amlogic
 git clone --depth=1 https://github.com/ophub/luci-app-amlogic
+
+# Add LuCI v2rayA
+git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
