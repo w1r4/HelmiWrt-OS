@@ -15,9 +15,6 @@ on:
 #  watch:
 #    types: started
 
-permissions:
-  contents: read|write
-
 env:
   REPO_URL: https://github.com/radityabh/amlogic-s9xxx-openwrt
   REPO_BRANCH: main
