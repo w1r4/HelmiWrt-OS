@@ -16,7 +16,6 @@ on:
 #    types: started
 
 permissions:
-  actions: read|write
   contents: read|write
 
 env:
