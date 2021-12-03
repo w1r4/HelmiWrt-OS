@@ -118,8 +118,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.HELMIWRT_RW }}
       with:
+        prerelease: true
         name: HelmiWrt ${{ env.BUILD_TAG }}
         tag_name: helmiwrt-${{ env.BUILD_TAG }}
         files: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
@@ -127,5 +128,5 @@ jobs:
     - name: Delete Workflow Runs
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 1
+        retain_days: 2
         keep_minimum_runs: 3
