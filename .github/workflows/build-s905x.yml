@@ -114,15 +114,14 @@ jobs:
         echo "::set-output name=status::success"
 
     - name: Upload Firmware Files to GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.HELMIWRT_RW }}
       with:
-        prerelease: true
+        allowUpdates: true
+        token: ${{ secrets.HELMIWRT_RW }}
         name: HelmiWrt ${{ env.BUILD_TAG }}
-        tag_name: helmiwrt-${{ env.BUILD_TAG }}
-        files: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
+        tag: helmiwrt-${{ env.BUILD_TAG }}
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
 
     - name: Delete Workflow Runs
       uses: GitRML/delete-workflow-runs@main
