@@ -172,7 +172,7 @@ EOF
 /etc/config/firewall restart
 
 # Fix Architecture overview for s9xxx amlogic and Uninstall luci-app-amlogic for Raspberry Pi 3
-if grep -q "amlogic" /sbin/cpuinfo; then
+if grep -q "amlogic" /tmp/sysinfo/board_name; then
 	sed -i "s#bcm27xx/bcm2710#armvirt/64#iIg" /etc/openwrt_release
 else
 	opkg remove luci-app-amlogic
