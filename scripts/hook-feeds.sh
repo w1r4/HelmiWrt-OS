@@ -58,6 +58,7 @@ cp -r temp/luci/protocols/luci-proto-minieap luci/protocols/luci-proto-minieap
 # Add v2rayA
 cp -r temp/packages/net/xray-core packages/net/xray-core
 cp -r temp/packages/net/xray-plugin packages/net/xray-plugin
+rm -rf packages/net/v2raya
 cp -r temp/packages/net/v2raya packages/net/v2raya
 sed -i 's#include ../../lang/golang#include \$\(TOPDIR\)/feeds/packages/lang/golang#g' packages/net/v2raya/Makefile
 
@@ -66,6 +67,11 @@ cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
 
 # Add luci-theme-darkmatter
 cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
+
+# Fix docker-compose,docker,dockerd compile
+sed -i 's#include ../../lang/golang#include \$\(TOPDIR\)/feeds/packages/lang/golang#g' packages/utils/docker-compose/Makefile
+sed -i 's#include ../../lang/golang#include \$\(TOPDIR\)/feeds/packages/lang/golang#g' packages/utils/docker/Makefile
+sed -i 's#include ../../lang/golang#include \$\(TOPDIR\)/feeds/packages/lang/golang#g' packages/utils/dockerd/Makefile
 
 # Clearing temp directory
 rm -rf temp
