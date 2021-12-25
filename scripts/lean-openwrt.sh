@@ -94,6 +94,9 @@ svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradi
 # Add luci-app-amlogic
 git clone --depth=1 https://github.com/ophub/luci-app-amlogic
 
+# Add p7zip
+git clone --depth=1 https://github.com/hubutui/p7zip-lede
+
 # Add LuCI v2rayA
 git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
 
