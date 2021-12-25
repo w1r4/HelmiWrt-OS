@@ -240,7 +240,7 @@ jobs:
           prerelease: true
           name: HelmiWrt ${{ env.FILE_DATE }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
-          files: ${{ env.FIRMWARE }}/*
+          files: ${{ env.FIRMWARE }}/helmiwrt-armvirt-64-default*
 
       - name: Delete Workflow Runs
         uses: GitRML/delete-workflow-runs@main
