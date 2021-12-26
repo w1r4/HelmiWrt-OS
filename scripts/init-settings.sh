@@ -130,11 +130,11 @@ chmod +x /bin/vasm
 opkg remove $(opkg list-installed | grep zh-cn)
 
 # start v2rayA service on boot
-sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
-/etc/init.d/v2raya enable
-/etc/init.d/v2raya start
-/etc/init.d/v2raya reload
-/etc/init.d/v2raya restart
+# sed -i "s#option enabled.*#option enabled '1'#g" /etc/config/v2raya
+# /etc/init.d/v2raya enable
+# /etc/init.d/v2raya start
+# /etc/init.d/v2raya reload
+# /etc/init.d/v2raya restart
 
 # activate TUN TAP interface
 /usr/sbin/openvpn --mktun --dev tun0
