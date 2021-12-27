@@ -28,7 +28,7 @@ env:
   TZ: Asia/Jakarta
 
 jobs:
-  Build armvirt64:
+  Build_armvirt64:
     runs-on: ubuntu-18.04
 
     outputs:
@@ -262,7 +262,7 @@ jobs:
             [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.helmiau.com/blog/helmiwrt-os)
 
 
-  Build s9xxx:
+  Trigger_s9xxx_Build_Actions:
     runs-on: ubuntu-18.04
 
     steps:
