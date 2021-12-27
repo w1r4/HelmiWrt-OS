@@ -241,6 +241,23 @@ jobs:
           name: HelmiWrt ${{ env.FILE_DATE }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ${{ env.FIRMWARE }}/helmiwrt-armvirt-64-default*
+          body: |
+            **HelmiWrt is custom OpenWrt build for**
+            - Raspberry Pi 1,2,3,4
+            - x86/64 (PC)
+            - NanoPi R2C, R2S and R4S
+            - OrangePi Zero, R1 Plus
+            - Set-top-box s9xxx chipset
+            
+            **Firmware Information**
+            LuCI IP Address   : 192.168.1.1
+            LuCI Username     : root
+            LuCI Password     : password
+            WiFi SSID         : HelmiWrt
+            WiFi Password     : none
+            
+            [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.helmiau.com/blog/helmiwrt-os)
+
 
   Build s9xxx:
     runs-on: ubuntu-18.04

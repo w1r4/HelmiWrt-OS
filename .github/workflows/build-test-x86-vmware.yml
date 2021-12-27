@@ -92,9 +92,3 @@ jobs:
             exit 1
           fi
           echo "::set-output name=COMPILE_STATUS::success"
-
-      - name: Delete Workflow Runs
-        uses: GitRML/delete-workflow-runs@main
-        with:
-          retain_days: 2
-          keep_minimum_runs: 3

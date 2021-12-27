@@ -273,9 +273,3 @@ jobs:
             WiFi Password     : none
             
             [Read more about this firmware info and guides here](https://www.helmiau.com/blog/helmiwrt-os)
-
-      - name: Delete Workflow Runs
-        uses: GitRML/delete-workflow-runs@main
-        with:
-          retain_days: 2
-          keep_minimum_runs: 3
