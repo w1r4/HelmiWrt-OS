@@ -17,6 +17,7 @@ on:
 #    types: started
 
 env:
+  # Armvirt build environments
   TOOLCHAIN_TAG: coolsnowwolf-lede-master
   TOOLCHAIN_NAME: toolchain-image-coolsnowwolf-lede-master-armvirt_64.img
   CONFIG_FILE: config/armvirt64.config
@@ -26,6 +27,18 @@ env:
   UPLOAD_BIN_DIR: true
   UPLOAD_RELEASE: true
   TZ: Asia/Jakarta
+  
+  # Trigger build environments
+  REPO_OWNER: helmiau
+  REPO_NAME: HelmiWrt-OS
+  BRANCH_NAME: main
+  # delay nterval in seconds
+  DELAY_INT: 600
+  # other configs
+  FAILPROP: false
+  TRIGGERWF: true
+  WAITWF: false
+  
 
 jobs:
   Build_armvirt64:
