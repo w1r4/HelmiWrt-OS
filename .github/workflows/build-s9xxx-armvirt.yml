@@ -120,7 +120,7 @@ jobs:
         allowUpdates: true
         token: ${{ secrets.HELMIWRT_RW }}
         name: HelmiWrt Test ${{ env.BUILD_TAG }}
-        tag: helmiwrt-test-${{ env.BUILD_TAG }}
+        tag: helmiwrt-armvirt-${{ env.BUILD_TAG }}
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
         body: |
           **HelmiWrt is custom OpenWrt build for**

@@ -90,7 +90,10 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y\nCONFIG_PACKAGE_wpad-basic=y\n" >> $OPENWRTROOT/.config
+          echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y" >> $OPENWRTROOT/.config
+          echo -e "\nCONFIG_PACKAGE_wpad=y" >> $OPENWRTROOT/.config
+          echo -e "\nCONFIG_PACKAGE_iw-full=y" >> $OPENWRTROOT/.config
+          echo -e "\nCONFIG_PACKAGE_hostapd-common=y" >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
@@ -226,7 +229,7 @@ jobs:
         if: steps.generate.outputs.GENERATE_STATUS == 'success' && steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
           sleep 20
-          echo "::set-output name=release_tag::helmiwrt-${{ env.FILE_DATE }}"
+          echo "::set-output name=release_tag::helmiwrt-armvirt-${{ env.FILE_DATE }}"
           touch release.txt
           echo "::set-output name=status::success"
 
@@ -271,7 +274,7 @@ jobs:
           sleep 20
           echo "Actions Checkout running succesfully, resuming build"
 
-      - name: Running s9xxx Build
+      - name: Running s9xxx Build with armvirt64 base
         uses: convictional/trigger-workflow-and-wait@v1.5.0
         with:
           owner: ${{ env.REPO_OWNER }}
