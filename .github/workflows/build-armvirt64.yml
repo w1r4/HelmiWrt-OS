@@ -263,6 +263,7 @@ jobs:
 
 
   Trigger_s9xxx_Build_Actions:
+    needs: [Build_armvirt64]
     runs-on: ubuntu-18.04
 
     steps:
