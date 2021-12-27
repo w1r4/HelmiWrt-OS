@@ -7,7 +7,7 @@
 # HelmiWrt by helmiau.com
 #=================================================
 
-name: Build Armvirt 64
+name: Build armvirt64
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ env:
   TZ: Asia/Jakarta
 
 jobs:
-  Build:
+  Build armvirt64:
     runs-on: ubuntu-18.04
 
     outputs:
@@ -90,14 +90,14 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y\n" >> $OPENWRTROOT/.config
+          echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y\nCONFIG_PACKAGE_wpad-basic=y\n" >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-speedtest.sh aarch64
           ../scripts/preset-terminal-tools.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
+          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/armvirt/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods
@@ -242,8 +242,26 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ${{ env.FIRMWARE }}/helmiwrt-armvirt-64-default*
 
-      - name: Delete Workflow Runs
-        uses: GitRML/delete-workflow-runs@main
+  Build s9xxx:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Actions Checkout running succesfully, resuming build
+        run: |
+          sleep 20
+          echo "Actions Checkout running succesfully, resuming build"
+
+      - name: Running s9xxx Build
+        uses: convictional/trigger-workflow-and-wait@v1.5.0
         with:
-          retain_days: 2
-          keep_minimum_runs: 3
+          owner: ${{ env.REPO_OWNER }}
+          repo: ${{ env.REPO_NAME }}
+          github_token: ${{ secrets.HELMIWRT_RW }}
+          workflow_file_name: build-s9xxx-armvirt.yml
+          ref: ${{ env.BRANCH_NAME }}
+          propagate_failure: ${{ env.FAILPROP }}
+          trigger_workflow: ${{ env.TRIGGERWF }}
+          wait_workflow: ${{ env.WAITWF }}
