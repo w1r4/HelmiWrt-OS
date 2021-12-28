@@ -118,6 +118,7 @@ jobs:
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
         allowUpdates: true
+        prerelease: true
         token: ${{ secrets.HELMIWRT_RW }}
         name: HelmiWrt Test ${{ env.BUILD_TAG }}
         tag: helmiwrt-armvirt-${{ env.BUILD_TAG }}
