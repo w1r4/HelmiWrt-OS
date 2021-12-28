@@ -6,7 +6,7 @@
 # HelmiWrt OS by helmiau.com   
 #=================================================
 
-name: Build s9xxx
+name: Build s9xxx rpi3 based
 
 on:
   workflow_dispatch:
@@ -118,6 +118,7 @@ jobs:
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
         allowUpdates: true
+        prerelease: true
         token: ${{ secrets.HELMIWRT_RW }}
         name: HelmiWrt ${{ env.BUILD_TAG }}
         tag: helmiwrt-${{ env.BUILD_TAG }}
