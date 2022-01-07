@@ -68,11 +68,6 @@ cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
 # Add luci-theme-darkmatter
 cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
 
-# Fix dockerd compile (revert runc: update to 1.0.3)
-sed -i 's#:=1.0.3#:=1.0.2#g' packages/utils/runc/Makefile
-sed -i 's#0eaf2f6606d72f166a5e7138a8a8d4d8f85d84e43448c08c66a1c93ead17a574#6c3cca4bbeb5d9b2f5e3c0c401c9d27bc8a5d2a0db8a2f6a06efd03ad3c38a33#g' packages/utils/runc/Makefile
-sed -i 's#f46b6ba2c9314cfc8caae24a32ec5fe9ef1059fe#52b36a2dd837e8462de8e01458bf02cf9eea47dd#g' packages/utils/runc/Makefile
-
 # Fix modemmanager dw5821e by @neo_at (Nugroho)
 sed -i 's/$(LIBQMI/$(CONFIG_LIBQMI/g' packages/libs/libqmi/Makefile
 
