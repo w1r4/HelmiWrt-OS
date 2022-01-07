@@ -76,6 +76,9 @@ sed -i 's#f46b6ba2c9314cfc8caae24a32ec5fe9ef1059fe#52b36a2dd837e8462de8e01458bf0
 # Fix modemmanager dw5821e by @neo_at (Nugroho)
 sed -i 's/$(LIBQMI/$(CONFIG_LIBQMI/g' packages/libs/libqmi/Makefile
 
+# Fix stubby: add libunbound to stubby package
+sed -i 's#+ca-certs#+ca-certs +libunbound#g' packages/net/stubby/Makefile
+
 # Clearing temp directory
 rm -rf temp
 popd
