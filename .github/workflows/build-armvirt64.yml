@@ -242,7 +242,7 @@ jobs:
         if: steps.generate.outputs.GENERATE_STATUS == 'success' && steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
           sleep 20
-          echo "::set-output name=release_tag::helmiwrt-armvirt-${{ env.FILE_DATE }}"
+          echo "::set-output name=release_tag::helmiwrt-${{ env.FILE_DATE }}"
           touch release.txt
           echo "::set-output name=status::success"
 
