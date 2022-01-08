@@ -65,45 +65,45 @@ jobs:
       run: |
         cd $OPENWRTROOT
         [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
-        if wget -S --spider $HELMIWRT_REL-armvirt-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        if wget -S --spider $HELMIWRT_REL-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #Today Build
             echo "Today build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #Yesterday
             echo "Yesterday build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '1 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #2 Day Before
             echo "2 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '2 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #3 Days Before
             echo "3 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '3 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #4 Days Before
             echo "4 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '4 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #5 Days Before
             echo "5 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '5 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #6 Days Before
             echo "6 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '6 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
+        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
             #7 Days Before
             echo "7 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-armvirt-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME
+            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME
             echo "BUILD_TAG=$(date +%Y.%m.%d -d '7 day ago')" >> $GITHUB_ENV
         fi
         sudo chmod +x makeHelmi
