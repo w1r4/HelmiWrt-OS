@@ -102,10 +102,6 @@ cat << 'EOF' > /bin/default-theme
 uci set luci.main.mediaurlbase='/luci-static/argon'
 uci commit luci
 
-uci delete system.@watchcat
-uci commit
-/etc/init.d/watchcat restart
-
 uci add_list dhcp.@dnsmasq[0].server='8.8.8.8'
 uci add_list dhcp.@dnsmasq[0].server='8.8.4.4'
 uci commit dhcp

@@ -34,6 +34,8 @@ rm -rf packages/utils/watchcat
 rm -rf luci/applications/luci-app-watchcat
 cp -r temp/luci/applications/luci-app-watchcat luci/applications/luci-app-watchcat
 cp -r temp/packages/utils/watchcat packages/utils/watchcat
+# Remove watchcat config
+echo "" > packages/utils/watchcat/files/watchcat.config
 
 # Replace coolsnowwolf/lede php7 with immortalwrt source
 rm -rf packages/lang/php7
