@@ -21,22 +21,6 @@ mkdir -p $COREDIR
 # TEST debug
 # curl -sL https://api.github.com/repos/Dreamacro/clash/releases | grep /clash-linux-armv8 | awk -F '"' '{print $4}' | awk 'NR==1 {print; exit}'
 
-# Dreamacro Core has:
-# - original core
-# - tun premium core
-# Please use tun game core from Meta or Vernesong core
-clash_url=$(curl -sL $APIGIT/Dreamacro/clash/releases | grep /clash-linux-$1 | awk -F '"' '{print $4}' | sed -n '1p')
-clash_tun_url=$(curl -sL $APIGIT/Dreamacro/clash/releases/tags/premium | grep /clash-linux-$1 | awk -F '"' '{print $4}')
-#wget --show-progress -qO- $clash_url | gunzip -c > $COREDIR/clash
-#wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
-
-# Clash Meta Core has:
-# - tun premium core
-# Please use original and tun game core from Dreamacro or Vernesong core
-# Docs: https://github.com/MetaCubeX/Clash.Meta/tree/Dev
-clash_tun_url=$(curl -sL $APIGIT/MetaCubeX/Clash.Meta/releases | grep /Clash.Meta-linux-$1 | awk -F '"' '{print $4}' | sed -n '1p')
-#wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
-
 # Vernesong Core has:
 # - original core
 # - tun premium core
@@ -47,6 +31,22 @@ clash_game_url=$(curl -sL $APIGIT/vernesong/OpenClash/releases/tags/TUN | grep /
 wget --show-progress -qO- $clash_url | tar xOvz > $COREDIR/clash
 wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
 wget --show-progress -qO- $clash_game_url | tar xOvz > $COREDIR/clash_game
+
+# Dreamacro Core has:
+# - original core
+# - tun premium core
+# Please use tun game core from Meta or Vernesong core
+clash_dreamacro=$(curl -sL $APIGIT/Dreamacro/clash/releases | grep /clash-linux-$1 | awk -F '"' '{print $4}' | sed -n '1p')
+clash_tun_dreamacro=$(curl -sL $APIGIT/Dreamacro/clash/releases/tags/premium | grep /clash-linux-$1 | awk -F '"' '{print $4}')
+wget --show-progress -qO- $clash_dreamacro | gunzip -c > $COREDIR/clash_dreamacro
+wget --show-progress -qO- $clash_tun_dreamacro | gunzip -c > $COREDIR/clash_tun_dreamacro
+
+# Clash Meta Core has:
+# - tun premium core
+# Please use original and tun game core from Dreamacro or Vernesong core
+# Docs: https://github.com/MetaCubeX/Clash.Meta/tree/Dev
+clash_tun_meta=$(curl -sL $APIGIT/MetaCubeX/Clash.Meta/releases | grep /Clash.Meta-linux-$1 | awk -F '"' '{print $4}' | sed -n '1p')
+wget --show-progress -qO- $clash_tun_meta | gunzip -c > $COREDIR/clash_tun_meta
 
 chmod +x $COREDIR/clash*
 
