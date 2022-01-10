@@ -35,7 +35,7 @@ clash_tun_url=$(curl -sL $APIGIT/Dreamacro/clash/releases/tags/premium | grep /c
 # Please use original and tun game core from Dreamacro or Vernesong core
 # Docs: https://github.com/MetaCubeX/Clash.Meta/tree/Dev
 clash_tun_url=$(curl -sL $APIGIT/MetaCubeX/Clash.Meta/releases | grep /Clash.Meta-linux-$1 | awk -F '"' '{print $4}' | sed -n '1p')
-wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
+#wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
 
 # Vernesong Core has:
 # - original core
@@ -45,7 +45,7 @@ clash_url=$(curl -sL $APIGIT/vernesong/OpenClash/releases/tags/Clash | grep /cla
 clash_tun_url=$(curl -sL $APIGIT/vernesong/OpenClash/releases/tags/TUN-Premium | grep /clash-linux-$1 | awk -F '"' '{print $4}')
 clash_game_url=$(curl -sL $APIGIT/vernesong/OpenClash/releases/tags/TUN | grep /clash-linux-$1 | awk -F '"' '{print $4}')
 wget --show-progress -qO- $clash_url | tar xOvz > $COREDIR/clash
-#wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
+wget --show-progress -qO- $clash_tun_url | gunzip -c > $COREDIR/clash_tun
 wget --show-progress -qO- $clash_game_url | tar xOvz > $COREDIR/clash_game
 
 chmod +x $COREDIR/clash*
