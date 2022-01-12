@@ -90,6 +90,7 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd ken
 
 # Add Xradio kernel for Orange Pi Zero
 svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
+sed -i "s/ +wpad-mini//g" melsem/xradio/Makefile
 
 # Add luci-app-amlogic
 git clone --depth=1 https://github.com/ophub/luci-app-amlogic
