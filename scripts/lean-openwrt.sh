@@ -34,7 +34,7 @@ sed -i 's/ upx\/host//g' openwrt-passwall/v2ray-plugin/Makefile
 grep -lr upx/host openwrt-passwall/* | xargs -t -I {} sed -i '/upx\/host/d' {}
 
 # Add OpenClash
-git clone --depth=1 -b master https://github.com/vernesong/OpenClash
+git clone --depth=1 -b dev https://github.com/vernesong/OpenClash
 
 # Add luci-app-diskman
 git clone --depth=1 https://github.com/SuLingGG/luci-app-diskman
