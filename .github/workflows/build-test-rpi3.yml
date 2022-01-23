@@ -109,7 +109,7 @@ jobs:
           git clone https://${{ env.REPO_OWNER }}:${{ secrets.HELMIWRT_RW }}@github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}-Plus.git filex
           rm -rf filex/{README.md,LICENSE,runbashing.sh}
           cp -r filex/* package/base-files/files/
-          rm -rf filex 
+          rm -rf filex
           sed -i -e 's/\r$//' $(grep -rli "/bin/bash" "package/base-files/files/bin")
           chmod +x package/base-files/files/bin/*
           mv package/base-files/files/root/.oh-my-zsh/themes/ys.zsh-theme files/root/.oh-my-zsh/themes/ys.zsh-theme
@@ -249,12 +249,4 @@ jobs:
             - NanoPi R2S, R4S
             - OrangePi Zero, R1 Plus
             - Set-top-box s950x chipset
-            
-            **Firmware Information**
-            LuCI IP Address   : 192.168.1.1
-            LuCI Username     : root
-            LuCI Password     : password
-            WiFi SSID         : HelmiWrt
-            WiFi Password     : none
-            
             [Read more about this firmware info and guides here](https://www.helmiau.com/blog/helmiwrt-os)

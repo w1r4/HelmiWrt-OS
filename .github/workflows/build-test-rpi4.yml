@@ -264,12 +264,4 @@ jobs:
             - NanoPi R2S, R4S
             - OrangePi Zero, R1 Plus
             - Set-top-box s9xxx chipset
-            
-            **Firmware Information**
-            LuCI IP Address   : 192.168.1.1
-            LuCI Username     : root
-            LuCI Password     : password
-            WiFi SSID         : HelmiWrt
-            WiFi Password     : none
-            
             [Read more about this firmware info and guides here](https://www.helmiau.com/blog/helmiwrt-os)

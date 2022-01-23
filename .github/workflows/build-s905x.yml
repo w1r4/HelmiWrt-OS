@@ -3,7 +3,7 @@
 # Description: Repack HelmiWrt OS for s905x devices using GitHub Actions
 # Lisence: MIT
 # Repacker : Raditya Budi Handoko <https://github.com/radityabh>
-# HelmiWrt OS by helmiau.com   
+# HelmiWrt OS by helmiau.com
 #=================================================
 
 name: Build s9xxx rpi3 based
@@ -45,7 +45,7 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
         echo "COMPILE_STARTINGTIME=$(date +"%Y.%m.%d.%H:%M")" >> $GITHUB_ENV
-        
+
     - name: Clone source code
       working-directory: /workdir
       run: |
@@ -53,13 +53,13 @@ jobs:
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         sed -i '/HelmiWrt_/c\ build_image_file="${out_path}/helmiwrt-\${build_op}-k\${kernel}.img"' openwrt/makeHelmi
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        
+
     - name: Install Feeds
       id: feeds
       run: |
         cd openwrt
         echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
-        
+
     - name: Repacking HelmiWrt firmware
       id: build
       run: |
@@ -130,13 +130,4 @@ jobs:
           - NanoPi R2C, R2S and R4S
           - OrangePi Zero, R1 Plus
           - Set-top-box s9xxx chipset
-            
-          **Firmware Information**
-          LuCI IP Address   : 192.168.1.1
-          LuCI Username     : root
-          LuCI Password     : password
-          WiFi SSID         : HelmiWrt
-          WiFi Password     : none
-            
           [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.helmiau.com/blog/helmiwrt-os)
-
