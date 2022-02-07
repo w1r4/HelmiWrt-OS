@@ -98,14 +98,19 @@ jobs:
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-speedtest.sh aarch64
-          #echo "====== Checking speedtest file size ======"
-          #wc -c files/bin/speedtest
-          #echo "====== Listing files under files/bin ======"
-          #ls -R files/bin
-          #echo "====== Checking and Listing done ======"
+          #Check Speedtest Binary File
+          echo "====== Checking speedtest file size ======"
+          wc -c files/bin/speedtest
+          echo "====== Listing files under files/bin ======"
+          ls -R files/bin
+          echo "====== Checking and Listing done ======"
           ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
+          #Force kernel 5.4
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
+          #Fix: Patch failed! Please fix linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch!
+          rm -f target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/4e4a05e9bb525df227346a7f32e7be4637ea0516/target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch -O "target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch"
 
       - name: Load HelmiWrt Mods
         id: mods
