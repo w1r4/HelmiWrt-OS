@@ -108,9 +108,15 @@ jobs:
           ../scripts/enable-rpi4-wifi.sh
           #Force kernel 5.4
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
-          #Fix: Patch failed! Please fix linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch!
+          #Fix: linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch
           rm -f target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch
-          wget -q https://raw.githubusercontent.com/WYC-2020/lede/4e4a05e9bb525df227346a7f32e7be4637ea0516/target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch -O "target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch"
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/6af5667c3db7c415d9c379bd05a1c96eee4477a5/target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch -O "target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch"
+          #Fix: linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch
+          rm -f target/linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/6af5667c3db7c415d9c379bd05a1c96eee4477a5/target/linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch -O "target/linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch"
+          #Fix: linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch
+          rm -f target/linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/6af5667c3db7c415d9c379bd05a1c96eee4477a5/target/linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch -O "target/linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch"
 
       - name: Load HelmiWrt Mods
         id: mods
