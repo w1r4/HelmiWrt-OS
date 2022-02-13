@@ -108,12 +108,6 @@ jobs:
           ../scripts/enable-rpi4-wifi.sh
           #Force kernel 5.4
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
-          #Fix: linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch
-          rm -f target/linux/bcm27xx/patches-5.4/950-0316-pinctrl-bcm2835-Add-support-for-BCM2711-pull-up-func.patch
-          #Fix: linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch
-          rm -f target/linux/bcm27xx/patches-5.4/950-0328-Revert-pinctrl-bcm2835-Pass-irqchip-when-adding-gpio.patch
-          #Fix: linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch
-          rm -f target/linux/bcm27xx/patches-5.4/950-0362-pinctrl-bcm2835-Change-init-order-for-gpio-hogs.patch
 
       - name: Load HelmiWrt Mods
         id: mods
