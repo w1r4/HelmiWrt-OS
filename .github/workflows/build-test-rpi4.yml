@@ -108,6 +108,9 @@ jobs:
           ../scripts/enable-rpi4-wifi.sh
           #Force kernel 5.4
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
+          #Fix: kmod-drm-vc4 is missing dependencies
+          rm -f package/kernel/linux/modules/video.mk
+          wget -q https://github.com/WYC-2020/lede/blob/f3b81b3e65fdcfc1e533ee72377aa16063908cf7/target/linux/bcm27xx/modules/video.mk -O package/kernel/linux/modules/video.mk
 
       - name: Load HelmiWrt Mods
         id: mods
