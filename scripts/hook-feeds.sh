@@ -73,9 +73,6 @@ cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
 # Fix modemmanager dw5821e by @neo_at (Nugroho)
 sed -i 's/$(LIBQMI/$(CONFIG_LIBQMI/g' packages/libs/libqmi/Makefile
 
-# Fix stubby: add libunbound to stubby package
-sed -i 's#+ca-certs#+ca-certs +libunbound#g' packages/net/stubby/Makefile
-
 # Clearing temp directory
 rm -rf temp
 popd
