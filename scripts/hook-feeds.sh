@@ -89,16 +89,19 @@ popd
 pushd customfeeds/luci
 export luci_feed="$(pwd)"
 popd
-#Old
-#sed -i '/src-git packages/d' feeds.conf.default
-#echo "src-link packages $packages_feed" >> feeds.conf.default
-#sed -i '/src-git luci/d' feeds.conf.default
-#echo "src-link luci $luci_feed" >> feeds.conf.default
-#New: 15-02-2022
-sed -i '/src-git-full packages/d' feeds.conf.default
-echo "src-link packages $packages_feed" >> feeds.conf.default
-sed -i '/src-git-full luci/d' feeds.conf.default
-echo "src-link luci $luci_feed" >> feeds.conf.default
+if grep -q "src-git packages" "feeds.conf.default"; then
+	#Old
+	sed -i '/src-git packages/d' feeds.conf.default
+	echo "src-link packages $packages_feed" >> feeds.conf.default
+	sed -i '/src-git luci/d' feeds.conf.default
+	echo "src-link luci $luci_feed" >> feeds.conf.default
+elif grep -q "src-git-full packages" "feeds.conf.default"; then
+	#New: 15-02-2022
+	sed -i '/src-git-full packages/d' feeds.conf.default
+	echo "src-link packages $packages_feed" >> feeds.conf.default
+	sed -i '/src-git-full luci/d' feeds.conf.default
+	echo "src-link luci $luci_feed" >> feeds.conf.default
+fi
 
 # Update feeds
 ./scripts/feeds update -a
