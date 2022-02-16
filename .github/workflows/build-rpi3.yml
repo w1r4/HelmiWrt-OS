@@ -98,6 +98,9 @@ jobs:
           ../scripts/preset-speedtest.sh aarch64
           ../scripts/preset-terminal-tools.sh
           sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
+          #Fix: kmod-drm-vc4 is missing dependencies
+          rm -f target/linux/bcm27xx/modules/video.mk
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/f3b81b3e65fdcfc1e533ee72377aa16063908cf7/target/linux/bcm27xx/modules/video.mk -O target/linux/bcm27xx/modules/video.mk
 
       - name: Load HelmiWrt Mods
         id: mods
