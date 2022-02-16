@@ -74,9 +74,9 @@ cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
 sed -i 's/$(LIBQMI/$(CONFIG_LIBQMI/g' packages/libs/libqmi/Makefile
 
 # Use older btrfs-progs
-[ -f packages/utils/btrfs-progs/Makefile ] && rm -rf packages/utils/btrfs-progs/Makefile
-[ -f packages/utils/btrfs-progs/patches/010-64bit.patch ] && packages/utils/btrfs-progs/patches/010-64bit.patch
-wget -q https://raw.githubusercontent.com/coolsnowwolf/packages/49b749563915542ccb5b9805a8dcfbd911d8cc31/utils/btrfs-progs/Makefile -O packages/utils/btrfs-progs/Makefile
+# [ -f packages/utils/btrfs-progs/Makefile ] && rm -rf packages/utils/btrfs-progs/Makefile
+# [ -f packages/utils/btrfs-progs/patches/010-64bit.patch ] && packages/utils/btrfs-progs/patches/010-64bit.patch
+# wget -q https://raw.githubusercontent.com/coolsnowwolf/packages/49b749563915542ccb5b9805a8dcfbd911d8cc31/utils/btrfs-progs/Makefile -O packages/utils/btrfs-progs/Makefile
 
 # Clearing temp directory
 rm -rf temp
