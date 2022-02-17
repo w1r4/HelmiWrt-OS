@@ -90,7 +90,7 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-tomato kenzo
 git clone --depth=1 https://github.com/rosywrt/luci-theme-rosy
 
 # Add luci-theme-neobird theme
-git clone --depth=1 https://github.com/thinktip/luci-theme-neobird
+git clone --depth=1 https://github.com/helmiau/luci-theme-neobird
 
 # Add Xradio kernel for Orange Pi Zero
 svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
@@ -148,7 +148,7 @@ rawgit="https://raw.githubusercontent.com"
 
 # Add vmess creator account from racevpn.com
 # run "vmess" using terminal to create free vmess account
-wget --show-progress -qO $HWOSDIR/bin/vmess "$rawgit/ryanfauzi1/vmesscreator/main/vmess"
+# wget --show-progress -qO $HWOSDIR/bin/vmess "$rawgit/ryanfauzi1/vmesscreator/main/vmess"
 
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
