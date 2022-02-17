@@ -86,9 +86,6 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-ifit kenzok8
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-mcat kenzok8/luci-theme-mcat
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-tomato kenzok8/luci-theme-tomato
 
-# Add luci-theme-rosy theme
-git clone --depth=1 https://github.com/rosywrt/luci-theme-rosy
-
 # Add luci-theme-neobird theme
 git clone --depth=1 https://github.com/helmiau/luci-theme-neobird
 
