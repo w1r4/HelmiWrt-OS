@@ -70,6 +70,9 @@ cp -r temp/luci/applications/luci-app-ramfree luci/applications/luci-app-ramfree
 # Add luci-theme-darkmatter
 cp -r temp/luci/themes/luci-theme-darkmatter luci/themes/luci-theme-darkmatter
 
+# Remove lede argon theme
+rm -rf luci/themes/luci-theme-argon
+
 # Fix modemmanager dw5821e by @neo_at (Nugroho)
 sed -i 's/$(LIBQMI/$(CONFIG_LIBQMI/g' packages/libs/libqmi/Makefile
 

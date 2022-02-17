@@ -49,7 +49,6 @@ git clone --depth=1 https://github.com/lisaac/luci-lib-docker
 # Add luci-theme-argon
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
 git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config
-rm -rf ../lean/luci-theme-argon
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau additionals packages for cloning repo 
@@ -86,10 +85,6 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-edge kenzok8
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-ifit kenzok8/luci-theme-ifit
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-mcat kenzok8/luci-theme-mcat
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-tomato kenzok8/luci-theme-tomato
-
-# Add luci-theme-tano theme
-git clone --depth=1 https://github.com/lynxnexy/lynx
-rm -rf lynx/luci-theme-netgear
 
 # Add luci-theme-rosy theme
 git clone --depth=1 https://github.com/rosywrt/luci-theme-rosy
