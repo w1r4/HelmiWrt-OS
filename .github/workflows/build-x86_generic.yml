@@ -95,7 +95,7 @@ jobs:
           cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/config-5.10
           cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/64/config-5.10
           # Add rtl8723bu for x86
-          svn co https://github.com/radityabh/raditya-package/tree/main/rtl8723bu $OPENWRTROOT/package/kernel/rtl8723bu
+          svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu $OPENWRTROOT/package/kernel/rtl8723bu
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh 386
