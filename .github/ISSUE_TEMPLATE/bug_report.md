@@ -21,8 +21,13 @@ If applicable, add screenshots to help explain your problem.
      - [ ] Amlogic s9xxx
      - [ ] x86
 
+ - Downloaded Firmware Name: ( see: **Supported Devices and Download Section** at my blog post )
+       x86-generic squashfs UEFI ( this is an example, replace this line with your own )
+       Raspberry Pi 4 squashfs factory ( this is an example, replace this line with your own )
+
  - Device Model: ( see: **LuCI - Status - Overview - Model** )
        Raspberry Pi 4 Model B Rev 1.2 ( this is an example, replace this line with your own )
+
  - Firmware Build Version ( see: **LuCI - Status - Overview - Firmware Version** )
        HelmiWrt R22.2.2 2022-02-18  ( this is an example, replace this line with your own )
 
