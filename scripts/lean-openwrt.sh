@@ -104,7 +104,7 @@ git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
 
 # Add Telegram Bot
 git clone https://github.com/koshev-msk/luci-app-telegrambot.git package/luci-app-telegrambot
-git clone https://github.com/koshev-msk/openwrt-telegram-bot.git package/openwrt-telegram-bot
+svn co https://github.com/koshev-msk/openwrt-packages/trunk/packages/net/telegrambot package/openwrt-telegrambot
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
