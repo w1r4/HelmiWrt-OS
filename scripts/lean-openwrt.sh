@@ -102,6 +102,10 @@ git clone --depth=1 https://github.com/hubutui/p7zip-lede
 # Add LuCI v2rayA
 git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
 
+# Add Telegram Bot
+git clone https://github.com/koshev-msk/luci-app-telegrambot.git package/luci-app-telegrambot
+git clone https://github.com/koshev-msk/openwrt-telegram-bot.git package/openwrt-telegram-bot
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------

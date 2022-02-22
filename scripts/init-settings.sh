@@ -167,11 +167,9 @@ ip6tables -t mangle -I PREROUTING ! -p icmpv6 -i  -j HL --hl-set 65
 EOF
 /etc/config/firewall restart
 
-# Fix Architecture overview for s9xxx amlogic and Uninstall luci-app-amlogic for Raspberry Pi 3
-if ! grep -q "aspberry" /tmp/sysinfo/board_name; then
-	sed -i "s#bcm27xx/bcm2710#armvirt/64#iIg" /etc/openwrt_release
-else
-	opkg remove luci-app-amlogic
+# Add Driver wifi rtl8723bu ds866 and set wireless on
+if grep -q "x86_64\|i386" /tmp/sysinfo/board_name; then
+	sed -i "s|iw |ipconfig |g"  /lib/netifd/wireless/mac80211.sh
 fi
 
 # Fix 3ginfo

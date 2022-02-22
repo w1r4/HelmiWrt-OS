@@ -29,14 +29,8 @@ cp -r temp/packages/devel/packr packages/devel/packr
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
 
-# Replace coolsnowwolf/lede watchcat and luci-app-watchcat with immortalwrt source
-rm -rf packages/utils/watchcat
-rm -rf luci/applications/luci-app-watchcat
-cp -r temp/luci/applications/luci-app-watchcat luci/applications/luci-app-watchcat
-cp -r temp/packages/utils/watchcat packages/utils/watchcat
 # Remove watchcat config
 echo "" > packages/utils/watchcat/files/watchcat.config
-echo "" > packages/utils/watchcat/files/uci_defaults_watchcat
 
 # Replace coolsnowwolf/lede php7 with immortalwrt source
 rm -rf packages/lang/php7
