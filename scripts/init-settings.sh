@@ -48,9 +48,6 @@ echo "neofetch" > /root/.oh-my-zsh/custom/example.zsh
 chmod +x /bin/neofetch
 neofetch
 
-# Vmess creator shortcut
-chmod +x /bin/vmess
-
 # Add ram checker from wegare123
 # run "ram" using terminal to check ram usage
 chmod +x /bin/ram
@@ -80,6 +77,9 @@ ln -sf /usr/sbin/trojan /usr/bin/trojan
 # HelmiWrt Patches
 chmod +x /bin/helmiwrt
 helmiwrt
+
+# Add default interfaces
+helmiwrt addinterfacefirewall
 
 # HelmiWrt Patches
 if ! grep -q "helmiwrt" /etc/rc.local; then
