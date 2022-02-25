@@ -65,47 +65,13 @@ jobs:
       run: |
         cd $OPENWRTROOT
         [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
-        if wget -S --spider $HELMIWRT_REL-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #Today Build
-            echo "Today build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +"%Y.%m.%d")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #Yesterday
-            echo "Yesterday build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "1 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '1 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #2 Day Before
-            echo "2 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "2 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '2 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #3 Days Before
-            echo "3 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "3 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '3 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #4 Days Before
-            echo "4 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "4 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '4 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #5 Days Before
-            echo "5 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "5 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '5 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #6 Days Before
-            echo "6 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "6 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '6 day ago')" >> $GITHUB_ENV
-        elif wget -S --spider $HELMIWRT_REL-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME 2>&1 | grep -q 'HTTP/1.1 200 OK'; then
-            #7 Days Before
-            echo "7 days ago build found ! Using this build for repack."
-            wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$(date +%Y.%m.%d -d "7 day ago")/$HELMIWRT_FILENAME
-            echo "BUILD_TAG=$(date +%Y.%m.%d -d '7 day ago')" >> $GITHUB_ENV
-        fi
+        # Get Latest Tag
+        echo -e "LATESTTAG=$(curl -sL https://api.github.com/repos/helmiau/HelmiWrt-OS/releases | jq -r 'first | .tag_name' | sed 's/helmiwrt-//g')" >> $GITHUB_ENV
+        # Download Firmware
+        echo -e "$LATESTTAG build found ! Using this build for repack."
+        wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$LATESTTAG/$HELMIWRT_FILENAME
+        echo "BUILD_TAG=$LATESTTAG" >> $GITHUB_ENV
+        # Build Firmware
         sudo chmod +x makeHelmi
         sudo ./makeHelmi -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.4.0_5.15.15 -a false
         echo "PACKAGED_OUTPUTPATH=${PWD}/out" >> $GITHUB_ENV
@@ -130,4 +96,4 @@ jobs:
           - NanoPi R2C, R2S and R4S
           - OrangePi Zero, R1 Plus
           - Set-top-box s9xxx chipset
-          [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.helmiau.com/blog/helmiwrt-os)
+          [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.google.com/search?q=helmi+wrt+os)
