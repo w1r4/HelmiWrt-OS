@@ -167,8 +167,8 @@ ip6tables -t mangle -I PREROUTING ! -p icmpv6 -i  -j HL --hl-set 65
 EOF
 /etc/config/firewall restart
 
-# Add Driver wifi rtl8723bu ds866 and set wireless on
-if grep -q "x86_64\|i386" /tmp/sysinfo/board_name; then
+# Add Driver wifi rtl8723bu ds866 and set wireless on at x86 devices
+if [ -e "/sbin/getcpu" ] && grep -q "MHz MHz" /sbin/cpuinfo; then
 	sed -i "s|iw |ipconfig |g"  /lib/netifd/wireless/mac80211.sh
 fi
 
