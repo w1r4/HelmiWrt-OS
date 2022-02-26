@@ -93,8 +93,8 @@ jobs:
           cat config/universal.config >> $OPENWRTROOT/.config
           sed -i 's/kmod-usb-net-rtl8152=/kmod-usb-net-rtl8152-vendor=/g' openwrt/.config
           # Add Configs to Kernel Config
-          cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/config-5.10
-          cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/64/config-5.10
+          cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/config-5.4
+          cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/64/config-5.4
           # Add rtl8723bu for x86
           svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu $OPENWRTROOT/package/kernel/rtl8723bu
           cd $OPENWRTROOT
@@ -103,7 +103,7 @@ jobs:
           ../scripts/preset-v2raya.sh 64
           ../scripts/preset-speedtest.sh x86_64
           ../scripts/preset-terminal-tools.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.10" "target/linux/x86/Makefile"
+          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/x86/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods
