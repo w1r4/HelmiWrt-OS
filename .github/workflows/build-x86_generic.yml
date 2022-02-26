@@ -102,6 +102,7 @@ jobs:
           ../scripts/preset-v2raya.sh 32
           ../scripts/preset-speedtest.sh i386
           ../scripts/preset-terminal-tools.sh
+          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.10" "target/linux/x86/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods
