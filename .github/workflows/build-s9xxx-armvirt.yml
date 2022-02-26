@@ -66,9 +66,9 @@ jobs:
         cd $OPENWRTROOT
         [ -d openwrt-armvirt ] || mkdir -p openwrt-armvirt
         # Get Latest Tag
-        echo -e "LATESTTAG=$(curl -sL https://api.github.com/repos/helmiau/HelmiWrt-OS/releases | jq -r 'first | .tag_name' | sed 's/helmiwrt-//g')" >> $GITHUB_ENV
+        echo "LATESTTAG=$(curl -sL https://api.github.com/repos/helmiau/HelmiWrt-OS/releases | jq -r "first | .tag_name" | sed "s/helmiwrt-//g")" >> "$GITHUB_ENV"
         # Download Firmware
-        echo -e "$LATESTTAG build found ! Using this build for repack."
+        echo "$LATESTTAG build found ! Using this build for repack."
         wget -q --show-progress -P openwrt-armvirt $HELMIWRT_REL-$LATESTTAG/$HELMIWRT_FILENAME
         echo "BUILD_TAG=$LATESTTAG" >> $GITHUB_ENV
         # Build Firmware
