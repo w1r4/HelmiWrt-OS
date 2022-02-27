@@ -100,6 +100,7 @@ jobs:
           svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu $OPENWRTROOT/package/kernel/rtl8723bu
           wget -q https://raw.githubusercontent.com/WYC-2020/lede/205d384f392ee6307fc73e083c67064ef6eaac65/package/kernel/linux/modules/crypto.mk -O $OPENWRTROOT/package/kernel/linux/modules/crypto.mk
           wget -q https://raw.githubusercontent.com/WYC-2020/lede/71e0b9d1334a8dc735231da4ff81e60c3006410d/package/kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch -O $OPENWRTROOT/package/kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch
+          wget -q https://raw.githubusercontent.com/WYC-2020/lede/0bdae446b37ca151de2c17902635df59770c5c25/target/linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch -O $OPENWRTROOT/target/linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch
           cd $OPENWRTROOT
           ../$DIY_SH
           ../scripts/preset-clash-core.sh 386
