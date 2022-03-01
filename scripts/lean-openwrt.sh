@@ -142,6 +142,22 @@ popd
 # Change default shell to zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 
+# x86 Patches
+pushd package
+# Add rtl8723bu for x86
+svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu kernel/rtl8723bu
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/205d384f392ee6307fc73e083c67064ef6eaac65/package/kernel/linux/modules/crypto.mk -O kernel/linux/modules/crypto.mk
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/71e0b9d1334a8dc735231da4ff81e60c3006410d/package/kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch -O kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/893ba3d9e6984f90560a0f93921f651ee3ae96cf/package/kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch -O kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/3cc62304a7829cb0dc95328cb6809cf57e3dba40/package/kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch -O kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch
+popd
+
+pushd target
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/0bdae446b37ca151de2c17902635df59770c5c25/target/linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch -O linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/9ea4c2e7634d73645bd3274f2d5fd8437580ea77/target/linux/generic/backport-5.15/003-add-module_supported_device-macro.patch -O linux/generic/backport-5.15/003-add-module_supported_device-macro.patch
+wget -q https://raw.githubusercontent.com/WYC-2020/lede/f60db604f07165d5cd8f7a98be6890180c790513/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -O linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch
+popd
+
 #-----------------------------------------------------------------------------
 #   Start of @helmiau terminal scripts additionals menu
 #-----------------------------------------------------------------------------
