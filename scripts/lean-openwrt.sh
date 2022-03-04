@@ -119,7 +119,7 @@ svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/pa
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
-if grep -q "x86" $WORKFLOWNAME; then
+if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
 	sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
 	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
