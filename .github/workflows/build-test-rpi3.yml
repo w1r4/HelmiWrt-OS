@@ -50,6 +50,8 @@ jobs:
           sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
           docker image prune -a -f
           echo "FILE_DATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
+          export WORKFLOWNAME=$(basename "$0")
+          echo "WORKFLOWNAME=$(basename "$0")" >> $GITHUB_ENV
 
       - name: Free Up More Space
         uses: easimon/maximize-build-space@master

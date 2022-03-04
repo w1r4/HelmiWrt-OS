@@ -46,6 +46,8 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
         echo "COMPILE_STARTINGTIME=$(date +"%Y.%m.%d.%H:%M")" >> $GITHUB_ENV
         echo "BUILD_TAG=$(curl -sL https://api.github.com/repos/helmiau/HelmiWrt-OS/releases | jq -r 'first | .tag_name' | sed 's/helmiwrt-//g')" >> $GITHUB_ENV
+        export WORKFLOWNAME=$(basename "$0")
+        echo "WORKFLOWNAME=$(basename "$0")" >> $GITHUB_ENV
 
     - name: Clone source code
       working-directory: /workdir
