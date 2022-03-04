@@ -120,11 +120,22 @@ svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/pa
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
 svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
 if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
+	#rtl8188eu patches
 	sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
 	sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
 	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
 	sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
 	[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
+	#rtl8812au-ac patches
+	sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
+	sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
+	sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
+	[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
+	#rtl8821cu patches
+	sed -i 's/2020-12-19/2021-11-14/g' rtl8821cu/Makefile
+	sed -i 's/428a0820487418ec69c0edb91726d1cf19763b1e/ef3ff12118a75ea9ca1db8f4806bb0861e4fffef/g' rtl8821cu/Makefile
+	sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
+	[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
 fi
 
 
