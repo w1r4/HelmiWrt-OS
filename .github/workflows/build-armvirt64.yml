@@ -64,8 +64,8 @@ jobs:
           sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
           docker image prune -a -f
           echo "FILE_DATE=$(curl -sL https://api.github.com/repos/helmiau/HelmiWrt-OS/releases | jq -r 'first | .tag_name' | sed 's/helmiwrt-//g')" >> $GITHUB_ENV
-          export WORKFLOWNAME=$(basename "$0")
-          echo "WORKFLOWNAME=$(basename "$0")" >> $GITHUB_ENV
+          export WORKFLOWNAME=$TOOLCHAIN_NAME
+          echo "WORKFLOWNAME=$TOOLCHAIN_NAME" >> $GITHUB_ENV
 
       - name: Free Up More Space
         uses: easimon/maximize-build-space@master
