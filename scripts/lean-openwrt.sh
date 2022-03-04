@@ -123,6 +123,7 @@ sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
 sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
 sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
 sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
+[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
 
 popd
 
