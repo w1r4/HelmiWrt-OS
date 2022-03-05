@@ -114,28 +114,36 @@ svn co https://github.com/koshev-msk/openwrt-packages/trunk/packages/net/telegra
 git clone --depth=1 https://github.com/NateLol/luci-app-oled
 
 # Add extra wireless drivers
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8812au-ac
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8821cu
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
-svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
 if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
+	echo "x86 build detected, using x86 kernel realtek additions"
+	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8812au-ac
+	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8821cu
+	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8192du
+	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl88x2bu
+	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8188eu
 	#rtl8188eu patches
-	sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
-	sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
-	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
-	sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
-	[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
+	#sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
+	#sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
+	#sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
+	#sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
+	#[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
 	#rtl8812au-ac patches
-	sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
-	sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
-	sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
-	[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
+	#sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
+	#sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
+	#sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
+	#[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
 	#rtl8821cu patches
-	sed -i 's/2020-12-19/2021-11-14/g' rtl8821cu/Makefile
-	sed -i 's/428a0820487418ec69c0edb91726d1cf19763b1e/ef3ff12118a75ea9ca1db8f4806bb0861e4fffef/g' rtl8821cu/Makefile
-	sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
-	[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
+	#sed -i 's/2020-12-19/2021-11-14/g' rtl8821cu/Makefile
+	#sed -i 's/428a0820487418ec69c0edb91726d1cf19763b1e/ef3ff12118a75ea9ca1db8f4806bb0861e4fffef/g' rtl8821cu/Makefile
+	#sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
+	#[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
+else
+	echo "x86 build is not detected, using 5.4 kernel realtek additions"
+	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8812au-ac
+	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8821cu
+	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
+	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
+	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
 fi
 
 
@@ -162,21 +170,23 @@ popd
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' $HWOSDIR/etc/passwd
 
 # x86 Patches
-pushd package
-# Add rtl8723bu for x86
-svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu kernel/rtl8723bu
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/205d384f392ee6307fc73e083c67064ef6eaac65/package/kernel/linux/modules/crypto.mk -O kernel/linux/modules/crypto.mk
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/71e0b9d1334a8dc735231da4ff81e60c3006410d/package/kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch -O kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/893ba3d9e6984f90560a0f93921f651ee3ae96cf/package/kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch -O kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/3cc62304a7829cb0dc95328cb6809cf57e3dba40/package/kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch -O kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch
-popd
+if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
+	pushd package
+	# Add rtl8723bu for x86
+	svn co https://github.com/radityabh/raditya-package/trunk/rtl8723bu kernel/rtl8723bu
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/205d384f392ee6307fc73e083c67064ef6eaac65/package/kernel/linux/modules/crypto.mk -O kernel/linux/modules/crypto.mk
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/71e0b9d1334a8dc735231da4ff81e60c3006410d/package/kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch -O kernel/mac80211/patches/ath/001-fix-wil6210-build-with-kernel-5.15.patch
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/893ba3d9e6984f90560a0f93921f651ee3ae96cf/package/kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch -O kernel/mac80211/patches/rt2x00/651-rt2x00-driver-compile-with-kernel-5.15.patch
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/3cc62304a7829cb0dc95328cb6809cf57e3dba40/package/kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch -O kernel/mt76/patches/001-fix-mt76-driver-build-with-kernel-5.15.patch
+	popd
 
-pushd target
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/0bdae446b37ca151de2c17902635df59770c5c25/target/linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch -O linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/9ea4c2e7634d73645bd3274f2d5fd8437580ea77/target/linux/generic/backport-5.15/003-add-module_supported_device-macro.patch -O linux/generic/backport-5.15/003-add-module_supported_device-macro.patch
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/f60db604f07165d5cd8f7a98be6890180c790513/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -O linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch
-wget -q https://raw.githubusercontent.com/WYC-2020/lede/01358c12ec1bfa6d5237eadecbd5ac404705cab3/target/linux/generic/backport-5.15/004-add-old-kernel-macros.patch -O linux/generic/backport-5.15/004-add-old-kernel-macros.patch
-popd
+	pushd target
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/0bdae446b37ca151de2c17902635df59770c5c25/target/linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch -O linux/generic/backport-5.15/001-fix-kmod-iwlwifi-build-on-kernel-5.15.patch
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/9ea4c2e7634d73645bd3274f2d5fd8437580ea77/target/linux/generic/backport-5.15/003-add-module_supported_device-macro.patch -O linux/generic/backport-5.15/003-add-module_supported_device-macro.patch
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/f60db604f07165d5cd8f7a98be6890180c790513/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -O linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch
+	wget -q https://raw.githubusercontent.com/WYC-2020/lede/01358c12ec1bfa6d5237eadecbd5ac404705cab3/target/linux/generic/backport-5.15/004-add-old-kernel-macros.patch -O linux/generic/backport-5.15/004-add-old-kernel-macros.patch
+	popd
+fi
 
 #-----------------------------------------------------------------------------
 #   Start of @helmiau terminal scripts additionals menu
