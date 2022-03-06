@@ -103,9 +103,11 @@ git clone --depth=1 https://github.com/hubutui/p7zip-lede
 # Add LuCI v2rayA
 git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
 
-# Add Telegram Bot
-git clone https://github.com/koshev-msk/luci-app-telegrambot.git package/luci-app-telegrambot
-svn co https://github.com/koshev-msk/openwrt-packages/trunk/packages/net/telegrambot package/openwrt-telegrambot
+# HelmiWrt additional packages (telegrambot)
+git clone --depth=1 https://github.com/helmiau/helmiwrt-adds
+rm -rf helmiwrt-adds/build-ipk
+rm -rf helmiwrt-adds/packages/kernel
+rm -rf helmiwrt-adds/packages/lang
 
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
@@ -123,14 +125,14 @@ svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/pa
 if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	echo "x86 build detected, adding x86 kernel patches realtek additions..."
 	#rtl8188eu patches
-	sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
-	sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
-	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
+	sed -i 's/aircrack-ng/helmiau/g' rtl8188eu/Makefile
+	sed -i 's/2021-02-06/2022-02-05/g' rtl8188eu/Makefile
+	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/f2a36630006ceedd7fc275b3190afe733f5080b8/g' rtl8188eu/Makefile
 	sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
 	[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
 	#rtl8812au-ac patches
-	sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
-	sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
+	sed -i 's/2021-05-22/2022-02-05/g' rtl8812au-ac/Makefile
+	sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/37e27f9165300c89607144b646545fac576ec510/g' rtl8812au-ac/Makefile
 	sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
 	[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
 	#rtl8821cu patches
