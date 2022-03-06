@@ -30,7 +30,7 @@ pushd package/community
 
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
-[ ! -d openwrt-passwall/luci-app-passwall ] && svn co https://github.com/NueXini/NueXini_Packages/branches/main/luci-app-passwall openwrt-passwall/luci-app-passwall
+[ ! -d openwrt-passwall/luci-app-passwall ] && svn co https://github.com/NueXini/NueXini_Packages/trunk/luci-app-passwall openwrt-passwall/luci-app-passwall
 sed -i 's/ upx\/host//g' openwrt-passwall/v2ray-plugin/Makefile
 grep -lr upx/host openwrt-passwall/* | xargs -t -I {} sed -i '/upx\/host/d' {}
 
@@ -115,36 +115,29 @@ svn co https://github.com/koshev-msk/openwrt-packages/trunk/packages/net/telegra
 git clone --depth=1 https://github.com/NateLol/luci-app-oled
 
 # Add extra wireless drivers
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8812au-ac
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8821cu
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
 if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
-	echo "x86 build detected, using x86 kernel realtek additions"
-	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8812au-ac
-	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8821cu
-	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8192du
-	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl88x2bu
-	svn co https://github.com/immortalwrt/immortalwrt/branches/master/package/kernel/rtl8188eu
+	echo "x86 build detected, adding x86 kernel patches realtek additions..."
 	#rtl8188eu patches
-	#sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
-	#sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
-	#sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
-	#sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
-	#[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
+	sed -i 's/aircrack-ng/drygdryg/g' rtl8188eu/Makefile
+	sed -i 's/2021-02-06/2021-10-13/g' rtl8188eu/Makefile
+	sed -i 's/1e7145f3237b3eeb3baf775f4a883e6d79c1cfe6/4830d3906230a4d80ba67709a06c9d5b99764839/g' rtl8188eu/Makefile
+	sed -i '/PKG_MIRROR_HASH/d' rtl8188eu/Makefile
+	[ -f rtl8188eu/patches/030-wireless-5.8.patch ] && rm -f rtl8188eu/patches/030-wireless-5.8.patch
 	#rtl8812au-ac patches
-	#sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
-	#sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
-	#sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
-	#[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
+	sed -i 's/2021-05-22/2021-12-13/g' rtl8812au-ac/Makefile
+	sed -i 's/0b87ed921a8682856aed5a3e68344b0087f3c93c/a72835df07f94439dea74af90c3f726eb3ddf0b7/g' rtl8812au-ac/Makefile
+	sed -i '/PKG_MIRROR_HASH/d' rtl8812au-ac/Makefile
+	[ -f rtl8812au-ac/patches/040-wireless-5.8.patch ] && rm -f rtl8812au-ac/patches/040-wireless-5.8.patch
 	#rtl8821cu patches
-	#sed -i 's/2020-12-19/2021-11-14/g' rtl8821cu/Makefile
-	#sed -i 's/428a0820487418ec69c0edb91726d1cf19763b1e/ef3ff12118a75ea9ca1db8f4806bb0861e4fffef/g' rtl8821cu/Makefile
-	#sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
-	#[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
-else
-	echo "x86 build is not detected, using 5.4 kernel realtek additions"
-	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8812au-ac
-	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8821cu
-	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8192du
-	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl88x2bu
-	svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/kernel/rtl8188eu
+	sed -i 's/2020-12-19/2021-11-14/g' rtl8821cu/Makefile
+	sed -i 's/428a0820487418ec69c0edb91726d1cf19763b1e/ef3ff12118a75ea9ca1db8f4806bb0861e4fffef/g' rtl8821cu/Makefile
+	sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
+	[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
 fi
 
 
