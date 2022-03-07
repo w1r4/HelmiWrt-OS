@@ -185,13 +185,16 @@ fi
 # Default kernel selection and some additions
 if [[ "$WORKFLOWNAME" == *"rpi"* ]] ; then
 	# Raspberry Pi kernel and patches
+	echo "helmilog: Raspberry Pi kernel and patches"
 	sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" $BUILDDIR/target/linux/bcm27xx/Makefile
 	sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.10" $BUILDDIR/target/linux/bcm27xx/Makefile
 	if [[ "$WORKFLOWNAME" == *"master-rpi.img"* ]] ; then
 		# Raspberry Pi 1 additions
+		echo "helmilog: Raspberry Pi 1 kernel and patches"
 		sed -i 's/NaiveProxy=y/NaiveProxy=n/g' $BUILDDIR/.config
 	fi
 	if [[ "$WORKFLOWNAME" == *"master-rpi-4.img"* ]] ; then
+		echo "helmilog: Raspberry Pi 4 kernel and patches"
 		# Raspberry Pi 4 additions
 		echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> $BUILDDIR/target/linux/bcm27xx/bcm2711/config-5.4
 		mkdir -p $BUILDDIR/files/lib/firmware/brcm/
@@ -199,13 +202,16 @@ if [[ "$WORKFLOWNAME" == *"rpi"* ]] ; then
 	fi
 elif [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	# x86 kernel and patches
+	echo "helmilog: x86 kernel and patches"
     sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" $BUILDDIR/target/linux/x86/Makefile
 	sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.10" $BUILDDIR/target/linux/x86/Makefile
 	if [[ "$WORKFLOWNAME" == *"x86_64"* ]] ; then
+		echo "x86 _4 kernel and patches"
 		sed -i 's/kmod-usb-net-rtl8152=/kmod-usb-net-rtl8152-vendor=/g' $BUILDDIR/.config
 	fi
 elif [[ "$WORKFLOWNAME" == *"armvirt"* ]] ; then
 	# Armvirt64 kernel and patches
+	echo "helmilog: Armvirt64 kernel and patches"
     sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" $BUILDDIR/target/linux/armvirt/Makefile
 	sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.10" $BUILDDIR/target/linux/armvirt/Makefile
 	echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y" >> $BUILDDIR/.config
@@ -214,6 +220,7 @@ elif [[ "$WORKFLOWNAME" == *"armvirt"* ]] ; then
 	echo -e "\nCONFIG_PACKAGE_hostapd-common=y" >> $BUILDDIR/.config
 elif [[ "$WORKFLOWNAME" == *"xunlong_orangepi-zero"* ]] ; then
 	# Orange Pi Zero kernel and patches
+	echo "helmilog: Orange Pi Zero kernel and patches"
 	mkdir -p $BUILDDIR/target/linux/sunxi/files-5.4/drivers/thermal
 	echo -e "CONFIG_SUN8I_THERMAL=y" >> $BUILDDIR/target/linux/sunxi/config-5.4
 	wget -q https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-18.06-k5.4/target/linux/sunxi/patches-5.4/012-thermal-drivers-sun8i-Add-thermal-driver.patch -O $BUILDDIR/target/linux/sunxi/patches-5.4/012-thermal-drivers-sun8i-Add-thermal-driver.patch
@@ -223,10 +230,12 @@ elif [[ "$WORKFLOWNAME" == *"xunlong_orangepi-zero"* ]] ; then
     sed -i "s/kmod-i2c-core=y/kmod-i2c-core=n/g" $BUILDDIR/.config
 elif [[ "$WORKFLOWNAME" == *"friendlyarm_nanopi"* ]] ; then
 	# NanoPi kernel and patches
+	echo "helmilog: NanoPi kernel and patches"
 	sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" $BUILDDIR/target/linux/rockchip/Makefile
 	sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.10" $BUILDDIR/target/linux/rockchip/Makefile
 elif [[ "$WORKFLOWNAME" == *"xunlong_orangepi-r1-plus"* ]] ; then
 	# OrangePi R1 Plus kernel and patches
+	echo "helmilog: OrangePi R1 Plus kernel and patches"
 	sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" $BUILDDIR/target/linux/rockchip/Makefile
 	sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.10" $BUILDDIR/target/linux/rockchip/Makefile
 fi
