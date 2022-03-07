@@ -93,14 +93,14 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          sed -i 's/NaiveProxy=y/NaiveProxy=n/g' $OPENWRTROOT/.config
           cd $OPENWRTROOT
+          export BUILDDIR=$OPENWRTROOT
+          echo "BUILDDIR=$OPENWRTROOT" >> $GITHUB_ENV
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv6
           ../scripts/preset-v2raya.sh arm32-v6
           ../scripts/preset-speedtest.sh arm
           ../scripts/preset-terminal-tools.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/bcm27xx/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods

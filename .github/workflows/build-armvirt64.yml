@@ -106,17 +106,14 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
           cat config/rpi-lean-extra.config >> $OPENWRTROOT/.config
           cat config/universal.config >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_luci-app-amlogic=y" >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_wpad=y" >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_iw-full=y" >> $OPENWRTROOT/.config
-          echo -e "\nCONFIG_PACKAGE_hostapd-common=y" >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
+          export BUILDDIR=$OPENWRTROOT
+          echo "BUILDDIR=$OPENWRTROOT" >> $GITHUB_ENV
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-v2raya.sh arm64-v8a
           ../scripts/preset-speedtest.sh aarch64
           ../scripts/preset-terminal-tools.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/armvirt/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods

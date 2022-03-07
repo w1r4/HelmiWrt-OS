@@ -99,13 +99,13 @@ jobs:
           cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/config-5.4
           cat config/x86-kernel.config >> $OPENWRTROOT/target/linux/x86/64/config-5.4
           cd $OPENWRTROOT
+          export BUILDDIR=$OPENWRTROOT
+          echo "BUILDDIR=$OPENWRTROOT" >> $GITHUB_ENV
           ../$DIY_SH
           ../scripts/preset-clash-core.sh 386
           ../scripts/preset-v2raya.sh 32
           ../scripts/preset-speedtest.sh i386
           ../scripts/preset-terminal-tools.sh
-          sed -i "/KERNEL_PATCHVER=/c\KERNEL_PATCHVER=5.4" "target/linux/x86/Makefile"
-          sed -i "/KERNEL_TESTING_PATCHVER=/c\KERNEL_TESTING_PATCHVER=5.15" "target/linux/x86/Makefile"
 
       - name: Load HelmiWrt Mods
         id: mods
