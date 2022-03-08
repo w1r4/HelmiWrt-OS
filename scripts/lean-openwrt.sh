@@ -107,6 +107,9 @@ git clone --depth=1 https://github.com/zxlhhyccc/luci-app-v2raya
 svn co https://github.com/helmiau/helmiwrt-adds/trunk/packages/net/telegrambot helmiwrt-adds/telegrambot
 svn co https://github.com/helmiau/helmiwrt-adds/trunk/luci/luci-app-telegrambot helmiwrt-adds/luci-app-telegrambot
 
+# Add luci-app-mqos
+git clone --depth=1 https://github.com/WROIATE/luci-app-mqos
+
 #-----------------------------------------------------------------------------
 #   End of @helmiau additionals packages for cloning repo 
 #-----------------------------------------------------------------------------
@@ -139,8 +142,6 @@ if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	sed -i '/PKG_MIRROR_HASH/d' rtl8821cu/Makefile
 	[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
 fi
-
-git clone --depth=1 https://github.com/WROIATE/luci-app-mqos
 
 popd
 
