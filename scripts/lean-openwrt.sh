@@ -140,6 +140,7 @@ if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	[ -f rtl8821cu/patches/040-wireless-5.8.patch ] && rm -f rtl8821cu/patches/040-wireless-5.8.patch
 fi
 
+git clone --depth=1 https://github.com/WROIATE/luci-app-mqos
 
 popd
 
