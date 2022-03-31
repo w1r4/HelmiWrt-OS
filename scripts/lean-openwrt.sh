@@ -30,7 +30,7 @@ pushd package/community
 
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
-[ ! -d openwrt-passwall/luci-app-passwall ] && svn co https://github.com/NueXini/NueXini_Packages/trunk/luci-app-passwall openwrt-passwall/luci-app-passwall
+[ ! -d openwrt-passwall/luci-app-passwall ] && svn co https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2 openwrt-passwall/luci-app-passwall2
 sed -i 's/ upx\/host//g' openwrt-passwall/v2ray-plugin/Makefile
 grep -lr upx/host openwrt-passwall/* | xargs -t -I {} sed -i '/upx\/host/d' {}
 
