@@ -182,7 +182,7 @@ if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	#wget -q https://raw.githubusercontent.com/WYC-2020/lede/f60db604f07165d5cd8f7a98be6890180c790513/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -O linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch
 	#wget -q https://raw.githubusercontent.com/WYC-2020/lede/01358c12ec1bfa6d5237eadecbd5ac404705cab3/target/linux/generic/backport-5.15/004-add-old-kernel-macros.patch -O linux/generic/backport-5.15/004-add-old-kernel-macros.patch
 	popd
-elif
+else
 	# Disable kmod-fs-virtiofs for non-x86
 	sed -i "s/KCONFIG:=CONFIG_VIRTIO_FS/KCONFIG:=CONFIG_DEF_VIRTIO_FS/g" $BUILDDIR/package/kernel/linux/modules/fs.mk
 	sed -i "s/CONFIG_VIRTIO_MENU=y/CONFIG_VIRTIO_MENU=n/g" $BUILDDIR/target/linux/generic/config-5.4
