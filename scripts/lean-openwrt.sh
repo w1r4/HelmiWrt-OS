@@ -11,6 +11,12 @@ HWOSDIR="package/base-files/files"
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' $HWOSDIR/bin/config_generate
 
+# Replace lede hostapd with immortalwrt source
+pushd package/network/services
+rm -rf hostapd
+svn co https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/network/services/hostapd
+popd
+
 # Switch dir to package/lean
 pushd package/lean
 
@@ -91,8 +97,8 @@ svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-tomato kenzo
 git clone --depth=1 https://github.com/helmiau/luci-theme-neobird
 
 # Add Xradio kernel for Orange Pi Zero
-svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
-sed -i "s/ +wpad-mini//g" melsem/xradio/Makefile
+#svn co https://github.com/melsem/openwrt-lede_xradio-xr819_soc-audio/trunk/xradio-Openwrt_kernel-5.4.xx melsem/xradio
+#sed -i "s/ +wpad-mini//g" melsem/xradio/Makefile
 
 # Add luci-app-amlogic
 git clone --depth=1 https://github.com/ophub/luci-app-amlogic
@@ -182,12 +188,18 @@ if [[ "$WORKFLOWNAME" == *"x86"* ]] ; then
 	#wget -q https://raw.githubusercontent.com/WYC-2020/lede/f60db604f07165d5cd8f7a98be6890180c790513/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -O linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch
 	#wget -q https://raw.githubusercontent.com/WYC-2020/lede/01358c12ec1bfa6d5237eadecbd5ac404705cab3/target/linux/generic/backport-5.15/004-add-old-kernel-macros.patch -O linux/generic/backport-5.15/004-add-old-kernel-macros.patch
 	popd
+	
+	# Remove kmod-crypto-misc error
+	sed -i "/glue_helper.ko/d" $BUILDDIR/package/kernel/linux/modules/crypto.mk
 else
 	# Disable kmod-fs-virtiofs for non-x86
 	sed -i "s/KCONFIG:=CONFIG_VIRTIO_FS/KCONFIG:=CONFIG_DEF_VIRTIO_FS/g" $BUILDDIR/package/kernel/linux/modules/fs.mk
 	sed -i "s/CONFIG_VIRTIO_MENU=y/CONFIG_VIRTIO_MENU=n/g" $BUILDDIR/target/linux/generic/config-5.4
 	sed -i "s/CONFIG_VIRTIO_MENU=y/CONFIG_VIRTIO_MENU=n/g" $BUILDDIR/target/linux/generic/config-5.10
 	sed -i "s/CONFIG_VIRTIO_MENU=y/CONFIG_VIRTIO_MENU=n/g" $BUILDDIR/target/linux/generic/config-5.15
+	# Remove kmod-9pnet
+	sed -i "s|CONFIG_NET_9P \|CONFIG_NET_9P=n \|g" $BUILDDIR/package/kernel/linux/modules/netsupport.mk
+	sed -i "s|CONFIG_NET_9P_VIRTIO|CONFIG_NET_9P_VIRTIO=n|g" $BUILDDIR/package/kernel/linux/modules/netsupport.mk
 fi
 
 # Default kernel selection and some additions
