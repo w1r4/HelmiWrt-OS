@@ -353,8 +353,8 @@ EOF
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
 echo -e "${N}=====================================${G}"
-echo "    OpenClash Script Manager v$SCRIPTVER"
-echo "         Created by ${Y}helmiau"
+echo -e "    OpenClash Script Manager v$SCRIPTVER"
+echo -e "         Created by ${Y}helmiau"
 echo -e "${N}=====================================${N}"
 echo -e "  ${Y}Architecture   : $ARCH"
 echo -e "  ${Y}OpenClash App  : $IPKSTAT"
