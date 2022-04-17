@@ -353,7 +353,7 @@ EOF
 #   If you use some codes frome here, please give credit to www.helmiau.com
 #--------------------------------------------------------
 echo -e "${N}=====================================${G}"
-echo -e "    OpenClash Script Manager v$SCRIPTVER"
+echo -e "    OpenClash Script Manager ${R}v$SCRIPTVER${G}"
 echo -e "         Created by ${Y}helmiau"
 echo -e "${N}=====================================${N}"
 echo -e "  ${Y}Architecture   : $ARCH"
@@ -364,9 +364,9 @@ echo -e "  ${Y}Vernesong Core : $VSCORESTAT"
 echo -e "  ${Y}Meta Core      : $METACORESTAT"
 echo -e "${N}=====================================${G}"
 if [[ $VSCORESTAT == *"(Used)"* ]]; then
-	echo "  Switch to Dreamacro core    : s"
+	echo "  Switch to Dreamacro core  : s"
 else
-	echo "  Switch to Vernesong core    : s"
+	echo "  Switch to Vernesong core  : s"
 fi
 echo -e "${N}=====================================${G}"
 echo "  Install Dreamacro core    : d"
@@ -376,10 +376,10 @@ echo "  Re-Install all cores      : r"
 echo -e "${N}=====================================${Y}"
 echo "  Install OpenClash Stable  : is"
 echo "  Install OpenClash Dev     : id"
-echo -e "${N}=====================================${N}"
+echo -e "${N}=====================================${R}"
 echo "  Start OpenClash           : st"
 echo "  Stop OpenClash            : sp"
-echo -e "${N}=====================================${N}"
+echo -e "${N}=====================================${Y}"
 echo "  Add Adblock Rules         : b"
 echo "  Update OCSM Script        : u"
 echo -e "${N}=====================================${G}"
