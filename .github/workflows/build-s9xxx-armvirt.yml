@@ -80,25 +80,7 @@ jobs:
         echo "::set-output name=status::success"
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
+      if: steps.build.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.BUILD_TAG }}${{ env.FILE_DATE }}
         path: ${{ env.PACKAGED_OUTPUTPATH}}
-    - name: Upload Firmware Files to GitHub Release
-      uses: ncipollo/release-action@v1
-      if: steps.build.outputs.status == 'success' && !cancelled()
-      with:
-        allowUpdates: true
-        prerelease: true
-        token: ${{ secrets.HELMIWRT_RW }}
-        name: HelmiWrt Test ${{ env.BUILD_TAG }}
-        tag: helmiwrt-${{ env.BUILD_TAG }}
-        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/helmiwrt-s9*
-        body: |
-          **HelmiWrt is custom OpenWrt build for**
-          - Raspberry Pi 1,2,3,4
-          - x86/64 (PC)
-          - NanoPi R2C, R2S and R4S
-          - OrangePi Zero, R1 Plus
-          - Set-top-box s9xxx chipset
-          [Donation here](https://www.helmiau.com/pay/index_en.html) • [Read more firmware info and guides](https://www.google.com/search?q=helmi+wrt+os)
