@@ -78,7 +78,12 @@ jobs:
         echo "PACKAGED_OUTPUTDATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
         find . -type f -name '$HELMIWRT_FILENAME' -exec rm "{}" \;
         echo "::set-output name=status::success"
-
+  - name: Upload firmware directory
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.BUILD_TAG }}${{ env.FILE_DATE }}
+        path: ${{ env.PACKAGED_OUTPUTPATH}}
     - name: Upload Firmware Files to GitHub Release
       uses: ncipollo/release-action@v1
       if: steps.build.outputs.status == 'success' && !cancelled()
