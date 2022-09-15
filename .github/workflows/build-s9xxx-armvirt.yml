@@ -83,4 +83,4 @@ jobs:
       if: steps.build.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.BUILD_TAG }}${{ env.FILE_DATE }}
-        path: ${{ env.PACKAGED_OUTPUTPATH}}
+        path: ${{ env.PACKAGED_OUTPUTPATH}}/helmiwrt-s9*
