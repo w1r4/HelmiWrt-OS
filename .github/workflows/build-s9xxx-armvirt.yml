@@ -78,7 +78,7 @@ jobs:
         echo "PACKAGED_OUTPUTDATE=$(date +"%Y.%m.%d")" >> $GITHUB_ENV
         find . -type f -name '$HELMIWRT_FILENAME' -exec rm "{}" \;
         echo "::set-output name=status::success"
-  - name: Upload firmware directory
+    - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
